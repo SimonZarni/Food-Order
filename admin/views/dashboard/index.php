@@ -1,4 +1,4 @@
-<?php // dev2
+<?php
 include_once __DIR__ . '/../../layouts/sidebar.php';
 ?>
 

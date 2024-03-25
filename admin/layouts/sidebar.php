@@ -45,17 +45,9 @@
               <span class="hide-menu">MODULES</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Restaurant</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
               <a class="sidebar-link" href="../menu/menu_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-alert-circle"></i>
+                  <i class="ti ti-menu"></i>
                 </span>
                 <span class="hide-menu">Menu</span>
               </a>
@@ -63,7 +55,15 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-cards"></i>
+                  <i class="ti ti-table"></i>
+                </span>
+                <span class="hide-menu">Restaurant</span>
+              </a>
+            </li>          
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#" aria-expanded="false">
+                <span>
+                  <i class="ti ti-cup"></i>
                 </span>
                 <span class="hide-menu">Restaurant Menu</span>
               </a>
@@ -71,7 +71,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-file-description"></i>
+                  <i class="ti ti-pizza"></i>
                 </span>
                 <span class="hide-menu">Item</span>
               </a>
@@ -87,7 +87,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-alert-circle"></i>
+                  <i class="ti ti-box"></i>
                 </span>
                 <span class="hide-menu">Delivery</span>
               </a>
@@ -95,7 +95,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="../township/township_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-cards"></i>
+                  <i class="ti ti-home"></i>
                 </span>
                 <span class="hide-menu">Township</span>
               </a>

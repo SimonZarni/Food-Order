@@ -47,7 +47,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-bowl"></i>
+                  <i class="ti ti-article"></i>
                 </span>
                 <span class="hide-menu">Restaurant</span>
               </a>
@@ -55,7 +55,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-menu"></i>
+                  <i class="ti ti-alert-circle"></i>
                 </span>
                 <span class="hide-menu">Menu</span>
               </a>
@@ -63,7 +63,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-cup"></i>
+                  <i class="ti ti-cards"></i>
                 </span>
                 <span class="hide-menu">Restaurant Menu</span>
               </a>
@@ -71,7 +71,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-pizza"></i>
+                  <i class="ti ti-file-description"></i>
                 </span>
                 <span class="hide-menu">Item</span>
               </a>
@@ -87,7 +87,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
-                  <i class="ti ti-box"></i>
+                  <i class="ti ti-alert-circle"></i>
                 </span>
                 <span class="hide-menu">Delivery</span>
               </a>
@@ -95,7 +95,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="../township/township_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-home"></i>
+                  <i class="ti ti-cards"></i>
                 </span>
                 <span class="hide-menu">Township</span>
               </a>
@@ -106,14 +106,6 @@
                   <i class="ti ti-file-description"></i>
                 </span>
                 <span class="hide-menu">Payment</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user"></i>
-                </span>
-                <span class="hide-menu">User</span>
               </a>
             </li>
             <li class="nav-small-cap">
@@ -206,14 +198,6 @@
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-3">My Account</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">My Task</p>
-                    </a> -->
                     <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>

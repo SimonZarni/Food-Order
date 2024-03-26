@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
     if (isset($_FILES['image'])) {
         $image = $_FILES['image']['name'];
     }
-    if (!empty($image)) {
+    if (!empty($name) && !empty($image)) {
         $targetDirectory = "../../uploads/";
         $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
@@ -19,48 +19,45 @@ if (isset($_POST['submit'])) {
         } else {
             echo "Error";
         }
+    } else {
+        if (empty($name)) {
+            $error_name = "Please Enter Menu Name";
+        }
+        if (empty($image)) {
+            $error_image = "Please choose Image";
+        }
     }
 }
 
 include_once __DIR__ . '/../../layouts/sidebar.php';
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 d-flex align-items-strech">
-                <div class="card-body">
-                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <div>
-                                <label for="" class="form-label">Name</label>
-                                <input type="text" name="name" class="form-control" id="">
-                            </div>
-                            <div>
-                                <label for="" class="form-label">Image</label>
-                                <input type="file" name="image" class="form-control" id="">
-                            </div>
-                            <div>
-                                <button class="btn btn-warning mt-2" name="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 d-flex align-items-strech">
+            <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                    <form action="" method="post" enctype="multipart/form-data" class="bg-body-tertiary shadow rounded p-5 py-10">
+                        <div>
+                            <label for="" class="form-label">Menu Name</label>
+                            <input type="text" name="name" class="form-control" value="<?php if (isset($name)) echo $name; ?>" id="">
+                            <span class="text-danger"><?php if (isset($error_name)) echo $error_name; ?></span>
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Image</label>
+                            <input type="file" name="image" class="form-control" id="">
+                            <span class="text-danger"><?php if (isset($error_image)) echo $error_image; ?></span>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-warning mt-2" name="submit">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
 
 <?php
 include_once __DIR__ . '/../../layouts/footer.php';

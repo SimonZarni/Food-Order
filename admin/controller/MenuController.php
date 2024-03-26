@@ -17,5 +17,19 @@ class MenuController {
     {
         return $this->menu->addMenu($name, $image);
     }
+
+    public function getMenu($id)
+    {
+        return $this->menu->getMenu($id);
+    }
+
+    public function editMenu($id, $name, $image)
+    {
+        return $this->menu->editMenu($id, $name, $image);
+    }
+
+    public function deleteMenu($id)
+    {
+        return $this->menu->deleteMenu($id);
+    }
 }
-?>

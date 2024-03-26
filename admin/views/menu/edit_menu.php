@@ -53,7 +53,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             <span class="text-danger"><?php if (isset($error_image)) echo $error_image; ?></span>
                         </div>
                         <div class="text-center mt-3">
-                            <button class="btn btn-warning mt-2" name="update">Submit</button>
+                            <button class="btn btn-warning mt-2" name="update">Update</button>
                         </div>
                     </form>
                 </div>

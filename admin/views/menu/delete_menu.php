@@ -10,3 +10,5 @@ if ($status) {
 } else {
     header('location:menu_list.php?delete_status=fail');
 }
+
+?>

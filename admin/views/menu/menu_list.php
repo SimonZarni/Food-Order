@@ -17,12 +17,12 @@ $menus = $menu_controller->getMenus();
         echo ' <div class="alert alert-success" role="alert">Menu deleted successfully.</div>';
     }
     ?>
-    <a href="create_menu.php" class="btn btn-success">Create Menu</a>
+    <a href="create_menu.php" class="btn btn-success">Add Menu</a>
     <div class="row">
         <div class="col-lg-12 d-flex align-items-strech">
             <div class="card-body">
                 <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <table class="table table-striped">
+                    <table class="table table-striped text-center">
                         <thead>
                             <tr>
                                 <th>ID</th>

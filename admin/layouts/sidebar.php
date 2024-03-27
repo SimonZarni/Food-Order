@@ -61,7 +61,7 @@
               </a>
             </li>          
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../restaurant_menu/restaurantMenu_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-cup"></i>
                 </span>

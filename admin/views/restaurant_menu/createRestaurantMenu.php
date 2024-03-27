@@ -43,7 +43,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                     <form action="" method="post" enctype="multipart/form-data" class="bg-body-tertiary shadow rounded p-5">
                         <div>
                             <label for="" class="form-label">Restaurant</label>
-                            <select name="restaurant" id="" class="form-select">
+                            <select name="restaurant" id="" class="form-select" style="width: 20rem;">
                                 <option value="" disabled selected>Select restaurant</option>
                                 <?php
                                 foreach ($restaurants as $restaurant) {
@@ -59,7 +59,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                         </div>
                         <div>
                             <label for="" class="form-label">Menu</label>
-                            <select name="menu" id="" class="form-select">
+                            <select name="menu" id="" class="form-select" style="width: 20rem;">
                                 <option value="" disabled selected>Select Menu</option>
                                 <?php
                                 foreach ($menus as $menu) {

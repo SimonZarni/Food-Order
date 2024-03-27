@@ -45,7 +45,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                     <form action="" method="post" class="bg-body-tertiary shadow rounded p-5">
                         <div>
                             <label for="" class="form-label">Restaurant</label>
-                            <select name="restaurant" id="" class="form-select">
+                            <select name="restaurant" id="" class="form-select" style="width: 20rem;">
                                 <?php
                                 foreach ($restaurants as $restaurant) {
                                     if ($restaurant['status'] == null) {
@@ -62,7 +62,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                         </div>
                         <div>
                             <label for="" class="form-label">Menu</label>
-                            <select name="menu" id="" class="form-select">
+                            <select name="menu" id="" class="form-select" style="width: 20rem;">
                                 <?php
                                 foreach ($menus as $menu) {
                                     if ($menu['status'] == null) {

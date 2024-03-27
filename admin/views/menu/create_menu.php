@@ -49,8 +49,16 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             <input type="file" name="image" class="form-control" id="">
                             <span class="text-danger"><?php if (isset($error_image)) echo $error_image; ?></span>
                         </div>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-warning mt-2" name="submit">Add</button>
+                        <div class="d-flex justify-content-center">
+                            <div class="mx-2 mt-3">
+                                <button class="btn btn-warning mt-2" name="submit">Add</button>
+                            </div>
+                            <div class="mx-2 mt-3">
+                                <button type="reset" class="btn btn-danger mt-2">Clear</button>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <a href="menu_list.php">Back</a>
                         </div>
                     </form>
                 </div>

@@ -48,11 +48,11 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                                 <button class="btn btn-warning mt-2" name="submit">Add</button>
                             </div>
                             <div class="mx-2 mt-3">
-                                <button type="reset" class="btn btn-danger mt-2" name="submit">Clear</button>
+                                <button type="reset" class="btn btn-danger mt-2">Clear</button>
                             </div>
                         </div>
                         <div class="text-end">
-                            <a href="restaurant_list.php" class="btn btn-primary">Back</a>
+                            <a href="restaurant_list.php">Back</a>
                         </div>
                     </form>
                 </div>

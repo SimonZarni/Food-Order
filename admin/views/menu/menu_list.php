@@ -39,7 +39,7 @@ $menus = $menu_controller->getMenus();
                                 <tr>
                                     <td><?php echo $menu['id']; ?></td>
                                     <td><?php echo $menu['name']; ?></td>
-                                    <td><img src="../../uploads/<?php echo $menu['image']; ?>" alt="" style="width: 120px; height:120px; border-radius:100%;"></td>
+                                    <td><img src="../../uploads/<?php echo $menu['image']; ?>" alt="" style="width: 200px;" class="rounded-3"></td>
                                     <td>
                                         <a href="menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-info mx-2">View</a>
                                         <a href="edit_menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning mx-2">Edit</a>

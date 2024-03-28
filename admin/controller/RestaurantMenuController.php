@@ -13,9 +13,9 @@ class RestaurantMenuController {
         return $this->restaurant->getRestaurantMenus();
     }
 
-    public function addRestaurantMenu($name, $address)
+    public function addRestaurantMenu($restaurant, $menu, $restaurant_menu)
     {
-        return $this->restaurant->addRestaurantMenu($name, $address);
+        return $this->restaurant->addRestaurantMenu($restaurant, $menu, $restaurant_menu);
     }
 
     public function getRestaurantMenu($id)

@@ -10,11 +10,13 @@ $menus = $menu_controller->getMenus();
 <div class="container-fluid">
     <?php
     if (isset($_GET['status'])) {
-        echo ' <div class="alert alert-success" role="alert">New menu created successfully.</div>';
+        echo ' <div class="alert alert-success" role="alert">New menu added successfully.</div>';
     } elseif (isset($_GET['update_status'])) {
         echo ' <div class="alert alert-success" role="alert">Menu updated Successfully.</div>';
-    } elseif (isset($_GET['delete_status'])) {
+    } elseif (isset($_GET['delete_status']) && $_GET['delete_status'] == 'success') {
         echo ' <div class="alert alert-success" role="alert">Menu deleted successfully.</div>';
+    } elseif (isset($_GET['delete_status']) && $_GET['delete_status'] == 'fail'){
+        echo ' <div class="alert alert-danger" role="alert">Cannot be deleted since it has related restaurant menu data.</div>';
     }
     ?>
     <a href="create_menu.php" class="btn btn-success">Add Menu</a>
@@ -41,9 +43,9 @@ $menus = $menu_controller->getMenus();
                                     <td><?php echo $menu['name']; ?></td>
                                     <td><img src="../../uploads/<?php echo $menu['image']; ?>" alt="" style="width: 200px;" class="rounded-3"></td>
                                     <td>
-                                        <a href="menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-info mx-2">View</a>
-                                        <a href="edit_menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning mx-2">Edit</a>
-                                        <a href="delete_menu.php?id=<?php echo $menu['id']; ?>" onclick="return confirm('Are you sure to delete this menu?');" class="btn btn-danger mx-2">Delete</a>
+                                        <a href="menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
+                                        <a href="edit_menu.php?id=<?php echo $menu['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>
+                                        <a href="delete_menu.php?id=<?php echo $menu['id']; ?>" onclick="return confirm('Are you sure to delete this menu?');" class="btn btn-danger mx-2"><i class="ti ti-trash"></i></a>
                                     </td>
                                 </tr>
                             <?php

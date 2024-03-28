@@ -13,8 +13,10 @@ $restaurants = $restaurant_controller->getRestaurants();
         echo ' <div class="alert alert-success" role="alert">New restaurant added successfully.</div>';
     } elseif (isset($_GET['update_status'])) {
         echo ' <div class="alert alert-success" role="alert">Restaurant updated successfully.</div>';
-    } elseif (isset($_GET['delete_status'])) {
+    } elseif (isset($_GET['delete_status']) && $_GET['delete_status'] == 'success') {
         echo ' <div class="alert alert-success" role="alert">Restaurant deleted successfully.</div>';
+    } elseif (isset($_GET['delete_status']) && $_GET['delete_status'] == 'fail') {
+        echo ' <div class="alert alert-danger" role="alert">Cannot be deleted since it has related restaurant menu data.</div>';
     }
     ?>
     <a href="create_restaurant.php" class="btn btn-success">Add Restaurant</a>
@@ -41,9 +43,9 @@ $restaurants = $restaurant_controller->getRestaurants();
                                         <td><?php echo $restaurant['name']; ?></td>
                                         <td><?php echo $restaurant['address']; ?></td>
                                         <td>
-                                            <a href="restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-info mx-2">View</a>
-                                            <a href="edit_restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-warning mx-2">Edit</a>
-                                            <a href="delete_restaurant.php?id=<?php echo $restaurant['id']; ?>" onclick="return confirm('Are you sure to delete this restaurant?');" class="btn btn-danger mx-2">Delete</a>
+                                            <a href="restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
+                                            <a href="edit_restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>
+                                            <a href="delete_restaurant.php?id=<?php echo $restaurant['id']; ?>" onclick="return confirm('Are you sure to delete this restaurant?');" class="btn btn-danger mx-2"><i class="ti ti-trash"></i></a>
                                         </td>
                                     </tr>
                             <?php

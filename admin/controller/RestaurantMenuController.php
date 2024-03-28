@@ -23,9 +23,9 @@ class RestaurantMenuController {
         return $this->restaurant->getRestaurantMenu($id);
     }
 
-    public function editRestaurantMenu($id, $restaurant, $menu)
+    public function editRestaurantMenu($id, $restaurant, $menu, $restaurant_menu)
     {
-        return $this->restaurant->editRestaurantMenu($id, $restaurant, $menu);
+        return $this->restaurant->editRestaurantMenu($id, $restaurant, $menu, $restaurant_menu);
     }
     
     public function deleteRestaurantMenu($id)

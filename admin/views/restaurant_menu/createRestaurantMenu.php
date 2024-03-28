@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
         $restaurant_menu = $_POST['restaurant_menu'];
     } else {
         $error = true;
-        $error_resMenu = "Please fill in restaurant menu";
+        $error_restaurantMenu = "Please fill in restaurant menu";
     }
     if (!$error) {
         $status = $restaurantMenu_controller->addRestaurantMenu($restaurant, $menu, $restaurant_menu);
@@ -82,7 +82,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                         <div>
                             <label for="" class="form-label">Restaurant Menu</label>
                             <input type="text" name="restaurant_menu" id="" placeholder="Please fill in restaurant menu" class="form-control">
-                            <span class="text-danger"> <?php if (isset($error_resMenu)) echo $error_resMenu; ?></span>
+                            <span class="text-danger"> <?php if (isset($error_restaurantMenu)) echo $error_restaurantMenu; ?></span>
                         </div>
                         <div class="d-flex">
                             <div class="mx-2 mt-3">

@@ -100,7 +100,7 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             </div>
                         </div>
                         <div class="text-end">
-                            <a href="menu_list.php">Back</a>
+                            <a href="item_list.php">Back</a>
                         </div>
                     </form>
                 </div>

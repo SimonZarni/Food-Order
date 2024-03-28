@@ -38,16 +38,16 @@ $restaurants = $restaurant_controller->getRestaurants();
                             foreach ($restaurants as $restaurant) {
                                 if ($restaurant['status'] == null) {
                             ?>
-                                    <tr>
-                                        <td><?php echo $restaurant['id'] ?></td>
-                                        <td><?php echo $restaurant['name']; ?></td>
-                                        <td><?php echo $restaurant['address']; ?></td>
-                                        <td>
-                                            <a href="restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
-                                            <a href="edit_restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>
-                                            <a href="delete_restaurant.php?id=<?php echo $restaurant['id']; ?>" onclick="return confirm('Are you sure to delete this restaurant?');" class="btn btn-danger mx-2"><i class="ti ti-trash"></i></a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $restaurant['id']; ?></td>
+                                    <td><?php echo $restaurant['name']; ?></td>
+                                    <td><?php echo $restaurant['address']; ?></td>
+                                    <td>
+                                        <a href="restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
+                                        <a href="edit_restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>
+                                        <a href="delete_restaurant.php?id=<?php echo $restaurant['id']; ?>" onclick="return confirm('Are you sure to delete this restaurant?');" class="btn btn-danger mx-2"><i class="ti ti-trash"></i></a>
+                                    </td>
+                                </tr>
                             <?php
                                 }
                             }

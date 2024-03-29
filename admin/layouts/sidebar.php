@@ -1,3 +1,12 @@
+<?php
+session_start();
+include_once __DIR__ . '/../controller/AuthenticationController.php';
+
+$auth_controller = new AuthenticationController();
+$auth_controller->authentication();
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -186,6 +195,7 @@
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <p><?php if(isset($_SESSION['name'])) echo $_SESSION['name']; ?></p>
               <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
@@ -198,7 +208,7 @@
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <a href="../dashboard/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>
               </li>

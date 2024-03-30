@@ -18,14 +18,13 @@ class RestaurantMenu {
         }
     }
 
-    public function addRestaurantMenu($restaurant, $menu, $restaurant_menu)
+    public function addRestaurantMenu($restaurant, $menu)
     {
         $this->conn = Database::connect();
-        $sql = "INSERT INTO restaurant_menu (restaurant_id, menu_id, restaurant_menu) VALUES (:restaurant, :menu, :restaurant_menu)";
+        $sql = "INSERT INTO restaurant_menu (restaurant_id, menu_id) VALUES (:restaurant, :menu)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':restaurant', $restaurant);
         $this->statement->bindParam(':menu', $menu);
-        $this->statement->bindParam(':restaurant_menu', $restaurant_menu);
         return $this->statement->execute();
     }
 
@@ -45,15 +44,14 @@ class RestaurantMenu {
         }
     }
 
-    public function editRestaurantMenu($id, $restaurant, $menu, $restaurant_menu)
+    public function editRestaurantMenu($id, $restaurant, $menu)
     {
         $this->conn = Database::connect();
-        $sql = "update restaurant_menu set restaurant_id=:restaurant, menu_id=:menu, restaurant_menu=:restaurant_menu where id=:id";
+        $sql = "update restaurant_menu set restaurant_id=:restaurant, menu_id=:menu  where id=:id";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':id', $id);
         $this->statement->bindParam(':restaurant', $restaurant);
         $this->statement->bindParam(':menu', $menu);
-        $this->statement->bindParam(':restaurant_menu', $restaurant_menu);
         return $this->statement->execute();
     }
 

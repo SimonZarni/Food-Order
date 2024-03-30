@@ -5,16 +5,19 @@ class Item {
     private $conn, $statement;
 
     public function getItems()
-    {
-        $this->conn = Database::connect();
-        $sql = "select item.*, restaurant_menu.restaurant_menu as restaurant_menu from item
-                join restaurant_menu on item.restaurant_menuID=restaurant_menu.id";
-        $this->statement = $this->conn->prepare($sql);
-        if ($this->statement->execute()) {
-            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
-            return $results;
-        }
-    }
+        {
+            $this->conn = Database::connect();
+            $sql = "SELECT item.*, restaurant.name AS restaurant_name, menu.name AS menu_name
+                    FROM item
+                    JOIN restaurant_menu ON item.restaurant_menuID = restaurant_menu.id
+                    JOIN restaurant ON restaurant_menu.restaurant_id = restaurant.id
+                    JOIN menu ON restaurant_menu.menu_id = menu.id;";
+            $this->statement = $this->conn->prepare($sql);
+            if ($this->statement->execute()) {
+                $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+                return $results;
+            }
+        }    
 
     public function addItem($name, $image, $price, $description, $restaurant_menu)
     {

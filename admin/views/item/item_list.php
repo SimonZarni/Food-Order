@@ -45,7 +45,7 @@ $items = $item_controller->getItems();
                                         <td><img src="../../uploads/<?php echo $item['image']; ?>" alt="" style="width: 200px;" class="rounded-3"></td>
                                         <td><?php echo $item['price']; ?></td>
                                         <td><?php echo $item['description']; ?></td>
-                                        <td><?php echo $item['restaurant_menu']; ?></td>
+                                        <td><?php echo $item['restaurant_name']." ".$item['menu_name']; ?></td>
                                         <td>
                                             <a href="item.php?id=<?php echo $item['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
                                             <a href="edit_item.php?id=<?php echo $item['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>

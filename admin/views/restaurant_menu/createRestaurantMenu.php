@@ -25,14 +25,8 @@ if (isset($_POST['submit'])) {
         $error = true;
         $error_menu = "Please select menu";
     }
-    if (!empty($_POST['restaurant_menu'])) {
-        $restaurant_menu = $_POST['restaurant_menu'];
-    } else {
-        $error = true;
-        $error_restaurantMenu = "Please fill in restaurant menu";
-    }
     if (!$error) {
-        $status = $restaurantMenu_controller->addRestaurantMenu($restaurant, $menu, $restaurant_menu);
+        $status = $restaurantMenu_controller->addRestaurantMenu($restaurant, $menu);
         header('location:restaurantMenu_list.php?status=success');
     }
 }
@@ -78,11 +72,6 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                                 ?>
                             </select>
                             <span class="text-danger"> <?php if (isset($error_menu)) echo $error_menu; ?></span>
-                        </div>
-                        <div>
-                            <label for="" class="form-label">Restaurant Menu</label>
-                            <input type="text" name="restaurant_menu" id="" placeholder="Please fill in restaurant menu" class="form-control">
-                            <span class="text-danger"> <?php if (isset($error_restaurantMenu)) echo $error_restaurantMenu; ?></span>
                         </div>
                         <div class="d-flex">
                             <div class="mx-2 mt-3">

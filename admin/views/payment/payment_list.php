@@ -1,7 +1,22 @@
 <?php
 include_once __DIR__ . '/../../layouts/sidebar.php';
+include_once __DIR__ . '/../../controller/PaymentController.php';
+
+$paymentController = new PaymentController();
+$payments = $paymentController->getPayments();
 ?>
+
 <div class="container-fluid">
+    <?php
+    if (isset($_GET['status'])) {
+        echo ' <div class="alert alert-success" role="alert">New Payment Method added successfully.</div>';
+    } elseif (isset($_GET['update_status'])) {
+        echo ' <div class="alert alert-success" role="alert">Payment Method edited Successfully.</div>';
+    } elseif (isset($_GET['delete_status'])) {
+        echo ' <div class="alert alert-success" role="alert">Payment Method deleted successfully.</div>';
+    }
+    ?>
+    <a href="create_payment.php" class="btn btn-success">Create Payment Method</a>
     <div class="row">
         <div class="col-lg-12 d-flex align-items-strech">
             <div class="card-body">
@@ -10,10 +25,30 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Method</th>
-                                <th>Action</th>
+                                <th>Payment Method</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <?php
+                            foreach ($payments as $payment) {
+                                if($payment['status']==null){
+                                    if($payment['deleted_at']==null){
+                            ?>
+                                <tr>
+                                    <td><?php echo $payment['id']; ?></td>
+                                    <td><?php echo $payment['method']; ?></td>
+                                    <td>
+                                        <a href="payment.php?id=<?php echo $payment['id']; ?>" class="btn btn-info mx-2">View</a>
+                                        <a href="edit_payment.php?id=<?php echo $payment['id']; ?>" class="btn btn-warning mx-2">Edit</a>
+                                        <a href="delete_payment.php?id=<?php echo $payment['id']; ?>" onclick="return confirm('Are you sure to delete this payment method?');" class="btn btn-danger mx-2">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                    }
+                                }
+                            }
+                            ?>
+                        </tbody>
                     </table>
                 </div>
             </div>

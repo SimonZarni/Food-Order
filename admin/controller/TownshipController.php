@@ -5,7 +5,7 @@ class TownshipController {
     private $township;
     function __construct()
     {
-        $this->township = new township();
+        $this->township = new Township();
     }
 
     public function getTownships()

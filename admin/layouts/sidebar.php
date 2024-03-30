@@ -86,7 +86,7 @@ $auth_controller->authentication();
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../order/order_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
@@ -117,6 +117,14 @@ $auth_controller->authentication();
                 <span class="hide-menu">Payment</span>
               </a>
             </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="../user/user_list.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user"></i>
+                </span>
+                <span class="hide-menu">User</span>
+              </a>
+            </li>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">AUTH</span>
@@ -135,26 +143,6 @@ $auth_controller->authentication();
                   <i class="ti ti-user-plus"></i>
                 </span>
                 <span class="hide-menu">Register</span>
-              </a>
-            </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">EXTRA</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-mood-happy"></i>
-                </span>
-                <span class="hide-menu">Icons</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-aperture"></i>
-                </span>
-                <span class="hide-menu">Sample Page</span>
               </a>
             </li>
           </ul>

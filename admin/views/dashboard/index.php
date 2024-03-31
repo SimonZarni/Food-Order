@@ -3,6 +3,14 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
 ?>
 
 <div class="container-fluid">
+    <?php
+      if(isset($_GET['reset_status']))
+      {
+        echo "<div class='alert alert-success'>Your password has been reset successfully.</div>";
+      } elseif(isset($_GET['change_status'])){
+        echo "<div class='alert alert-success'>Your password has been changed successfully.</div>";
+      }
+    ?>
         <!--  Row 1 -->
         <div class="row">
           <div class="col-lg-8 d-flex align-items-strech">

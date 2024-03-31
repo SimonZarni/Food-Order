@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
                         Remeber this Device
                       </label>
                     </div>
-                    <a class="text-primary fw-bold" href="">Forgot Password ?</a>
+                    <a class="text-primary fw-bold" href="forgot_password.php">Forgot Password ?</a>
                   </div>
                   <span class="text-danger"><?php if (isset($error)) echo $error; ?></span>
                   <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" name="submit">Sign In</button>

@@ -45,8 +45,8 @@ $orders = $order_controller->getOrders();
                                     <td><?php echo "Status"; ?></td>
                                     <td>
                                         <a href="order.php?id=<?php echo $order['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
-                                        <a href="accept_order.php?" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2">Accept</a>
-                                        <a href="decline_order.php?" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2">Decline</a>
+                                        <a href="accept_order.php?" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
+                                        <a href="decline_order.php?" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>
                                     </td>
                                 </tr>
                             <?php

@@ -38,6 +38,7 @@ if (isset($_POST['submit'])) {
                 $_SESSION['email'] = $email;
                 $_SESSION['password'] = $password;
                 header('location: otp_verify.php');
+                exit;
             }
         }
     }

@@ -33,6 +33,11 @@ class AuthenticationController {
         return $this->auth->getAdmins();
     }
 
+    public function getAdmin($id)
+    {
+        return $this->auth->getAdmin($id);
+    }
+
     public function isEmailExists($email)
     {
         return $this->auth->isEmailExists($email);
@@ -63,6 +68,43 @@ class AuthenticationController {
         {
             return $otp;
         }
+    }
+
+    public function resetPassword($email){
+        $otp = rand(1000,9999);
+   
+        $mailer = new PHPMailer(true);
+
+        $mailer->isSMTP();
+        $mailer->Host = 'smtp.gmail.com';
+        $mailer->SMTPAuth = true;
+        $mailer->SMTPSecure = 'tls';
+        $mailer->Port = 587;
+
+        $mailer->Username = "simonzarni03@gmail.com";
+        $mailer->Password = "uszj czrg zowg apxa";
+
+        $mailer->setFrom("simonzarni03@gmail.com","Food Order");
+        $mailer->addAddress($email);
+
+        $mailer->IsHTML(true);
+        $mailer->Subject = "Reset your password with otp code.";
+        $mailer->Body = 'Your OTP code is '.$otp.'.';
+
+        if ($mailer->send())
+        {
+            return $otp;
+        }
+    }
+
+    public function editPassword($password, $id)
+    {
+        return $this->auth->editPassword($password, $id);
+    }
+
+    public function updatePassword($password, $email)
+    {
+        return $this->auth->updatePassword($password, $email);
     }
 }
 

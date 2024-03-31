@@ -125,26 +125,6 @@ $auth_controller->authentication();
                 <span class="hide-menu">User</span>
               </a>
             </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">AUTH</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-login"></i>
-                </span>
-                <span class="hide-menu">Login</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user-plus"></i>
-                </span>
-                <span class="hide-menu">Register</span>
-              </a>
-            </li>
           </ul>
           <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
             <div class="d-flex">
@@ -195,6 +175,10 @@ $auth_controller->authentication();
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="change_password.php" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-key fs-6"></i>
+                      <p class="mb-0 fs-3">Change Password</p>
                     </a>
                     <a href="../dashboard/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>

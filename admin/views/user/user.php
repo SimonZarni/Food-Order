@@ -16,9 +16,9 @@ $user = $user_controller->getUser($id);
                     <div class="card bg-body-tertiary shadow rounded" style="width: 400px;">
                         <div class="card-body">
                             <p class="card-text">ID: <?php echo $user['id']; ?></p>
-                            <p class="card-text">Total Price: <?php echo $user['name']; ?></p>
-                            <p class="card-text">Customer Name: <?php echo $user['email']; ?></p>
-                            <p class="card-text">Payment: <?php echo $user['address']; ?></p>
+                            <p class="card-text">Name: <?php echo $user['name']; ?></p>
+                            <p class="card-text">Email: <?php echo $user['email']; ?></p>
+                            <p class="card-text">Address: <?php echo $user['address']; ?></p>
                             <a href="user_list.php" class="btn btn-primary">Back</a>
                         </div>
                     </div>

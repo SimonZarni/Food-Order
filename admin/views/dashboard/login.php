@@ -44,9 +44,14 @@ if (isset($_POST['submit'])) {
                     <input type="email" name="email" class="form-control" id="" aria-describedby="emailHelp">
                   </div>
                   <div class="mb-4">
-                    <label for="" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="">
-                  </div>
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" name="password" class="form-control" id="password">
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="ti ti-eye"></i>
+                        </button>
+                    </div>
+                </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
                       <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
@@ -70,8 +75,7 @@ if (isset($_POST['submit'])) {
       </div>
     </div>
   </div>
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../src/js/dashboard.js"></script>
 </body>
 
 </html>

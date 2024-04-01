@@ -78,12 +78,22 @@ if (isset($_POST['submit'])) {
                   </div>
                   <div class="mb-4">
                     <label for="" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="">
+                    <div class="input-group">
+                        <input type="password" name="password" class="form-control" id="password">
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="ti ti-eye"></i>
+                        </button>
+                    </div>
                     <span class="text-danger"><?php if (isset($password_error)) echo $password_error; ?></span>
                   </div>
                   <div class="mb-4">
                     <label for="" class="form-label">Confirm Password</label>
-                    <input type="password" name="con_password" class="form-control" id="">
+                    <div class="input-group">
+                        <input type="password" name="con_password" class="form-control" id="con_password">
+                        <button type="button" class="btn btn-outline-secondary" id="toggleConPassword">
+                            <i class="ti ti-eye"></i>
+                        </button>
+                    </div>
                     <span class="text-danger"><?php if (isset($conPass_error)) echo $conPass_error; ?></span>
                   </div>
                   <span class="text-danger"><?php if (isset($error)) echo $error; ?></span>
@@ -100,8 +110,8 @@ if (isset($_POST['submit'])) {
       </div>
     </div>
   </div>
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../src/js/dashboard.js"></script>
+
 </body>
 
 </html>

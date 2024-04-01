@@ -24,6 +24,7 @@ $orders = $order_controller->getOrders();
                             <tr>
                                 <th>ID</th>
                                 <th>Total Price</th>
+                                <th>Order Date</th>
                                 <th>Customer name</th>
                                 <th>Payment</th>
                                 <th>Cart ID</th>
@@ -39,6 +40,7 @@ $orders = $order_controller->getOrders();
                                 <tr>
                                     <td><?php echo $order['id']; ?></td>
                                     <td><?php echo $order['total_price']; ?></td>
+                                    <td><?php echo $order['order_date']; ?></td>
                                     <td><?php echo $order['username']; ?></td>
                                     <td><?php echo $order['payment_method']; ?></td>
                                     <td><?php echo $order['cart_id']; ?></td>

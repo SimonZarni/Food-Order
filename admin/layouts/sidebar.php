@@ -64,7 +64,7 @@ $auth_controller->authentication();
             <li class="sidebar-item">
               <a class="sidebar-link" href="../restaurant/restaurant_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-table"></i>
+                  <i class="ti ti-location"></i>
                 </span>
                 <span class="hide-menu">Restaurant</span>
               </a>
@@ -88,7 +88,7 @@ $auth_controller->authentication();
             <li class="sidebar-item">
               <a class="sidebar-link" href="../order/order_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-article"></i>
+                  <i class="ti ti-device-tablet"></i>
                 </span>
                 <span class="hide-menu">Order</span>
               </a>
@@ -163,12 +163,12 @@ $auth_controller->authentication();
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <p><?php if(isset($_SESSION['name'])) echo $_SESSION['name']; ?></p>
               <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                  <img src="../../src/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                  <!-- <img src="../../src/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle"> -->
+                  <i class="ti ti-user"></i><?php if(isset($_SESSION['name'])) echo $_SESSION['name']; ?><i class="ti ti-caret-down"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
@@ -189,3 +189,4 @@ $auth_controller->authentication();
         </nav>
       </header>
       <!--  Header End -->
+

@@ -44,7 +44,7 @@ $orders = $order_controller->getOrders();
                                     <td><?php echo $order['username']; ?></td>
                                     <td><?php echo $order['payment_method']; ?></td>
                                     <td><?php echo $order['cart_id']; ?></td>
-                                    <td><?php echo "Status"; ?></td>
+                                    <td></td>
                                     <td>
                                         <a href="order.php?id=<?php echo $order['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
                                         <a href="accept_order.php?" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>

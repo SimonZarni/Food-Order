@@ -94,7 +94,7 @@ $auth_controller->authentication();
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../delivery/delivery_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-box"></i>
                 </span>

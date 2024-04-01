@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
       </div>
     </div>
   </div>
-  <script src="../../src/js/dashboard.js"></script>
+  <script src="../../src/js/script.js"></script>
 </body>
 
 </html>

@@ -3,45 +3,48 @@ session_start();
 include_once __DIR__ . '/../../controller/AuthenticationController.php';
 
 $auth_controller = new AuthenticationController();
+$admins = $auth_controller->getAdmins();
 
 $name_error = $email_error = $password_error = $conPass_error = $error = "";
 
 if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $con_password = $_POST['con_password'];
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+  $con_password = $_POST['con_password'];
 
-    if (empty($name)) {
-        $name_error = "Please enter your name";
-    }
-    if (empty($email)) {
-        $email_error = "Please enter your email";
-    }
-    if (empty($password)) {
-        $password_error = "Please enter your password";
-    }
-    if (empty($con_password)) {
-        $conPass_error = "Please enter your confirm password";
-    }
+  if (empty($name)) {
+    $name_error = "Please enter your name";
+  }
+  if (empty($email)) {
+    $email_error = "Please enter your email";
+  }
+  if (empty($password)) {
+    $password_error = "Please enter your password";
+  }
+  if (empty($con_password)) {
+    $conPass_error = "Please enter your confirm password";
+  }
 
-    if ($_POST['password'] != $_POST['con_password']) {
-        $error = 'Password and Confirm Password do not match.';
-    } else {
-        if ($auth_controller->isemailExists($email)) {
-            $error = "User with this email already exists.";
-        } else {
-            $otp = $auth_controller->otpVerify($email);
-            if (!empty($otp)) {
-                $_SESSION['otp'] = $otp;
-                $_SESSION['name'] = $name;
-                $_SESSION['email'] = $email;
-                $_SESSION['password'] = $password;
-                header('location: otp_verify.php');
-                exit;
-            }
+  if ($_POST['password'] != $_POST['con_password']) {
+    $error = 'Password and Confirm Password do not match.';
+  } else {
+    foreach ($admins as $admin) {
+      if ($email == $admin['email']) {
+        $error = "User with this email already exists.";
+      } else {
+        $otp = $auth_controller->otpVerify($email);
+        if (!empty($otp)) {
+          $_SESSION['otp'] = $otp;
+          $_SESSION['name'] = $name;
+          $_SESSION['email'] = $email;
+          $_SESSION['password'] = $password;
+          header('location: otp_verify.php');
+          exit;
         }
+      }
     }
+  }
 }
 
 ?>
@@ -79,20 +82,20 @@ if (isset($_POST['submit'])) {
                   <div class="mb-4">
                     <label for="" class="form-label">Password</label>
                     <div class="input-group">
-                        <input type="password" name="password" class="form-control" id="password">
-                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                            <i class="ti ti-eye"></i>
-                        </button>
+                      <input type="password" name="password" class="form-control" id="password">
+                      <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="ti ti-eye"></i>
+                      </button>
                     </div>
                     <span class="text-danger"><?php if (isset($password_error)) echo $password_error; ?></span>
                   </div>
                   <div class="mb-4">
                     <label for="" class="form-label">Confirm Password</label>
                     <div class="input-group">
-                        <input type="password" name="con_password" class="form-control" id="con_password">
-                        <button type="button" class="btn btn-outline-secondary" id="toggleConPassword">
-                            <i class="ti ti-eye"></i>
-                        </button>
+                      <input type="password" name="con_password" class="form-control" id="con_password">
+                      <button type="button" class="btn btn-outline-secondary" id="toggleConPassword">
+                        <i class="ti ti-eye"></i>
+                      </button>
                     </div>
                     <span class="text-danger"><?php if (isset($conPass_error)) echo $conPass_error; ?></span>
                   </div>

@@ -38,11 +38,6 @@ class AuthenticationController {
         return $this->auth->getAdmin($id);
     }
 
-    public function isEmailExists($email)
-    {
-        return $this->auth->isEmailExists($email);
-    }
-
     public function otpVerify($email){
         $otp = rand(1000,9999);
    

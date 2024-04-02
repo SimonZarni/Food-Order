@@ -40,16 +40,6 @@ class Authentication {
         }
     }
 
-    public function isEmailExists($email){
-        $this->conn = Database::connect();
-        $sql = "select COUNT(*) as count from admin where email = :email";
-        $this->statement = $this->conn->prepare($sql);
-        $this->statement->bindParam(':email',$email);
-        $this->statement->execute();
-        $count = $this->statement->fetchColumn();
-        return $count > 0;
-    }
-
     public function editPassword($password, $id){
         $this->conn = Database::connect();
         $sql = 'update admin set password = :password where id = :id';

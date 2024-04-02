@@ -15,6 +15,8 @@ $auth_controller->authentication();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="../../src/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../../src/css/datatables.css">
+  <link rel="stylesheet" href="../../src/css/datatables.min.css">
   <link rel="stylesheet" href="../../src/css/styles.min.css" />
 </head>
 
@@ -165,7 +167,7 @@ $auth_controller->authentication();
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
               <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                <a class="nav-link" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   <!-- <img src="../../src/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle"> -->
                   <i class="ti ti-user"></i><?php if(isset($_SESSION['name'])) echo $_SESSION['name']; ?><i class="ti ti-caret-down"></i>

@@ -27,3 +27,6 @@ document.getElementById('togglePassword').addEventListener('click', function() {
         icon.classList.add('ti-eye');
     }
   });
+
+
+

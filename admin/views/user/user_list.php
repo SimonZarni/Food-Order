@@ -11,8 +11,8 @@ $users = $user_controller->getUsers()
     <div class="row">
         <div class="col-lg-12 d-flex align-items-strech">
             <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <table class="table table-striped text-center">
+                <div class="d-block align-items-center justify-content-between mb-9">
+                    <table class="table table-striped text-center" id="userTable">
                         <thead>
                             <tr>
                                 <th>ID</th>

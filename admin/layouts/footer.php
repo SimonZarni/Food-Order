@@ -6,8 +6,11 @@
   </div>
   <script src="../../src/libs/jquery/dist/jquery.min.js"></script>
   <script src="../../src/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../src/js/datatables.js"></script>
+  <script src="../../src/js/datatables.min.js"></script>
   <script src="../../src/js/sidebarmenu.js"></script>
   <script src="../../src/js/app.min.js"></script>
   <script src="../../src/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="../../src/libs/simplebar/dist/simplebar.js"></script>
   <script src="../../src/js/dashboard.js"></script>
+  <script src="../../src/js/datatable.js"></script>

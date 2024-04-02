@@ -20,13 +20,14 @@ $townships = $township_controller->getTownships();
     <div class="row">
         <div class="col-lg-12 d-flex align-items-strech">
             <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <table class="table table-striped">
+                <div class="d-block align-items-center justify-content-between mb-9">
+                    <table class="table table-striped" id="townshipTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Township</th>
                                 <th>Fee</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -27,7 +27,7 @@ $orders = $order_controller->getOrders();
                                 <th>Order Date</th>
                                 <th>Customer name</th>
                                 <th>Payment</th>
-                                <th>Cart ID</th>
+                                <th>Item ID</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -43,7 +43,7 @@ $orders = $order_controller->getOrders();
                                     <td><?php echo $order['order_date']; ?></td>
                                     <td><?php echo $order['username']; ?></td>
                                     <td><?php echo $order['payment_method']; ?></td>
-                                    <td><?php echo $order['cart_id']; ?></td>
+                                    <td><?php echo $order['item_id']; ?></td>
                                     <td></td>
                                     <td>
                                         <a href="order.php?id=<?php echo $order['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>

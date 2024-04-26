@@ -16,18 +16,18 @@ $orders = $order_controller->getOrders();
     } 
     ?>
     <div class="row">
-        <div class="col-lg-12 d-flex align-items-strech">
+        <div class="col-md-12 d-flex align-items">
             <div class="card-body">
-                <div class="d-block align-items-center justify-content-between mb-9">
+                <div class="align-items-center mb-9">
                     <table class="table table-striped text-center" id="orderTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Order Code</th>
                                 <th>Total Price</th>
                                 <th>Order Date</th>
                                 <th>Customer name</th>
-                                <th>Payment</th>
-                                <th>Item ID</th>
+                                <th>Township</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -35,24 +35,44 @@ $orders = $order_controller->getOrders();
                         <tbody>
                             <?php
                             foreach ($orders as $order) {
-                                if($order['status']==null){
                             ?>
                                 <tr>
                                     <td><?php echo $order['id']; ?></td>
-                                    <td><?php echo $order['total_price']; ?></td>
+                                    <td><?php echo $order['order_code']; ?></td>
+                                    <td><?php echo $order['subtotal']; ?></td>
                                     <td><?php echo $order['order_date']; ?></td>
                                     <td><?php echo $order['username']; ?></td>
-                                    <td><?php echo $order['payment_method']; ?></td>
-                                    <td><?php echo $order['item_id']; ?></td>
-                                    <td></td>
+                                    <td><?php echo $order['township']; ?></td>
                                     <td>
-                                        <a href="order.php?id=<?php echo $order['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
-                                        <a href="accept_order.php?" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
-                                        <a href="decline_order.php?" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>
+                                        <?php
+                                        if($order['status'] == 'Accepted'){
+                                            echo "<p class='text-success'>" . $order['status'] . "</p>";
+                                        } elseif($order['status'] == 'Declined'){
+                                            echo "<p class='text-danger'>" . $order['status'] . "</p>";
+                                        } else {
+                                            echo "Pending";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if($order['status'] != 'Declined'){
+                                        ?>
+                                        <a href="invoice.php?order_code=<?php echo $order['order_code']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
+                                        <?php
+                                        }
+                                        ?>
+                                        <?php
+                                        if($order['status'] == null){
+                                        ?>
+                                        <a href="accept_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
+                                        <a href="decline_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>
+                                        <?php
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                             <?php
-                                }
                             }
                             ?>
                         </tbody>

@@ -15,18 +15,21 @@ if (isset($_POST['submit'])) {
     $error = false;
     if (!empty($_POST['restaurant'])) {
         $restaurant = $_POST['restaurant'];
+        $restaurant_name = $restaurant_controller->getRestaurant($restaurant)['name'];
     } else {
         $error = true;
         $error_restaurant = "Please select restaurant";
     }
     if (!empty($_POST['menu'])) {
         $menu = $_POST['menu'];
+        $menu_name = $menu_controller->getMenu($menu)['name'];
     } else {
         $error = true;
         $error_menu = "Please select menu";
     }
     if (!$error) {
-        $status = $restaurantMenu_controller->addRestaurantMenu($restaurant, $menu);
+        $restaurant_menu = $restaurant_name . ' ' . $menu_name;
+        $status = $restaurantMenu_controller->addRestaurantMenu($restaurant, $menu, $restaurant_menu);
         header('location:restaurantMenu_list.php?status=success');
     }
 }

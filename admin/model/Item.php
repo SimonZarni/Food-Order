@@ -19,15 +19,32 @@ class Item {
             }
         }    
 
-    public function addItem($name, $image, $price, $description, $restaurant_menu)
+    // public function addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu)
+    // {
+    //     $this->conn = Database::connect();
+    //     $sql = "insert into item(name, image, price, description, restaurant_id, menu_id, restaurant_menuID) values(:name, :image, :price, :description, :restaurant_id, :menu_id, :restaurant_menu)";
+    //     $this->statement = $this->conn->prepare($sql);
+    //     $this->statement->bindParam(':name', $name);
+    //     $this->statement->bindParam(':image', $image);
+    //     $this->statement->bindParam(':price', $price);
+    //     $this->statement->bindParam(':description', $description);
+    //     $this->statement->bindParam(':restaurant_id', $restaurant);
+    //     $this->statement->bindParam(':menu_id', $menu);
+    //     $this->statement->bindParam(':restaurant_menu', $restaurant_menu);
+    //     return $this->statement->execute();
+    // }
+
+    public function addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu)
     {
         $this->conn = Database::connect();
-        $sql = "insert into item(name, image, price, description, restaurant_menuID) values(:name, :image, :price, :description, :restaurant_menu)";
+        $sql = "insert into item(name, image, price, description, restaurant_id, menu_id, restaurant_menuID) values(:name, :image, :price, :description, :restaurant_id, :menu_id, :restaurant_menu)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':name', $name);
         $this->statement->bindParam(':image', $image);
         $this->statement->bindParam(':price', $price);
         $this->statement->bindParam(':description', $description);
+        $this->statement->bindParam(':restaurant_id', $restaurant);
+        $this->statement->bindParam(':menu_id', $menu);
         $this->statement->bindParam(':restaurant_menu', $restaurant_menu);
         return $this->statement->execute();
     }

@@ -13,9 +13,9 @@ class RestaurantController {
         return $this->restaurant->getRestaurants();
     }
 
-    public function addRestaurant($name, $address)
+    public function addRestaurant($name, $address, $profile_img, $bg_img)
     {
-        return $this->restaurant->addRestaurant($name, $address);
+        return $this->restaurant->addRestaurant($name, $address, $profile_img, $bg_img);
     }
 
     public function getRestaurant($id)
@@ -23,9 +23,9 @@ class RestaurantController {
         return $this->restaurant->getRestaurant($id);
     }
 
-    public function editRestaurant($id, $name, $address)
+    public function editRestaurant($id, $name, $address, $profile_img, $bg_img)
     {
-        return $this->restaurant->editRestaurant($id, $name, $address);
+        return $this->restaurant->editRestaurant($id, $name, $address, $profile_img, $bg_img);
     }
     
     public function deleteRestaurant($id)

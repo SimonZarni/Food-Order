@@ -15,13 +15,15 @@ class Restaurant {
         }
     }
 
-    public function addRestaurant($name, $address)
+    public function addRestaurant($name, $address, $profile_img, $bg_img)
     {
         $this->conn = Database::connect();
-        $sql = "INSERT INTO restaurant (name, address) VALUES (:name, :address)";
+        $sql = "INSERT INTO restaurant (name, address, profile_img, bg_img) VALUES (:name, :address, :profile_img, :bg_img)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':name', $name);
         $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':profile_img', $profile_img);
+        $this->statement->bindParam(':bg_img', $bg_img);
         return $this->statement->execute();
     }
 
@@ -37,14 +39,16 @@ class Restaurant {
         }
     }
 
-    public function editRestaurant($id, $name, $address)
+    public function editRestaurant($id, $name, $address, $profile_img, $bg_img)
     {
         $this->conn = Database::connect();
-        $sql = "UPDATE restaurant SET name=:name, address=:address WHERE id=:id";
+        $sql = "UPDATE restaurant SET name=:name, address=:address, profile_img =:profile_img, bg_img=:bg_img WHERE id=:id";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':id', $id);
         $this->statement->bindParam(':name', $name);
         $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':profile_img', $profile_img);
+        $this->statement->bindParam(':bg_img', $bg_img);
         return $this->statement->execute();
     }
 

@@ -7,21 +7,47 @@ $restaurant = $restaurant_controller->getRestaurant($id);
 
 if (isset($_POST['update'])) {
     $error = false;
-    if (!empty($_POST['name'])) {
-        $name = $_POST['name'];
-    } else {
+    if (empty($_POST['name'])) {
         $error = true;
         $error_name = "Please Enter Restaurant Name";
-    }
-    if (!empty($_POST['address'])) {
-        $address = $_POST['address'];
     } else {
+        $name = $_POST['name'];
+    }
+    if (empty($_POST['address'])) {
         $error = true;
         $error_address = "Please Enter Restaurant Address";
+    } else {
+        $address = $_POST['address'];
     }
+
+    if (empty($_FILES['profile_img']['name']) || empty($_FILES['bg_img']['name'])) {
+        $error = true;
+        $error_image = "Please choose both profile and background images";
+    } else {
+        $profile_img = $_FILES['profile_img']['name'];
+        $bg_img = $_FILES['bg_img']['name'];
+
+        $targetDirectory = "../../uploads/";
+
+        $profileImgTargetFile = $targetDirectory . basename($_FILES["profile_img"]["name"]);
+        $bgImgTargetFile = $targetDirectory . basename($_FILES["bg_img"]["name"]);
+
+        if (
+            !move_uploaded_file($_FILES["profile_img"]["tmp_name"], $profileImgTargetFile) ||
+            !move_uploaded_file($_FILES["bg_img"]["tmp_name"], $bgImgTargetFile)
+        ) {
+            $error = true;
+            echo "Error uploading files";
+        }
+    }
+
     if (!$error) {
-        $status = $restaurant_controller->editRestaurant($id, $name, $address);
-        header('location:restaurant_list.php?update_status=success');
+        $status = $restaurant_controller->editRestaurant($id, $name, $address, $profile_img, $bg_img);
+        if ($status) {
+            header('location:restaurant_list.php?update_status=success');
+        } else {
+            echo "Error adding restaurant with images";
+        }
     }
 }
 
@@ -39,6 +65,16 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             <label for="" class="form-label">Restaurant Name</label>
                             <input type="text" name="name" class="form-control" style="width: 30rem;" value="<?php if (isset($restaurant['name'])) echo $restaurant['name']; ?>" id="">
                             <span class="text-danger"><?php if (isset($error_name)) echo $error_name; ?></span>
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Profile Image</label>
+                            <input type="file" name="profile_img" class="form-control" id="">
+                            <span class="text-danger"><?php if (isset($error_image)) echo $error_image; ?></span>
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Bg Image</label>
+                            <input type="file" name="bg_img" class="form-control" id="">
+                            <span class="text-danger"><?php if (isset($error_image)) echo $error_image; ?></span>
                         </div>
                         <div>
                             <label for="" class="form-label">Restaurant Address</label>

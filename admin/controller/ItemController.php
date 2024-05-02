@@ -13,9 +13,14 @@ class ItemController {
         return $this->item->getItems();
     }
 
-    public function addItem($name, $image, $price, $description, $restaurant_menu)
+    // public function addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu)
+    // {
+    //     return $this->item->addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu);
+    // }
+
+    public function addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu)
     {
-        return $this->item->addItem($name, $image, $price, $description, $restaurant_menu);
+        return $this->item->addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu);
     }
 
     public function getItem($id)

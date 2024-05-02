@@ -32,4 +32,9 @@ class MenuController {
     {
         return $this->menu->deleteMenu($id);
     }
+
+    public function getMenuByRestaurant($resturant_id)
+    {
+        return $this->menu->getMenuByRestaurant($resturant_id);
+    }
 }

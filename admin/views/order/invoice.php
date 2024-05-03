@@ -13,21 +13,24 @@ $orders = $order_controller->getOrderByCode($order_code);
         <div class="col-md-3">
             Order Code: <?php echo $order_code; ?>
         </div>
-        <div class="col-md-9">
-            Order Date: <?php echo $orders[0]['order_date']; ?>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-3">
             Customer Name: <?php echo $orders[0]['username']; ?>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-3">
             Township: <?php echo $orders[0]['township']; ?>
+        </div>
+        <div class="col-md-3">
+            Address: <?php echo $orders[0]['address']; ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-3">
-            Address: <?php echo $orders[0]['address']; ?>
+            Order Date: <?php echo $orders[0]['order_date']; ?>
+        </div>
+        <div class="col-md-3">
+            Order Time: <?php echo $orders[0]['order_time']; ?>
         </div>
     </div>
     <div class="row">

@@ -22,6 +22,26 @@ class OrderController
         return $this->order->getOrders();
     }
 
+    public function filterOrder($order_date)
+    {
+        return $this->order->filterOrder($order_date);
+    }
+
+    public function getOrdersByPrice($min_price, $max_price)
+    {
+        return $this->order->getOrdersByPrice($min_price, $max_price);
+    }
+
+    public function getOrdersByTownship($township)
+    {
+        return $this->order->getOrdersByTownship($township);
+    }
+
+    public function getRecentOrders()
+    {
+        return $this->order->getRecentOrders();
+    }
+
     public function getOrderByCode($order_code)
     {
         return $this->order->getOrderByCode($order_code);

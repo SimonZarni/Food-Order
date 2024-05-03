@@ -58,4 +58,20 @@ class Menu {
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }
+
+    public function getMenuByRestaurant($restaurant_id)
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT m.id, m.name
+                FROM menu AS m
+                JOIN restaurant_menu AS rm ON m.id = rm.menu_id
+                WHERE rm.restaurant_id = :restaurant_id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':restaurant_id', $restaurant_id);
+        if($this->statement->execute())
+        {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
 }

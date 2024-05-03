@@ -29,7 +29,10 @@ $restaurants = $restaurant_controller->getRestaurants();
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Profile Image</th>
+                                <th>Background Image</th>
                                 <th>Address</th>
+                                <th>Opening Time</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -41,7 +44,10 @@ $restaurants = $restaurant_controller->getRestaurants();
                                 <tr>
                                     <td><?php echo $restaurant['id']; ?></td>
                                     <td><?php echo $restaurant['name']; ?></td>
+                                    <td><img src="../../uploads/<?php echo $restaurant['profile_img']; ?>" alt="" style="width: 200px;" class="rounded-3"></td>
+                                    <td><img src="../../uploads/<?php echo $restaurant['bg_img']; ?>" alt="" style="width: 200px;" class="rounded-3"></td>
                                     <td><?php echo $restaurant['address']; ?></td>
+                                    <td><?php echo $restaurant['open_time']; ?></td>
                                     <td>
                                         <a href="restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
                                         <a href="edit_restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-warning mx-2"><i class="ti ti-pencil"></i></a>

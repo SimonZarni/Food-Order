@@ -178,7 +178,7 @@ $auth_controller->authentication();
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <a href="change_password.php" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="../dashboard/change_password.php" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-key fs-6"></i>
                       <p class="mb-0 fs-3">Change Password</p>
                     </a>

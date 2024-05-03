@@ -19,6 +19,12 @@ if (isset($_POST['update'])) {
     } else {
         $address = $_POST['address'];
     }
+    if (empty($_POST['open_time'])) {
+        $error = true;
+        $error_open = "Please Enter Opening Time";
+    } else {
+        $open_time = $_POST['open_time'];
+    }
 
     if (empty($_FILES['profile_img']['name']) || empty($_FILES['bg_img']['name'])) {
         $error = true;
@@ -42,7 +48,7 @@ if (isset($_POST['update'])) {
     }
 
     if (!$error) {
-        $status = $restaurant_controller->editRestaurant($id, $name, $address, $profile_img, $bg_img);
+        $status = $restaurant_controller->editRestaurant($id, $name, $address, $profile_img, $bg_img, $open_time);
         if ($status) {
             header('location:restaurant_list.php?update_status=success');
         } else {
@@ -80,6 +86,11 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             <label for="" class="form-label">Restaurant Address</label>
                             <input type="text" name="address" class="form-control" style="width: 30rem;" value="<?php if (isset($restaurant['address'])) echo $restaurant['address']; ?>" id="">
                             <span class="text-danger"><?php if (isset($error_address)) echo $error_address; ?></span>
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Open Time</label>
+                            <input type="text" name="open_time" class="form-control" style="width: 30rem;" value="<?php if (isset($open_time)) echo $open_time; ?>" id="">
+                            <span class="text-danger"><?php if (isset($error_open)) echo $error_open; ?></span>
                         </div>
                         <div class="d-flex justify-content-center">
                             <div class="mx-2 mt-3">

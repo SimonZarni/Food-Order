@@ -91,6 +91,7 @@ if (isset($_GET['township'])) {
                                 <th>Order Code</th>
                                 <th>Total Price</th>
                                 <th>Order Date</th>
+                                <th>Order Time</th>
                                 <th>Customer Name</th>
                                 <th>Township</th>
                                 <th>Status</th>
@@ -106,6 +107,7 @@ if (isset($_GET['township'])) {
                                     <td><?php echo $order['order_code']; ?></td>
                                     <td><?php echo $order['subtotal']; ?></td>
                                     <td><?php echo $order['order_date']; ?></td>
+                                    <td><?php echo $order['order_time']; ?></td>
                                     <td><?php echo $order['username']; ?></td>
                                     <td><?php echo $order['township']; ?></td>
                                     <td>
@@ -121,7 +123,7 @@ if (isset($_GET['township'])) {
                                     </td>
                                     <td>
                                         <?php
-                                        if ($order['status'] != 'Declined') {
+                                        if ($order['status'] == 'Accepted') {
                                         ?>
                                             <a href="invoice.php?order_code=<?php echo $order['order_code']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
                                         <?php

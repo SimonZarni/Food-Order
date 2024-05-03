@@ -18,9 +18,9 @@ class ItemController {
     //     return $this->item->addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu);
     // }
 
-    public function addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu)
+    public function addItem($name, $image, $price, $description, $restaurant, $menu)
     {
-        return $this->item->addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu);
+        return $this->item->addItem($name, $image, $price, $description, $restaurant, $menu);
     }
 
     public function getItem($id)
@@ -28,9 +28,9 @@ class ItemController {
         return $this->item->getItem($id);
     }
 
-    public function editItem($id, $name, $image, $price, $description, $restaurant_menu)
+    public function editItem($id, $name, $image, $price, $description, $restaurant, $menu)
     {
-        return $this->item->editItem($id, $name, $image, $price, $description, $restaurant_menu);
+        return $this->item->editItem($id, $name, $image, $price, $description, $restaurant, $menu);
     }
 
     public function deleteItem($id)

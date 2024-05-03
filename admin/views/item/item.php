@@ -20,7 +20,6 @@ $item = $item_controller->getItem($id);
                             <p class="card-text">Item Name: <?php  echo $item['name']; ?></p>
                             <p class="card-text">Price: <?php  echo $item['price']; ?></p>
                             <p class="card-text">Description: <?php  echo $item['description']; ?></p>
-                            <p class="card-text">Restaurant Menu: <?php  echo $item['restaurant_menu']; ?></p>
                             <a href="item_list.php" class="btn btn-primary">Back</a>
                         </div>
                     </div>

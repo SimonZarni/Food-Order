@@ -17,7 +17,6 @@ if (isset($_POST['submit'])) {
     $description = $_POST['description'];
     $restaurant = $_POST['restaurant'];
     $menu = $_POST['menu'];
-    $restaurant_menu = $_POST['restaurant_menu'];
     if (isset($_FILES['image'])) {
         $image = $_FILES['image']['name'];
     }
@@ -25,7 +24,7 @@ if (isset($_POST['submit'])) {
         $targetDirectory = "../../uploads/";
         $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            $status = $item_controller->addItem($name, $image, $price, $description, $restaurant, $menu, $restaurant_menu);
+            $status = $item_controller->addItem($name, $image, $price, $description, $restaurant, $menu);
             if ($status) {
                 header('location: item_list.php?status=success');
             }
@@ -106,22 +105,6 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
                             <label for="restaurant_menu" class="form-label">Restaurant Menu</label>
                             <input type="text" name="restaurant_menu" id="restaurant_menu" class="form-control" readonly>
                         </div>
-                        <div>
-                            <label for="" class="form-label">Restaurant Menu</label>
-                            <select name="restaurant_menu" id="" class="form-select">
-                                <option value="" disabled selected>Please select restaurant menu</option>
-                                <?php
-                                foreach ($restaurant_menus as $restaurant_menu) {
-                                    if ($restaurant_menu['status'] == null) {
-                                ?>
-                                        <option value="<?php echo $restaurant_menu['id']; ?>"><?php echo $restaurant_menu['restaurant_menu']; ?></option>
-                                <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                            <span class="text-danger"><?php if (isset($error_restaurantMenu)) echo $error_restaurantMenu; ?></span>
-                        </div>
                         <div class="d-flex justify-content-center">
                             <div class="mx-2 mt-3">
                                 <button class="btn btn-warning mt-2" name="submit">Add</button>
@@ -181,7 +164,6 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
         }
     });
 </script>
-
 
 <?php
 include_once __DIR__ . '/../../layouts/footer.php';

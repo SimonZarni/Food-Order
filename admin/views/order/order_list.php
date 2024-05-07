@@ -130,7 +130,7 @@ if (isset($_GET['township'])) {
                                         }
                                         ?>
                                         <?php
-                                        if ($order['status'] == null) {
+                                        if ($order['status'] == "Pending") {
                                         ?>
                                             <a href="accept_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
                                             <a href="decline_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>

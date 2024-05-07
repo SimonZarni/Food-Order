@@ -74,4 +74,16 @@ class Menu {
             return $results;
         }
     }
+
+    public function getTotalMenus()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) as total_menus FROM menu";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_menus'];
+        }
+    }
+
 }

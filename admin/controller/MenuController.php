@@ -37,4 +37,8 @@ class MenuController {
     {
         return $this->menu->getMenuByRestaurant($resturant_id);
     }
+
+    public function getTotalMenus(){
+        return $this->menu->getTotalMenus();
+    }
 }

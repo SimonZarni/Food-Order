@@ -32,4 +32,8 @@ class RestaurantController {
     {
         return $this->restaurant->deleteRestaurant($id);
     }
+
+    public function getTotalRestaurants(){
+        return $this->restaurant->getTotalRestaurants();
+    }
 }

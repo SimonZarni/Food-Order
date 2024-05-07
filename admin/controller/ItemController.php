@@ -37,6 +37,10 @@ class ItemController {
     {
         return $this->item->deleteItem($id);
     }
+
+    public function getTotalitems() {
+        return $this->item->getTotalItems();
+    }
 }
 
 ?>

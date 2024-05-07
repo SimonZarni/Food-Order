@@ -16,9 +16,8 @@ $deliveries = $delivery_controller->getDeliveris();
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Address</th>
-                                <th>Delivery Date</th>
                                 <th>Order ID</th>
+                                <th>Delivery Date</th>
                                 <th>Township</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -27,23 +26,32 @@ $deliveries = $delivery_controller->getDeliveris();
                         <tbody>
                             <?php
                             foreach ($deliveries as $delivery) {
-                                if($delivery['status']==null){
                             ?>
                                 <tr>
                                     <td><?php echo $delivery['id']; ?></td>
-                                    <td><?php echo $delivery['address']; ?></td>
+                                    <td><?php echo $delivery['order_code']; ?></td>
                                     <td><?php echo $delivery['delivery_date']; ?></td>
-                                    <td><?php echo $delivery['order_id']; ?></td>
                                     <td><?php echo $delivery['township']; ?></td>
-                                    <td></td>
+                                    <td>
+                                    <?php
+                                        if ($delivery['status'] == 'Delivered') {
+                                            echo "<p class='text-success'>" . $delivery['status'] . "</p>";
+                                        } else {
+                                            echo "<p class='text-danger'>" . $delivery['status'] . "</p>";
+                                        }
+                                    ?>
                                     <td>
                                         <a href="delivery.php?id=<?php echo $delivery['id']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
-                                        <a href="edit_delivery.php?" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-pencil"></i></a>
-                                        <a href="delete_delivery.php?" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-trash"></i></a>
+                                        <?php
+                                            if($delivery['status'] == "Not Delivered"){
+                                        ?>
+                                                <a href="accept_delivery.php?id=<?php echo $delivery['id']; ?>" onclick="return confirm('Are you sure to accept this delivery?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
+                                        <?php
+                                            }
+                                        ?>
                                     </td>
                                 </tr>
                             <?php
-                                }
                             }
                             ?>
                         </tbody>

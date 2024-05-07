@@ -43,6 +43,38 @@ class Order
         }
     }
 
+    public function getOrderDetails($id) {
+        $this->conn = Database::connect();
+        $sql = "SELECT * FROM order_details WHERE id = :id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } else {
+            return null; // Return null if query fails
+        }
+    }
+
+    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status)
+    {
+        $this->conn = Database::connect();
+        $status = "Not Delivered"; // Reset status if necessary
+        
+        // Insert into delivery table
+        $sql = "INSERT INTO delivery (order_code, user_id, address, delivery_date, township_id, status) 
+                VALUES (:order_code, :user_id, :address, :delivery_date, :township_id, :status)";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':order_code', $order_code);
+        $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':delivery_date', $order_date); // Assuming delivery date is the same as order date
+        $this->statement->bindParam(':township_id', $township_id); // Bind township_id
+        $this->statement->bindParam(':status', $status);
+        return $this->statement->execute();
+    }
+    
+
     public function getOrdersByPrice($minPrice = null, $maxPrice = null)
     {
         $this->conn = Database::connect();

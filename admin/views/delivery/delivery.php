@@ -2,33 +2,58 @@
 include_once __DIR__ . '/../../layouts/sidebar.php';
 include_once __DIR__ . '/../../controller/DeliveryController.php';
 
-$id = $_GET['id'];
 $delivery_controller = new DeliveryController();
-$delivery = $delivery_controller->getDelivery($id);
+$deliveries = $delivery_controller->getDeliveris();
 
 ?>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12 d-flex align-items-strech">
-            <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <div class="card bg-body-tertiary shadow rounded" style="width: 400px;">
-                        <div class="card-body">
-                            <p class="card-text">ID: <?php echo $delivery['id']; ?></p>
-                            <p class="card-text">Address: <?php echo $delivery['address']; ?></p>
-                            <p class="card-text">Delivery Date: <?php echo $delivery['delivery_date']; ?></p>
-                            <p class="card-text">Order ID: <?php echo $delivery['order_id']; ?></p>
-                            <p class="card-text">Township: <?php echo $delivery['township']; ?></p>
-                            <a href="delivery_list.php" class="btn btn-primary">Back</a>
-                        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    Delivery Information
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Address</th>
+                                    <th>Delivery Date</th>
+                                    <th>Township</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($deliveries as $delivery) { ?>
+                                    <tr>
+                                        <td><?php echo $delivery['id']; ?></td>
+                                        <td><?php echo $delivery['user']; ?></td>
+                                        <td><?php echo $delivery['address']; ?></td>
+                                        <td><?php echo $delivery['delivery_date']; ?></td>
+                                        <td><?php echo $delivery['township']; ?></td>
+                                        <?php
+                                            if ($delivery['status'] == 'Delivered') {
+                                                echo "<td class='text-success'>" . $delivery['status'] . "</td>";
+                                            } else {
+                                                echo "<td class='text-danger'>" . $delivery['status'] . "</td>";
+                                            }
+                                        ?>
+                                        </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-2">
+        <a href="delivery_list.php" class="btn btn-primary">Back</a>
+    </div>
 </div>
 
-<?php
-include_once __DIR__ . '/../../layouts/footer.php';
-?>
+<?php include_once __DIR__ . '/../../layouts/footer.php'; ?>

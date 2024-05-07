@@ -17,6 +17,10 @@ class DeliveryController {
     {
         return $this->delivery->getDelivery($id);
     }
+
+    public function acceptDelivery($id){
+        return $this->delivery->acceptDelivery($id);
+    }
 }
 
 ?>

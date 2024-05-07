@@ -28,6 +28,18 @@ class User {
             return $results;
         }
     }
+
+    public function getTotalUsers()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) as total_users FROM user";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_users'];
+        }
+    }
+
 }
 
 ?>

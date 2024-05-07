@@ -52,6 +52,11 @@ class OrderController
         return $this->order->getOrderCodeById($id);
     }
 
+    public function getOrderDetails($id) {
+        return $this->order->getOrderDetails($id);
+    }    
+
+
     public function acceptOrder($order_id)
     {
         $accepted = $this->order->acceptOrder($order_id);
@@ -106,6 +111,10 @@ class OrderController
         } else {
             return false;
         }
+    }
+
+    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status){
+        return $this->order->addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status);
     }
 
     public function declineOrder($order_id)

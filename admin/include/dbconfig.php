@@ -2,10 +2,10 @@
 
 class Database {
 
-    private static $hostname = 'localhost:3307';
+    private static $hostname = 'localhost';
     private static $username = 'root';
     private static $password = '';
-    private static $dbname = 'food_drop';
+    private static $dbname = 'food_order';
     private static $connection = null;
 
     public static function connect()

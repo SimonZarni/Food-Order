@@ -1,3 +1,12 @@
+<?php
+session_start();
+include_once __DIR__ . '/../controller/AuthenticationController.php';
+
+$auth_controller = new AuthenticationController();
+$auth_controller->authentication();
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -6,6 +15,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="../../src/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../../src/css/datatables.css">
+  <link rel="stylesheet" href="../../src/css/datatables.min.css">
   <link rel="stylesheet" href="../../src/css/styles.min.css" />
 </head>
 
@@ -53,15 +64,15 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../restaurant/restaurant_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-table"></i>
+                  <i class="ti ti-location"></i>
                 </span>
                 <span class="hide-menu">Restaurant</span>
               </a>
             </li>          
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../restaurant_menu/restaurantMenu_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-cup"></i>
                 </span>
@@ -69,7 +80,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../item/item_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-pizza"></i>
                 </span>
@@ -77,15 +88,15 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../order/order_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-article"></i>
+                  <i class="ti ti-device-tablet"></i>
                 </span>
                 <span class="hide-menu">Order</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" aria-expanded="false">
+              <a class="sidebar-link" href="../delivery/delivery_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-box"></i>
                 </span>
@@ -108,44 +119,12 @@
                 <span class="hide-menu">Payment</span>
               </a>
             </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">AUTH</span>
-            </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+              <a class="sidebar-link" href="../user/user_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-login"></i>
+                  <i class="ti ti-user"></i>
                 </span>
-                <span class="hide-menu">Login</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user-plus"></i>
-                </span>
-                <span class="hide-menu">Register</span>
-              </a>
-            </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">EXTRA</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-mood-happy"></i>
-                </span>
-                <span class="hide-menu">Icons</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-aperture"></i>
-                </span>
-                <span class="hide-menu">Sample Page</span>
+                <span class="hide-menu">User</span>
               </a>
             </li>
           </ul>
@@ -188,9 +167,10 @@
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
               <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                <a class="nav-link" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                  <img src="../../src/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                  <!-- <img src="../../src/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle"> -->
+                  <i class="ti ti-user"></i><?php if(isset($_SESSION['name'])) echo $_SESSION['name']; ?><i class="ti ti-caret-down"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
@@ -198,7 +178,11 @@
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <a href="../dashboard/change_password.php" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-key fs-6"></i>
+                      <p class="mb-0 fs-3">Change Password</p>
+                    </a>
+                    <a href="../dashboard/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>
               </li>
@@ -207,3 +191,4 @@
         </nav>
       </header>
       <!--  Header End -->
+

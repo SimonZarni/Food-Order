@@ -86,4 +86,17 @@ class Cart
             return $results;
         }
     }
+
+    public function getCartItemCountByUser($user_id)
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS cart_count FROM cart WHERE user_id = :user_id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':user_id', $user_id);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['cart_count']; 
+        }
+        return 0; 
+    }
 }

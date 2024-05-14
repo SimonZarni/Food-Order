@@ -8,7 +8,7 @@ $accept = $delivery_controller->acceptDelivery($id);
 
 if($accept)
 {
-    header('location: delivery_list.php?accept_status=accepted');
+    header('location: delivery_list.php?confirm_status=accepted');
 }
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 include_once __DIR__ . "/layout/sidebar.php";
 include_once __DIR__ . '/controller/MenuController.php';
 include_once __DIR__ . '/controller/RestaurantController.php';
@@ -42,17 +43,18 @@ $restaurants = $restaurant_controller->getRestaurants();
                         </button>
                     </li>
                     <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="#"><i class="bi bi-heart"></i></a>
+                        <a class="text-decoration-none" href="favourite.php?user_id=<?php if (isset($_SESSION['id'])) echo $_SESSION['id']; ?>"><i class="bi bi-heart"></i></a>
                     </li>
                     <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="cart.php"><i class="bi bi-cart4"></i></a>
+                        <a class="text-decoration-none" href="cart.php">
+                            <i class="bi bi-cart4"></i>
+                            <span id="cart-count" class="badge badge-pill badge-danger">0</span>
+                        </a>
                     </li>
                     <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="orders.php?id=<?php echo $_SESSION['id']; ?>"><i class="bi bi-phone"></i></a>
+                        <a class="text-decoration-none" href="orders.php?id=<?php if (isset($_SESSION['id'])) echo $_SESSION['id']; ?>"><i class="bi bi-phone"></i></a>
                     </li>
                 </ul>
-
-
 
                 <!-- Modal -->
                 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -165,7 +167,7 @@ $restaurants = $restaurant_controller->getRestaurants();
             ?>
                     <div class="scroll-item">
                         <button class="prev-button">❮</button> <!-- Previous button -->
-                        <a href="restaurants.php?menu_id=<?php echo $menu['id']; ?>"><img src="images/<?php echo $menu['image']; ?>" class="img-fluid" alt=""></a>
+                        <a href="restaurants.php?menu_id=<?php echo $menu['id']; ?>"><img src="admin/uploads/<?php echo $menu['image']; ?>" class="img-fluid" alt=""></a>
                         <button class="next-button">❯</button> <!-- Next button -->
                         <p><?php echo $menu['name']; ?></p>
                     </div>
@@ -183,31 +185,100 @@ $restaurants = $restaurant_controller->getRestaurants();
     <div class="container mt-5">
         <h2>Restaurants</h2>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <?php
-            foreach ($restaurants as $restaurant) {
+            <?php foreach ($restaurants as $restaurant) {
                 if ($restaurant['status'] == null) {
             ?>
                     <div class="col">
                         <div class="card restaurant-display">
-                            <i class="bi bi-heart-fill heart-icon" data-liked="false"></i>
+                            <i class="bi bi-heart-fill heart-icon" data-liked="false" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
                             <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
-                                <img src="images/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
+                                <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $restaurant['name']; ?></h5>
-                                    <p class="card-text">Open</p>
+                                    <p class="card-text"><?php echo $restaurant['open_time']; ?></p>
                                 </div>
                             </a>
                         </div>
                     </div>
-            <?php
-                }
-            }
-            ?>
+            <?php }
+            } ?>
         </div>
     </div>
 
-</body>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
+    <script>
+        jQuery(document).ready(function($) {
+            function updateCartCount() {
+                $.ajax({
+                    type: 'GET',
+                    url: 'cart_count.php',
+                    success: function(response) {
+                        $('#cart-count').text(response);
+                    },
+                    error: function() {
+                        console.error('Error fetching cart count.');
+                    }
+                });
+            }
+
+            updateCartCount();
+        });
+    </script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            $('.heart-icon').click(function() {
+                var $heartIcon = $(this);
+                var restaurantId = $heartIcon.data('restaurant_id');
+                console.log(restaurantId);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'add_to_favourite.php',
+                    data: {
+                        restaurant_id: restaurantId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $heartIcon.addClass('text-danger');
+                        } else {
+                            alert('Failed to add restaurant to favorites.');
+                        }
+                    },
+
+                });
+                alert('Restaurant added to favourites!');
+            });
+        });
+    </script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            $(document).on('click', '.heart-icon', function() {
+                var restaurantId = $(this).data('restaurant_id');
+                var heartIcon = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'check_favourite.php',
+                    data: {
+                        restaurant_id: restaurantId
+                    },
+                    success: function(response) {
+                        if (response.isFavourite) {
+                            heartIcon.addClass('text-danger');
+                        }
+                    },
+                    error: function() {
+                        alert('Error occurred while processing request.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
 
 </html>
 <?php

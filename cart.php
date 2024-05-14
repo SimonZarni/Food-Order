@@ -103,10 +103,10 @@ $townships = $township_controller->getTownships();
                 <div class="mt-2">
                     Delivery Fee: <span class="township-fee"></span>
                 </div>
-                <!-- <div class="mt-2">
+                <div class="mt-2">
                     <label for="" class="form-label">Phone</label>
-                    <input type="phone" name="phone" id="phone" class="form-control" placeholder="Please fill your phone number">
-                </div> -->
+                    <input type="number" name="phone" id="phone" class="form-control" placeholder="Please fill your phone number">
+                </div>
                 <div class="mt-2">
                     <label for="" class="form-label">Address</label>
                     <input type="text" name="address" id="address" class="form-control" placeholder="Please fill in your address">
@@ -136,11 +136,8 @@ $townships = $township_controller->getTownships();
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        jQuery.noConflict();
-        // $(document).ready(function() {
         jQuery(document).ready(function($) {
             function updateTotalPrice(quantityInput) {
                 var pricePerItem = $(quantityInput).data('price');
@@ -153,8 +150,9 @@ $townships = $township_controller->getTownships();
             function updateSubtotal() {
                 var totalPriceWithoutFee = 0;
 
-                $('.quantity').each(function() {
-                    totalPriceWithoutFee += updateTotalPrice(this);
+                $('.cart-item-checkbox:checked').each(function() {
+                    var quantityInput = $(this).closest('tr').find('.quantity');
+                    totalPriceWithoutFee += updateTotalPrice(quantityInput);
                 });
 
                 console.log('Total Price Without Fee:', totalPriceWithoutFee);
@@ -225,7 +223,7 @@ $townships = $township_controller->getTownships();
                     'quantities': quantities,
                     'total_prices': totalPrices,
                     'township_id': townshipId,
-                    // 'phone': phone,
+                    'phone': phone,
                     'address': address,
                     'payment_id': paymentId,
                     'subtotal': $('#subtotal').text()
@@ -243,7 +241,6 @@ $townships = $township_controller->getTownships();
                         });
                     },
                     error: function() {
-                        console.log(error);
                         alert('Error submitting order.');
                     }
                 });

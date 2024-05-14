@@ -42,6 +42,11 @@ class CartController {
     {
         return $this->cart->checkItemInCart($item_id, $user_id);
     }
+
+    public function getCartItemCountByUser($user_id)
+    {
+        return $this->cart->getCartItemCountByUser($user_id);
+    }
 }
 
 ?>

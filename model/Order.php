@@ -21,11 +21,11 @@ class Order {
         return $this->statement->execute();
     }
 
-    public function addOrderDetails($order_code, $subtotal, $order_date, $order_time, $user_id, $township_id, $address, $payment_id)
+    public function addOrderDetails($order_code, $subtotal, $order_date, $order_time, $user_id, $township_id, $address, $phone, $payment_id)
     {
         $this->conn = Database::connect();
         $status = ($payment_id == 5) ? 'Accepted' : 'Pending';
-        $sql = "insert into order_details(order_code, subtotal, order_date, order_time, user_id, township_id, address, status) values(:order_code, :subtotal, :order_date, :order_time, :user_id, :township_id, :address, :status)";
+        $sql = "insert into order_details(order_code, subtotal, order_date, order_time, user_id, township_id, address, phone, status) values(:order_code, :subtotal, :order_date, :order_time, :user_id, :township_id, :address, :phone, :status)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':order_code', $order_code);
         $this->statement->bindParam(':subtotal', $subtotal);
@@ -34,6 +34,7 @@ class Order {
         $this->statement->bindParam(':user_id', $user_id);
         $this->statement->bindParam(':township_id', $township_id);
         $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':phone', $phone);
         $this->statement->bindParam(':status', $status);
         $success = $this->statement->execute();
     
@@ -47,17 +48,16 @@ class Order {
     public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status)
     {
         $this->conn = Database::connect();
-        $status = "Not Delivered"; // Reset status if necessary
+        $status = "Not Delivered"; 
         
-        // Insert into delivery table
         $sql = "INSERT INTO delivery (order_code, user_id, address, delivery_date, township_id, status) 
                 VALUES (:order_code, :user_id, :address, :delivery_date, :township_id, :status)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':order_code', $order_code);
         $this->statement->bindParam(':user_id', $user_id);
         $this->statement->bindParam(':address', $address);
-        $this->statement->bindParam(':delivery_date', $order_date); // Assuming delivery date is the same as order date
-        $this->statement->bindParam(':township_id', $township_id); // Bind township_id
+        $this->statement->bindParam(':delivery_date', $order_date);
+        $this->statement->bindParam(':township_id', $township_id); 
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }

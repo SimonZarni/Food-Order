@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL) ; ini_set('display_errors', 1);
+
 session_name('user');
 session_start();
 include_once __DIR__ . '/controller/OrderController.php';
@@ -13,7 +13,7 @@ if (isset($_POST['township_id'], $_POST['payment_id'], $_POST['item_ids'], $_POS
 
     $user_id = $_SESSION['id'];
     $township_id = $_POST['township_id'];
-    // $phone = $_POST['phone'];
+    $phone = $_POST['phone'];
     $address = $_POST['address'];
     $payment_id = $_POST['payment_id'];
     $item_ids = $_POST['item_ids'];
@@ -58,7 +58,7 @@ if (isset($_POST['township_id'], $_POST['payment_id'], $_POST['item_ids'], $_POS
         }
     }
 
-    $order_details_success = $order_controller->addOrderDetails($order_code, $sub_total, $order_date, $order_time, $user_id, $township_id, $address, $payment_id);
+    $order_details_success = $order_controller->addOrderDetails($order_code, $sub_total, $order_date, $order_time, $user_id, $township_id, $address, $phone, $payment_id);
 
     if ($order_details_success) {
         echo "Order details added successfully<br>";

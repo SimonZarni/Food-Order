@@ -41,10 +41,10 @@ foreach ($results as $row) {
 
     <div class="container-fluid">
         <div class="restaurant-bg">
-            <img src="images/<?php echo $results[0]["bg_img"]; ?>" class="img-fluid rounded" style="height: 200px;width:100%;object-fit:cover;" alt="">
+            <img src="admin/uploads/<?php echo $results[0]["bg_img"]; ?>" class="img-fluid rounded" style="height: 200px;width:100%;object-fit:cover;" alt="">
         </div>
         <div class="restaurant-logo">
-            <img src="images/<?php echo $results[0]["profile_img"]; ?>" class="rounded-circle img-fluid" style="height: 80px;width:80px" alt="">
+            <img src="admin/uploads/<?php echo $results[0]["profile_img"]; ?>" class="rounded-circle img-fluid" style="height: 80px;width:80px" alt="">
         </div>
         <div class="" style="margin-left:7rem;">
             <ol class="breadcrumb custom-breadcrumb">
@@ -299,7 +299,7 @@ foreach ($results as $row) {
                                         <p><?php echo $item['price']; ?></p>
                                     </div>
                                     <div>
-                                        <img src="images/<?php echo $item['image']; ?>" style="width: 200px;height:150px" alt="">
+                                        <img src="admin/uploads/<?php echo $item['image']; ?>" style="width: 200px;height:150px" alt="">
                                     </div>
                                     <button class="item-add btn" data-toggle="modal" data-target="#itemDetailModal_<?php echo $item['item_id']; ?>" data-backdrop="false"><i class="bi bi-plus-lg"></i></button>
 
@@ -317,7 +317,7 @@ foreach ($results as $row) {
                                             <div class="modal-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="col-md-6">
-                                                        <img src="images/<?php echo $item['image']; ?>" class="img-fluid" alt="">
+                                                        <img src="admin/uploads/<?php echo $item['image']; ?>" class="img-fluid" alt="">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <h4><?php echo $item['item_name']; ?></h4>
@@ -337,7 +337,6 @@ foreach ($results as $row) {
                                                     <button class="btn btn-outline-dark add-to-cart" type="button" data-item-id="<?php echo $item['item_id']; ?>">
                                                         Add to Cart
                                                     </button>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -359,6 +358,26 @@ include_once __DIR__ . "/layout/footer.php";
 ?>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    $(document).ready(function() {
+        function updateCartCount() {
+            $.ajax({
+                type: 'GET',
+                url: 'cart_count.php',
+                success: function(response) {
+                    $('#cart-count').text(response);
+                },
+                error: function() {
+                    console.error('Error fetching cart count.');
+                }
+            });
+        }
+
+        updateCartCount();
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         var item_id = <?php echo $item['item_id']; ?>;
@@ -441,6 +460,7 @@ include_once __DIR__ . "/layout/footer.php";
                         $(this).text('Added to Cart').prop('disabled', false).removeClass('btn-outline-success').addClass('btn-outline-dark');
                         localStorage.setItem('itemAdded' + item_id, 'true');
                     }
+                    updateCartCount()
                 }.bind(this),
                 error: function(xhr, status, error) {
                     console.error("Error:", xhr.responseText);

@@ -67,7 +67,7 @@ session_start();
                         if (isset($_SESSION['name'])) {
                         ?>
                             <div class="dropdown">
-                                <a class="btn btn-link text-dark mx-5 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-link mx-5 dropdown-toggle" style="color: rgb(209, 186, 130)" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['name']; ?>
                                 </a>
                                 <ul class="dropdown-menu">

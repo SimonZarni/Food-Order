@@ -37,13 +37,13 @@ if (isset($_GET['township'])) {
     }
     ?>
     <div class="row">
-        <form action="" method="GET" class="mb-3">
+        <!-- <form action="" method="GET" class="mb-3">
             <div class="form-group">
                 <label for="orderDate">Filter by Order Date:</label>
                 <input type="date" class="form-control" id="orderDate" name="order_date">
             </div>
             <button type="submit" class="btn btn-primary mt-2">Filter</button>
-        </form>
+        </form> -->
         <div class="row">
             <div class="col-md-6">
                 <form action="" method="GET" class="mb-3">

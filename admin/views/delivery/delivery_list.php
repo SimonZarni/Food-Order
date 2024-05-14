@@ -3,11 +3,16 @@ include_once __DIR__ . '/../../layouts/sidebar.php';
 include_once __DIR__ . '/../../controller/DeliveryController.php';
 
 $delivery_controller = new DeliveryController();
-$deliveries = $delivery_controller->getDeliveris();
+$deliveries = $delivery_controller->getDeliveries();
 
 ?>
 
 <div class="container-fluid">
+    <?php
+    if (isset($_GET['confirm_status'])) {
+        echo '<div class="alert alert-success" role="alert">Delivery has been confirmed.</div>';
+    } 
+    ?>
     <div class="row">
         <div class="col-lg-12 d-flex align-items-strech">
             <div class="card-body">
@@ -45,7 +50,7 @@ $deliveries = $delivery_controller->getDeliveris();
                                         <?php
                                             if($delivery['status'] == "Not Delivered"){
                                         ?>
-                                                <a href="accept_delivery.php?id=<?php echo $delivery['id']; ?>" onclick="return confirm('Are you sure to accept this delivery?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
+                                            <a href="accept_delivery.php?id=<?php echo $delivery['id']; ?>" onclick="return confirm('Are you sure to confirm this delivery?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
                                         <?php
                                             }
                                         ?>

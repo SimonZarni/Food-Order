@@ -113,10 +113,6 @@ class OrderController
         }
     }
 
-    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status){
-        return $this->order->addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status);
-    }
-
     public function declineOrder($order_id)
     {
         $declined = $this->order->declineOrder($order_id);

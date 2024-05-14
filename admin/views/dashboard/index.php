@@ -83,7 +83,6 @@ $totaluser = $user_controller->getTotalusers();
                 </div>
             </div>
           </div>
-          a
         </div>
       </div>
     </div>

@@ -4,19 +4,6 @@ include_once __DIR__ . '/../include/dbconfig.php';
 class Delivery {
     private $conn, $statement;
 
-    public function addDelivery($order_id, $township_id, $phone, $address)
-    {
-        $this->conn = Database::connect();
-        $sql = "INSERT INTO delivery(order_id, township_id, phone, address) 
-                VALUES(:order_id, :township_id, :phone, :address)";
-        $this->statement = $this->conn->prepare($sql);
-        $this->statement->bindParam(':order_id', $order_id);
-        $this->statement->bindParam(':township_id', $township_id);
-        $this->statement->bindParam(':phone', $phone);
-        $this->statement->bindParam(':address', $address);
-        return $this->statement->execute();
-    }
-
     public function getDeliveries()
     {
         $this-> conn = Database::connect();

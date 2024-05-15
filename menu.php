@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . "/layout/sidebar.php";
+include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/MenuController.php';
 include_once __DIR__ . '/controller/RestaurantController.php';
 
@@ -48,7 +48,17 @@ $restaurants = $restaurant_controller->getRestaurants();
                     <li class="mx-3 mt-2">
                         <a class="text-decoration-none" href="cart.php">
                             <i class="bi bi-cart4"></i>
+                            <?php
+                            if(isset($_SESSION['id'])){
+                            ?>
                             <span id="cart-count" class="badge badge-pill badge-danger">0</span>
+                            <?php
+                            } else {
+                            ?>
+                            <span id="" class="badge badge-pill badge-danger">0</span>
+                            <?php
+                            }
+                            ?>
                         </a>
                     </li>
                     <li class="mx-3 mt-2">

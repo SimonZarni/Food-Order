@@ -129,6 +129,11 @@ class OrderController
         }
     }
 
+    public function addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status)
+    {
+        return $this->order->addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status);
+    }
+
     public function orderMail($email, $message)
     {
         $mailer = new PHPMailer(true);

@@ -46,7 +46,7 @@ $restaurants = $restaurant_controller->getRestaurants();
                         <a class="text-decoration-none" href="favourite.php?user_id=<?php if (isset($_SESSION['id'])) echo $_SESSION['id']; ?>"><i class="bi bi-heart"></i></a>
                     </li>
                     <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="cart.php">
+                    <a class="text-decoration-none" href="cart.php">
                             <i class="bi bi-cart4"></i>
                             <?php
                             if(isset($_SESSION['id'])){
@@ -55,7 +55,7 @@ $restaurants = $restaurant_controller->getRestaurants();
                             <?php
                             } else {
                             ?>
-                            <span id="" class="badge badge-pill badge-danger">0</span>
+                            <span id="" class="badge badge-pill badge-danger"></span>
                             <?php
                             }
                             ?>

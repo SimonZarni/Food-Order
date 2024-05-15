@@ -11,6 +11,8 @@ include_once __DIR__ . '/../../controller/UserController.php';
 
 $order_controller = new OrderController();
 $orders = $order_controller->getRecentOrders();
+$mostboughtitem = $order_controller->getMostBoughtItem();
+$total_orders = $order_controller->getTotalOrders();
 $item_controller = new ItemController();
 $totalitem = $item_controller->getTotalitems();
 $restaurant_controller = new RestaurantController();
@@ -19,7 +21,6 @@ $menu_controller = new MenuController();
 $totalmenu = $menu_controller->getTotalmenus();
 $user_controller = new UserController();
 $totaluser = $user_controller->getTotalusers();
-
 
 ?>
 
@@ -82,6 +83,12 @@ $totaluser = $user_controller->getTotalusers();
                     </div>
                 </div>
             </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <h5><strong>Most Bought Item:</strong>  <span class=""><?php echo $mostboughtitem['item_name']," from ".$mostboughtitem['restaurant_name']. " restaurant"; ?></span></h5>
+                  <h5><strong>Total Orders:</strong>  <span class=""><?php echo $total_orders?></span></h5>
+              </div>
           </div>
         </div>
       </div>

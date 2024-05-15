@@ -202,4 +202,34 @@ class Order
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }
+
+    public function getMostBoughtItem()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT item.id AS item_id, 
+                SUM(o.quantity) AS total_quantity, 
+                item.name AS item_name, 
+                restaurant.name AS restaurant_name
+                FROM `order` o
+                JOIN item ON o.item_id = item.id
+                JOIN restaurant ON item.restaurant_id = restaurant.id
+                GROUP BY item.id
+                ORDER BY total_quantity DESC
+                LIMIT 1;";
+        $this->statement = $this->conn->query($sql);
+        return $this->statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_orders FROM order_details";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_orders'];
+        } else {
+            return 0; 
+        }
+    }
 }

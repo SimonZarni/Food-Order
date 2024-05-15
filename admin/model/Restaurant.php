@@ -64,4 +64,16 @@ class Restaurant {
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }
+
+    public function getTotalRestaurants()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) as total_restaurants FROM restaurant";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_restaurants'];
+        }
+    }
+
 }

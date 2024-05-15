@@ -52,6 +52,11 @@ class OrderController
         return $this->order->getOrderCodeById($id);
     }
 
+    public function getOrderDetails($id) {
+        return $this->order->getOrderDetails($id);
+    }    
+
+
     public function acceptOrder($order_id)
     {
         $accepted = $this->order->acceptOrder($order_id);

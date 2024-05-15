@@ -17,6 +17,10 @@ class UserController {
     {
         return $this->user->getUser($id);
     }
+
+    public function getTotalUsers(){
+        return $this->user->getTotalUsers();
+    }
 }
 
 ?>

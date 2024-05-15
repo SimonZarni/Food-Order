@@ -8,7 +8,7 @@ class DeliveryController {
         $this->delivery = new Delivery();
     }
 
-    public function getDeliveris()
+    public function getDeliveries()
     {
         return $this->delivery->getDeliveries();
     }
@@ -16,6 +16,10 @@ class DeliveryController {
     public function getDelivery($id)
     {
         return $this->delivery->getDelivery($id);
+    }
+
+    public function acceptDelivery($id){
+        return $this->delivery->acceptDelivery($id);
     }
 }
 

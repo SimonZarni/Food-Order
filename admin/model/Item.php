@@ -74,4 +74,15 @@ class Item
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }
+
+    public function getTotalItems()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) as total_items FROM item";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_items'];
+        }
+    }
 }

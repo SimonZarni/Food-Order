@@ -37,13 +37,13 @@ if (isset($_GET['township'])) {
     }
     ?>
     <div class="row">
-        <form action="" method="GET" class="mb-3">
+        <!-- <form action="" method="GET" class="mb-3">
             <div class="form-group">
                 <label for="orderDate">Filter by Order Date:</label>
                 <input type="date" class="form-control" id="orderDate" name="order_date">
             </div>
             <button type="submit" class="btn btn-primary mt-2">Filter</button>
-        </form>
+        </form> -->
         <div class="row">
             <div class="col-md-6">
                 <form action="" method="GET" class="mb-3">
@@ -130,7 +130,7 @@ if (isset($_GET['township'])) {
                                         }
                                         ?>
                                         <?php
-                                        if ($order['status'] == null) {
+                                        if ($order['status'] == "Pending") {
                                         ?>
                                             <a href="accept_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
                                             <a href="decline_order.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>

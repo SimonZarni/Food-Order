@@ -1,0 +1,395 @@
+/*index page */
+.navbar {
+    transition: background-color 0.8s ease-in-out;
+}
+
+/* CSS */
+.navbar-brand h2 {
+    transition: font-size 0.8s ease-in-out;
+}
+
+.head-color li a {
+    color: rgb(209, 186, 130);
+}
+
+/* Remove hover color change */
+.head-color li a:hover {
+    color: rgb(209, 186, 130);
+    text-decoration: underline;
+    /* Keep the original color on hover */
+}
+
+.btn-search button {
+    color: rgb(209, 186, 130);
+    border: 1px solid rgb(209, 186, 130);
+}
+
+.btn-search button:hover {
+    background: rgb(209, 186, 130);
+    color: white;
+}
+
+.login {
+    background-color: brown;
+    color: white;
+}
+
+.login:hover {
+    background-color: rgb(98, 26, 26);
+    color: white;
+}
+
+.find-meal {
+    color: rgb(209, 186, 130);
+    margin-left: 10rem;
+}
+
+
+/* Menu page */
+
+.subnav {
+    position: fixed;
+    top: 80px;
+    z-index: 1000;
+    width: 100%;
+    background-color: white;
+}
+
+.cartbtn li a {
+    color: black;
+    font-size: 1.3rem;
+}
+
+.promo-container {
+    margin-top: 130px;
+}
+
+.scroll-container {
+    margin-top: 20px;
+}
+
+.scroll-container,
+.promo-container {
+    position: relative;
+}
+
+.side-scroll,
+.promo-scroll {
+    display: grid;
+    grid-auto-flow: column;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Enable smooth scrolling snapping */
+}
+
+.side-scroll {
+    grid-auto-columns: 15%;
+    gap: 40px;
+}
+
+.promo-scroll {
+    grid-auto-columns: 20%;
+    gap: 50px;
+    overflow-x: auto;
+}
+
+.scroll-item,
+.promo-item {
+    display: grid;
+    object-fit: cover;
+}
+
+.promo-item {
+    position: relative;
+}
+
+.promo-item img {
+    height: 200px;
+}
+
+.scroll-item p {
+    text-align: center;
+}
+
+.promo-item h5 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(49, 49, 49, 0.5);
+    color: white;
+    padding: 1rem 1.5rem;
+    z-index: 10;
+    /* Add a higher z-index to keep it above other elements */
+}
+
+.prev-button,
+.next-button {
+    position: absolute;
+    top: 50%;
+    /* Center the buttons vertically */
+    transform: translateY(-50%);
+    /* Center the buttons vertically */
+    background-color: rgba(209, 186, 130, 0.1);
+    /* Semi-transparent background */
+    color: white;
+    /* White text color */
+    border: none;
+    /* No border */
+    padding: 5px;
+    /* Add some padding */
+    cursor: pointer;
+    /* Pointer cursor when hovering */
+    z-index: 1;
+    font-size: 1.5rem;
+}
+
+.prev-button {
+    left: 5%;
+    /* Position button on the left */
+}
+
+.next-button {
+    right: 5%;
+    /* Position button on the right */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1001;
+}
+
+
+.close-button {
+    float: right;
+    cursor: pointer;
+}
+
+.modal-content {
+    padding: 15px;
+}
+
+.restaurant-display a {
+    text-decoration: none;
+    color: black;
+    position: relative;
+}
+
+.heart-icon {
+    z-index: 1;
+    cursor: pointer;
+    color: gray;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}
+
+.heart-icon.liked {
+    color: red;
+}
+
+
+/* Item php */
+.breadcrumb-menu {
+    margin-top: 90px;
+}
+
+.breadcrumb {
+    background-color: white;
+}
+
+.restaurant-bg {
+    position: relative;
+}
+
+.restaurant-logo {
+    position: absolute;
+    bottom: 33%;
+    left: 3%;
+}
+
+.custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+    content: " • ";
+    /* Use dot as separator */
+    color: #6c757d;
+    /* Change color if needed */
+}
+
+.breadcrumb li {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.rating-star i {
+    color: orange;
+}
+
+/* Custom styles for food-category navbar */
+nav.food-category .nav-link {
+    /* Remove background color */
+    background-color: transparent;
+
+    /* Set text color to dark */
+    color: #333;
+    /* Dark text color */
+
+    /* Add padding for better spacing */
+    padding: 0.5rem 1rem;
+
+    /* Add a border at the bottom of each link (initially transparent) */
+    border-bottom: 2px solid transparent;
+
+    /* Add a transition for smooth changes */
+    transition: border-color 0.3s;
+}
+
+/* Add hover effect for better user experience */
+nav.food-category .nav-link:hover {
+    /* Change text color on hover */
+    color: #000;
+    /* Black text color */
+
+    /* Change border color on hover */
+    border-bottom-color: brown;
+    /* Brown border color */
+}
+
+/* Change border color of active link */
+nav.food-category .nav-link.active {
+    border-bottom-color: brown;
+    color: brown;
+    /* Brown border color */
+}
+.food-category {
+    position: sticky;
+    top: 14%;
+    z-index: 1000;
+    padding: 1.1rem 0;
+}
+.cart-noti{
+    position: relative;
+
+}
+.cart-noti span{
+    position: absolute;
+    top:2px;
+    right:0;
+    font-size: 0.6rem;
+}
+.food-item-list h4{
+    color: rgb(209, 186, 130);
+}
+.food-itemimg{
+    position: relative;
+}
+.item-add{
+    position: absolute;
+    bottom: 10%;
+    right: 8%;
+    border: 2px solid rgb(209, 186, 130);
+    color: rgb(209, 186, 130);
+}
+.item-add:hover{
+    background-color: wheat;
+    border: 2px solid rgb(209, 186, 130);
+}
+.quantityBtn button{
+    border: 2px solid rgb(209, 186, 130);
+    border-radius: 50%;
+    color: rgb(209, 186, 130);
+    font-weight: bold;
+}
+.quantityBtn input{
+    text-align: center;
+    border-radius: 30px;
+    width: 30%;
+}
+.offcanvas {
+    transition: transform 2s ease;
+}
+
+/* cart */
+.stepper-wrapper {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .stepper-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+  
+  .stepper-item::before {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: -50%;
+    z-index: 2;
+  }
+  
+  .stepper-item::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 2;
+  }
+  
+  .stepper-item .step-counter {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-bottom: 6px;
+  }
+  .step-counter{
+    color: white;
+  }
+  
+  .stepper-item.active {
+    font-weight: bold;
+  }
+  
+  .stepper-item.completed .step-counter {
+    background-color: brown;
+  }
+  
+  .stepper-item.completed::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid brown;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 3;
+  }
+  
+  .stepper-item:first-child::before {
+    content: none;
+  }
+  .stepper-item:last-child::after {
+    content: none;
+  }

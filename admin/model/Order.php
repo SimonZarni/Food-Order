@@ -43,6 +43,19 @@ class Order
         }
     }
 
+    public function getOrderDetails($id) {
+        $this->conn = Database::connect();
+        $sql = "SELECT * FROM order_details WHERE id = :id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } else {
+            return null; 
+        }
+    }
+    
     public function getOrdersByPrice($minPrice = null, $maxPrice = null)
     {
         $this->conn = Database::connect();

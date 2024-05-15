@@ -1,9 +1,26 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include_once __DIR__ . '/../../layouts/sidebar.php';
 include_once __DIR__ . '/../../controller/OrderController.php';
+include_once __DIR__ . '/../../controller/ItemController.php';
+include_once __DIR__ . '/../../controller/RestaurantController.php';
+include_once __DIR__ . '/../../controller/MenuController.php';
+include_once __DIR__ . '/../../controller/UserController.php';
 
 $order_controller = new OrderController();
 $orders = $order_controller->getRecentOrders();
+$item_controller = new ItemController();
+$totalitem = $item_controller->getTotalitems();
+$restaurant_controller = new RestaurantController();
+$totalrestaurant = $restaurant_controller->getTotalrestaurants();
+$menu_controller = new MenuController();
+$totalmenu = $menu_controller->getTotalmenus();
+$user_controller = new UserController();
+$totaluser = $user_controller->getTotalusers();
+
+
 ?>
 
 <div class="container-fluid">
@@ -15,6 +32,61 @@ $orders = $order_controller->getRecentOrders();
   }
   ?>
   <!--  Row 1 -->
+  <div class="row">
+    <div class="col-lg-12 d-flex align-items-stretch">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-title fw-semibold mb-4">Welcome Our Food-Order Service</h5>
+          <div class="row fs-3">
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card border-1 text-white bg-warning o-hidden">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <span class="m-3">Total Items</span>
+                            <i class="ti ti-pizza fs-6"></i>
+                        </div>
+                        <h2 class="text-center text-white mr-5"><?php echo $totalitem?></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card border-1 text-white bg-primary o-hidden">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <span class="m-1">Total Restaurant</span>
+                            <i class="ti ti-location fs-6"></i>
+                        </div>
+                        <h2 class="text-center text-white mr-5"><?php echo $totalrestaurant?></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card border-1 text-white bg-success o-hidden">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <span class="m-3">Total Menu</span>
+                            <i class="ti ti-cup fs-6"></i>
+                        </div>
+                        <h2 class="text-center text-white mr-5"><?php echo $totalmenu?></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card border-1 text-white bg-danger o-hidden">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <span class="m-3">Total User</span>
+                            <i class="ti ti-user fs-6"></i>
+                        </div>
+                        <h2 class="text-center text-white mr-5"><?php echo $totaluser?></h2>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-lg-8 d-flex align-items-strech">
       <div class="card w-100">

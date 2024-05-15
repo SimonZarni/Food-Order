@@ -169,4 +169,14 @@ class OrderController
             return false;
         }
     }
+
+    public function getMostBoughtItem()
+    {
+        return $this->order->getMostBoughtItem();
+    }
+
+    public function getTotalOrders()
+    {
+        return $this->order->getTotalOrders();
+    }
 }

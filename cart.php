@@ -6,9 +6,10 @@ include_once __DIR__ . '/controller/PaymentController.php';
 include_once __DIR__ . '/controller/TownshipController.php';
 
 $user_id = $_SESSION['id'];
+$restaurant_id = $_GET['restaurant_id'];
 
 $cart_controller = new CartController();
-$carts = $cart_controller->getCartDetails($user_id);
+$carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
 
 $payment_controller = new PaymentController();
 $payments = $payment_controller->getPayments();

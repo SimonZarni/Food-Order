@@ -1,11 +1,16 @@
 <?php
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/ItemController.php';
+include_once __DIR__ . '/controller/CartController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
+$user_id = $_SESSION['id'];
 
 $result_controller = new ItemController();
 $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
+
+$cart_controller = new CartController();
+$carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
 
 $groupedItems = [];
 foreach ($results as $row) {
@@ -63,7 +68,7 @@ foreach ($results as $row) {
             </ol>
         </div>
         <div class="mx-3">
-            <h4 class=""><?php echo $results[0]['restaurant_name']; ?></h4>
+            <h4 class=""><?php if(isset($results['restaurant_name'])) echo $results[0]['restaurant_name']; ?></h4>
             <div class="d-flex justify-content-between">
                 <div class="d-flex">
                     <div class="restaurant-status">
@@ -277,13 +282,57 @@ foreach ($results as $row) {
                     ?>
                 </ul>
                 <div class=" cart-noti px-2">
-                    <a href="cart.php" class="fs-3">
+                    <!-- <a href="cart.php" class="fs-3">
                         <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
                         <span id="cart-count" class="badge badge-pill badge-danger">0</span>
-                    </a>
+                    </a> -->
+                    <button class="fs-3 navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" data-user-id="<?php echo $user_id; ?>" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
+                        <span id="cart-count" class="badge badge-pill badge-danger">0</span>
+                    </button>
                 </div>
             </div>
         </nav>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cart items</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <?php foreach ($carts as $cart) : ?>
+                    <?php
+                    $totalPrice = $cart['price'] * $cart['quantity'];
+                    ?>
+                    <div class="d-flex mb-2" data-cart-id="<?php echo $cart['id']; ?>">
+                        <div class="col-md-6">
+                            <img src="images/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
+                        </div>
+                        <div class="col-md-6">
+                            <h6><?php echo $cart['name']; ?></h6>
+                            <p><?php echo $cart['price'] ?></p>
+                            <p><?php echo $cart['description'] ?></p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-5">
+                        <div class="total-price col-md-6 mt-2" id="totalPrice">
+                            <?php echo $totalPrice ?>
+                        </div>
+                        <div class="">
+                            <button class="remove-item btn btn-link" type="button" data-item-id="<?php echo $cart['id']; ?>"><i class="bi bi-trash text-danger fs-5"></i></button>
+                        </div>
+                        <div class="quantityBtn col-md-6 mt-2">
+                            <button class="decrease-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
+                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity w-3" data-price="<?php echo $cart['price']; ?>" readonly>
+                            <button class="increase-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <div class="col-md-12 text-center">
+                    <a href="cart.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn login">Checkout and View Address</a>
+                </div>
+            </div>
+        </div>
 
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="food-item-list scrollspy-example p-3 rounded-2" tabindex="0">
             <div class="gap-3">
@@ -358,6 +407,38 @@ include_once __DIR__ . "/layout/footer.php";
 ?>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function () {
+            const itemId = this.dataset.itemId;
+            const userId = <?php echo json_encode($_SESSION['id']); ?>;
+            const btnLogin = document.querySelector('.login')
+            
+            fetch('remove_item.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId, item_id: itemId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const cartItem = document.querySelector(`[data-cart-id="${itemId}"]`);
+                    cartItem.nextElementSibling.remove(); 
+                    cartItem.remove(); 
+                    // btnLogin.classList.remove('login')
+                    // btnLogin.classList.add('bg-secondary')
+                } else {
+                    alert('Failed to remove item from cart.');
+                }
+            });
+        });
+    });
+});
+</script>
 
 <script>
     $(document).ready(function() {

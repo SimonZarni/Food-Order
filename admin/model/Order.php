@@ -52,10 +52,30 @@ class Order
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         } else {
-            return null; 
+            return null; // Return null if query fails
         }
     }
+
+    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status)
+    {
+        $this->conn = Database::connect();
+        $status = "Not Delivered"; // Reset status if necessary
+        
+        // Insert into delivery table
+        $sql = "INSERT INTO delivery (order_code, user_id, address, delivery_date, township_id, phone, status) 
+                VALUES (:order_code, :user_id, :address, :delivery_date, :township_id, :phone, :status)";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':order_code', $order_code);
+        $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':delivery_date', $order_date); // Assuming delivery date is the same as order date
+        $this->statement->bindParam(':township_id', $township_id); // Bind township_id
+        $this->statement->bindParam(':phone', $phone); // Bind township_id
+        $this->statement->bindParam(':status', $status);
+        return $this->statement->execute();
+    }
     
+
     public function getOrdersByPrice($minPrice = null, $maxPrice = null)
     {
         $this->conn = Database::connect();
@@ -184,4 +204,74 @@ class Order
         $this->statement->bindParam(':id', $order_id);
         return $this->statement->execute();
     }
+    
+    public function getMostBoughtItem(){
+        $this->conn = Database::connect();
+        $sql = "SELECT item.id AS item_id, 
+                        SUM(o.quantity) AS total_quantity, 
+                        item.name AS item_name, 
+                        restaurant.name AS restaurant_name
+                FROM `order` o
+                JOIN item ON o.item_id = item.id
+                JOIN restaurant ON item.restaurant_id = restaurant.id
+                GROUP BY item.id
+                ORDER BY total_quantity DESC
+                LIMIT 1;
+                ";
+        $this->statement = $this->conn->query($sql);
+        return $this->statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_orders FROM order_details";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no orders found
+        }
+    }
+
+    public function getTotalAcceptedOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_accepted_orders FROM order_details WHERE status = 'Accepted'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_accepted_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no accepted orders found
+        }
+    }
+
+    public function getTotalDeclinedOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_declined_orders FROM order_details WHERE status = 'Declined'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_declined_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no declined orders found
+        }
+    }
+
+    public function getTotalPendingOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_pending_orders FROM order_details WHERE status = 'Pending'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_pending_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no pending orders found
+        }
+    }
+
 }

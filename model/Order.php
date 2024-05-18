@@ -39,22 +39,23 @@ class Order {
         $success = $this->statement->execute();
     
         if ($success && $status === 'Accepted') {
-            $this->addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status);
+            $this->addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status);
         }
     
     return $success;
     }
 
-    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $status)
+    public function addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status)
     {
         $this->conn = Database::connect();
         $status = "Not Delivered"; 
         
-        $sql = "INSERT INTO delivery (order_code, user_id, address, delivery_date, township_id, status) 
-                VALUES (:order_code, :user_id, :address, :delivery_date, :township_id, :status)";
+        $sql = "INSERT INTO delivery (order_code, user_id, phone, address, delivery_date, township_id, status) 
+                VALUES (:order_code, :user_id, :phone, :address, :delivery_date, :township_id, :status)";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':order_code', $order_code);
         $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':phone', $phone);
         $this->statement->bindParam(':address', $address);
         $this->statement->bindParam(':delivery_date', $order_date);
         $this->statement->bindParam(':township_id', $township_id); 

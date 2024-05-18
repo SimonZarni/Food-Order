@@ -23,9 +23,9 @@ class CartController {
         return $this->cart->getCartIdByUser($user_id);
     }
 
-    public function getCartDetails($user_id)
+    public function getCartDetails($user_id, $restaurant_id)
     {
-        return $this->cart->getCartDetails($user_id);
+        return $this->cart->getCartDetails($user_id, $restaurant_id);
     }
 
     public function getCartById($id)

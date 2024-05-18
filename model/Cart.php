@@ -39,15 +39,17 @@ class Cart
         }
     }
 
-    public function getCartDetails($user_id)
+    public function getCartDetails($user_id, $restaurant_id)
     {
         $this->conn = Database::connect();
-        $sql = "SELECT item.*, cart.quantity
+        $sql = "SELECT item.*, cart.quantity, restaurant.name as restaurant_name
                 FROM item
                 INNER JOIN cart ON item.id = cart.item_id
-                WHERE cart.user_id = :user_id";
+                INNER JOIN restaurant ON item.restaurant_id = restaurant.id
+                WHERE cart.user_id = :user_id AND item.restaurant_id = :restaurant_id";
         $statement = $this->conn->prepare($sql);
         $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':restaurant_id', $restaurant_id);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -10,7 +10,7 @@ $id = $_GET['id'];
 $order_controller = new OrderController();
 $accept = $order_controller->acceptOrder($id);
 $orderDetails = $order_controller->getOrderDetails($id);
-$addDelivery = $order_controller->addDelivery($orderDetails['order_code'], $orderDetails['user_id'], $orderDetails['address'], $orderDetails['order_date'], $orderDetails['township_id'], $orderDetails['status']);
+$addDelivery = $order_controller->addDelivery($orderDetails['order_code'], $orderDetails['user_id'], $orderDetails['phone'], $orderDetails['address'], $orderDetails['order_date'], $orderDetails['township_id'], $orderDetails['status']);
 if($accept)
 {
     header('location: order_list.php?accept_status=accepted');

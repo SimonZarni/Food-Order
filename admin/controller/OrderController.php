@@ -113,6 +113,10 @@ class OrderController
         }
     }
 
+    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status){
+        return $this->order->addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status);
+    }
+
     public function declineOrder($order_id)
     {
         $declined = $this->order->declineOrder($order_id);
@@ -163,5 +167,25 @@ class OrderController
             echo "Message could not be sent. Mailer Error: {$mailer->ErrorInfo}";
             return false;
         }
+    }
+
+    public function getMostBoughtItem(){
+        return $this->order->getMostBoughtItem();
+    }
+
+    public function getTotalOrders(){
+        return $this->order->getTotalOrders();
+    }
+
+    public function getTotalAcceptedOrders(){
+        return $this->order->getTotalAcceptedOrders();
+    }
+
+    public function getTotalDeclinedOrders(){
+        return $this->order->getTotalDeclinedOrders();
+    }
+
+    public function getTotalPendingOrders(){
+        return $this->order->getTotalPendingOrders();
     }
 }

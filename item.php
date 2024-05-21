@@ -4,12 +4,14 @@ include_once __DIR__ . '/controller/ItemController.php';
 include_once __DIR__ . '/controller/CartController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
+if(isset($_SESSION['id']))
 $user_id = $_SESSION['id'];
 
 $result_controller = new ItemController();
 $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
 
 $cart_controller = new CartController();
+if(isset($user_id))
 $carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
 
 $groupedItems = [];
@@ -300,7 +302,7 @@ foreach ($results as $row) {
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <?php foreach ($carts as $cart) : ?>
+                <?php if(isset($carts)) foreach ($carts as $cart) : ?>
                     <?php
                     $totalPrice = $cart['price'] * $cart['quantity'];
                     ?>

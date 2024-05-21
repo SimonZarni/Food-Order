@@ -2,7 +2,7 @@
 
 class Database {
 
-    private static $hostname = 'localhost:3307';
+    private static $hostname = 'localhost';
     private static $username = 'root';
     private static $password = '';
     private static $dbname = 'food_drop';

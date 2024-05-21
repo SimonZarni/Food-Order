@@ -19,7 +19,7 @@ $orders = $order_controller->getOrdersByUser($user_id);
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" style="margin-top: 70px">
         <h4>Orders History</h4>
         <strong>Customer Name: </strong><?php echo $orders[0]['username'] ?>
         <div class="row">

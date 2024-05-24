@@ -264,4 +264,43 @@ class Order
             return $results;
         }
     }
+
+    public function getTotalAcceptedOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_accepted_orders FROM order_details WHERE status = 'Accepted'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_accepted_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no accepted orders found
+        }
+    }
+
+    public function getTotalDeclinedOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_declined_orders FROM order_details WHERE status = 'Declined'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_declined_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no declined orders found
+        }
+    }
+
+    public function getTotalPendingOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_pending_orders FROM order_details WHERE status = 'Pending'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_pending_orders'];
+        } else {
+            return 0; // Return 0 if query fails or no pending orders found
+        }
+    }
 }

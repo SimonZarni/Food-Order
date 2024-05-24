@@ -43,6 +43,45 @@ class Delivery {
         $this->statement->bindParam(':id', $id);
         return $this->statement->execute();
     }
+
+    public function getTotalDeliveries()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_deliveries FROM delivery";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_deliveries'];
+        } else {
+            return 0; // Return 0 if query fails or no deliveries found
+        }
+    }
+
+    public function getTotalDeliveredDeliveries()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_delivered_deliveries FROM delivery WHERE status = 'Delivered'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_delivered_deliveries'];
+        } else {
+            return 0; // Return 0 if query fails or no delivered deliveries found
+        }
+    }
+
+    public function getTotalUndeliveredDeliveries()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT COUNT(*) AS total_undelivered_deliveries FROM delivery WHERE status = 'Not Delivered'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_undelivered_deliveries'];
+        } else {
+            return 0; // Return 0 if query fails or no undelivered deliveries found
+        }
+    }
 }
 
 ?>

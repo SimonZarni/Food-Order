@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include_once __DIR__ . '/../../layouts/sidebar.php';
 include_once __DIR__ . '/../../controller/OrderController.php';
+include_once __DIR__ . '/../../controller/DeliveryController.php';
 include_once __DIR__ . '/../../controller/ItemController.php';
 include_once __DIR__ . '/../../controller/RestaurantController.php';
 include_once __DIR__ . '/../../controller/MenuController.php';
@@ -13,14 +14,21 @@ $order_controller = new OrderController();
 $orders = $order_controller->getRecentOrders();
 $mostboughtitem = $order_controller->getMostBoughtItem();
 $total_orders = $order_controller->getTotalOrders();
+$total_accepted_orders = $order_controller->getTotalAcceptedOrders();
+$total_declined_orders = $order_controller->getTotalDeclinedOrders();
+$total_pending_orders = $order_controller->getTotalPendingOrders();
+$delivery_controller = new DeliveryController();
+$total_delivery_count = $delivery_controller->getTotalDeliveries();
+$total_delivered_count = $delivery_controller->getTotalDeliveredDeliveries();
+$total_undelivered_count = $delivery_controller->getTotalUndeliveredDeliveries();
 $item_controller = new ItemController();
-$totalitem = $item_controller->getTotalitems();
+$totalitem = $item_controller->getTotalItems();
 $restaurant_controller = new RestaurantController();
-$totalrestaurant = $restaurant_controller->getTotalrestaurants();
+$totalrestaurant = $restaurant_controller->getTotalRestaurants();
 $menu_controller = new MenuController();
-$totalmenu = $menu_controller->getTotalmenus();
+$totalmenu = $menu_controller->getTotalMenus();
 $user_controller = new UserController();
-$totaluser = $user_controller->getTotalusers();
+$totaluser = $user_controller->getTotalUsers();
 
 ?>
 
@@ -89,6 +97,90 @@ $totaluser = $user_controller->getTotalusers();
                   <h5><strong>Most Bought Item:</strong>  <span class=""><?php echo $mostboughtitem['item_name']," from ".$mostboughtitem['restaurant_name']. " restaurant"; ?></span></h5>
                   <h5><strong>Total Orders:</strong>  <span class=""><?php echo $total_orders?></span></h5>
               </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 d-flex align-items-strech">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-title fw-semibold">Details About Orders</h5><br>
+          <!-- Total Orders Section -->
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card text-center border border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Orders</h5>
+                        <p class="card-text display-6 text-primary"><?php echo $total_orders; ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card border border-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Accepted Orders</h5>
+                            <p class="card-text text-success"><?php echo $total_accepted_orders; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border border-danger">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Declined Orders</h5>
+                            <p class="card-text text-danger"><?php echo $total_declined_orders; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border border-warning">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Pending Orders</h5>
+                            <p class="card-text text-warning"><?php echo $total_pending_orders; ?></p>
+                        </div>
+                    </div>
+                </div>
+              </div><br>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 d-flex align-items-strech">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-title fw-semibold">Details About Delivery</h5><br>
+          <!-- Total Orders Section -->
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card text-center border border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Delivery</h5>
+                        <p class="card-text display-6 text-primary"><?php echo $total_delivery_count; ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card border border-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Delivered Orders</h5>
+                            <p class="card-text text-success"><?php echo $total_delivered_count; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border border-danger">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Declined Delivery</h5>
+                            <p class="card-text text-danger"><?php echo $total_undelivered_count; ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -338,6 +430,7 @@ $totaluser = $user_controller->getTotalusers();
       </div>
     </div>
   </div>
+</div>
   </body>
 
   </html>

@@ -308,7 +308,7 @@ foreach ($results as $row) {
                     ?>
                     <div class="d-flex mb-2" data-cart-id="<?php echo $cart['id']; ?>">
                         <div class="col-md-6">
-                            <img src="images/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
+                            <img src="admin/uploads/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
                         </div>
                         <div class="col-md-6">
                             <h6><?php echo $cart['name']; ?></h6>

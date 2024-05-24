@@ -6,24 +6,28 @@ include_once __DIR__ . '/../../controller/TownshipController.php';
 $order_controller = new OrderController();
 $township_controller = new TownshipController();
 
-$orders = $order_controller->getOrders();
+$orders = $order_controller->getUndeliverdOrders();
+$undelivered_orders = $order_controller->getUndeliveredStatusOrders();
 
 $townships = $township_controller->getTownships();
 
 if (isset($_GET['order_date'])) {
     $order_date = $_GET['order_date'];
     $orders = $order_controller->filterOrder($order_date, $orders);
+    $undelivered_orders = $order_controller->filterOrder($order_date, $orders);
 }
 
 $minPrice = isset($_GET['min_price']) ? $_GET['min_price'] : null;
 $maxPrice = isset($_GET['max_price']) ? $_GET['max_price'] : null;
 if ($minPrice !== null || $maxPrice !== null) {
     $orders = $order_controller->getOrdersByPrice($minPrice, $maxPrice, $orders);
+    $undelivered_orders = $order_controller->getOrdersByPrice($minPrice, $maxPrice, $orders);
 }
 
 if (isset($_GET['township'])) {
     $townshipId = $_GET['township'];
     $orders = $order_controller->getOrdersByTownship($townshipId, $orders);
+    $undelivered_orders = $order_controller->getOrdersByTownship($townshipId, $orders);
 }
 
 ?>
@@ -100,6 +104,7 @@ if (isset($_GET['township'])) {
                         </thead>
                         <tbody>
                             <?php
+                            if($orders) {
                             foreach ($orders as $order) {
                             ?>
                                 <tr>
@@ -140,6 +145,49 @@ if (isset($_GET['township'])) {
                                     </td>
                                 </tr>
                             <?php
+                                }
+                            } else {
+                                foreach($undelivered_orders as $undelivered_order){
+                            ?>
+                            <tr>
+                                    <td><?php echo $undelivered_order['id']; ?></td>
+                                    <td><?php echo $undelivered_order['order_code']; ?></td>
+                                    <td><?php echo $undelivered_order['subtotal']; ?></td>
+                                    <td><?php echo $undelivered_order['order_date']; ?></td>
+                                    <td><?php echo $undelivered_order['order_time']; ?></td>
+                                    <td><?php echo $undelivered_order['username']; ?></td>
+                                    <td><?php echo $undelivered_order['township']; ?></td>
+                                    <td>
+                                        <?php
+                                        if ($undelivered_order['status'] == 'Accepted') {
+                                            echo "<p class='text-success'>" . $undelivered_order['status'] . "</p>";
+                                        } elseif ($undelivered_order['status'] == 'Declined') {
+                                            echo "<p class='text-danger'>" . $undelivered_order['status'] . "</p>";
+                                        } else {
+                                            echo "Pending";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ($undelivered_order['status'] == 'Accepted') {
+                                        ?>
+                                            <a href="invoice.php?order_code=<?php echo $undelivered_order['order_code']; ?>" class="btn btn-info mx-2"><i class="ti ti-eye"></i></a>
+                                        <?php
+                                        }
+                                        ?>
+                                        <?php
+                                        if ($undelivered_order['status'] == "Pending") {
+                                        ?>
+                                            <a href="accept_order.php?id=<?php echo $undelivered_order['id']; ?>" onclick="return confirm('Are you sure to accept this order?');" class="btn btn-success mx-2"><i class="ti ti-check"></i></a>
+                                            <a href="decline_order.php?id=<?php echo $undelivered_order['id']; ?>" onclick="return confirm('Are you sure to decline this order?');" class="btn btn-danger mx-2"><i class="ti ti-x"></i></a>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php
+                                }
                             }
                             ?>
                         </tbody>

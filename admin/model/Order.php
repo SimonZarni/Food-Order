@@ -232,4 +232,36 @@ class Order
             return 0; 
         }
     }
+
+    public function getUndeliveredOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT od.*, user.name as username, township.name as township
+                FROM order_details od
+                LEFT JOIN delivery d ON od.order_code = d.order_code
+                JOIN user ON od.user_id = user.id
+                JOIN township ON od.township_id = township.id
+                WHERE d.order_code IS NULL";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
+
+    public function getUndeliveredStatusOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT od.*, user.name as username, township.name as township
+                FROM order_details od
+                LEFT JOIN delivery d ON od.order_code = d.order_code
+                JOIN user ON od.user_id = user.id
+                JOIN township ON od.township_id = township.id
+                WHERE d.status = 'Not delivered'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
 }

@@ -179,4 +179,14 @@ class OrderController
     {
         return $this->order->getTotalOrders();
     }
+
+    public function getUndeliverdOrders()
+    {
+        return $this->order->getUndeliveredOrders();
+    }
+
+    public function getUndeliveredStatusOrders()
+    {
+        return $this->order->getUndeliveredStatusOrders();
+    }
 }

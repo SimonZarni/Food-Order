@@ -4,15 +4,15 @@ include_once __DIR__ . '/controller/ItemController.php';
 include_once __DIR__ . '/controller/CartController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
-if(isset($_SESSION['id']))
-$user_id = $_SESSION['id'];
+if (isset($_SESSION['id']))
+    $user_id = $_SESSION['id'];
 
 $result_controller = new ItemController();
 $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
 
 $cart_controller = new CartController();
-if(isset($user_id))
-$carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
+if (isset($user_id))
+    $carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
 
 $groupedItems = [];
 foreach ($results as $row) {
@@ -32,6 +32,35 @@ foreach ($results as $row) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .cartContainer button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            height: 30px;
+            margin-top: 30px;
+        }
+
+        .cartContainer input {
+            width: 50px;
+            height: 30px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin: 0 10px;
+            font-size: 16px;
+            margin-top: 30px;
+        }
+
+        .cartContainer input::-webkit-inner-spin-button,
+        .cartContainer input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -57,11 +86,10 @@ foreach ($results as $row) {
             <ol class="breadcrumb custom-breadcrumb">
                 <?php
                 $previousMenuName = null;
-                foreach ($results as $result) {
-                    $menuName = $result['menu_name'];
+                foreach ($groupedItems as $menuName => $items) {
                     if ($menuName !== $previousMenuName) {
                 ?>
-                        <li class="breadcrumb-item"><?php echo $menuName; ?></li>
+                        <li class="breadcrumb-item"><?php echo htmlspecialchars($menuName); ?></li>
                 <?php
                         $previousMenuName = $menuName;
                     }
@@ -70,7 +98,7 @@ foreach ($results as $row) {
             </ol>
         </div>
         <div class="mx-3">
-            <h4 class=""><?php if(isset($results['restaurant_name'])) echo $results[0]['restaurant_name']; ?></h4>
+            <h4 class=""><?php if (isset($results['restaurant_name'])) echo $results[0]['restaurant_name']; ?></h4>
             <div class="d-flex justify-content-between">
                 <div class="d-flex">
                     <div class="restaurant-status">
@@ -270,8 +298,7 @@ foreach ($results as $row) {
                 <ul class="nav">
                     <?php
                     $previousMenuName = null;
-                    foreach ($results as $result) {
-                        $menuName = $result['menu_name'];
+                    foreach ($groupedItems as $menuName => $items) {
                         if ($menuName !== $previousMenuName) {
                     ?>
                             <li class="nav-item">
@@ -284,10 +311,6 @@ foreach ($results as $row) {
                     ?>
                 </ul>
                 <div class=" cart-noti px-2">
-                    <!-- <a href="cart.php" class="fs-3">
-                        <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
-                        <span id="cart-count" class="badge badge-pill badge-danger">0</span>
-                    </a> -->
                     <button class="fs-3 navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" data-user-id="<?php echo $user_id; ?>" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
                         <span id="cart-count" class="badge badge-pill badge-danger">0</span>
@@ -302,11 +325,14 @@ foreach ($results as $row) {
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <?php if(isset($carts)) foreach ($carts as $cart) : ?>
+                <?php if (isset($carts)) foreach ($carts as $cart) : ?>
                     <?php
                     $totalPrice = $cart['price'] * $cart['quantity'];
                     ?>
-                    <div class="d-flex mb-2" data-cart-id="<?php echo $cart['id']; ?>">
+                    <div class="d-flex mb-2 cartContainer related-content" data-cart-id="<?php echo $cart['cart_id']; ?>">
+                        <button class="decrease-quantity1 mx-2 btn btn-outline-primary" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
+                        <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity1" data-price="<?php echo $cart['price']; ?>" readonly>
+                        <button class="increase-quantity1 mx-2 btn btn-outline-primary" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
                         <div class="col-md-6">
                             <img src="admin/uploads/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
                         </div>
@@ -316,22 +342,22 @@ foreach ($results as $row) {
                             <p><?php echo $cart['description'] ?></p>
                         </div>
                     </div>
-                    <div class="d-flex mb-5">
-                        <div class="total-price col-md-6 mt-2" id="totalPrice">
-                            <?php echo $totalPrice ?>
+                    <div class="d-flex mb-5 related-content">
+                        <div class="col-md-6 mt-2" id="totalPrice">
+                            <?php echo $totalPrice; ?>
                         </div>
-                        <div class="">
+                        <div>
                             <button class="remove-item btn btn-link" type="button" data-item-id="<?php echo $cart['id']; ?>"><i class="bi bi-trash text-danger fs-5"></i></button>
                         </div>
                         <div class="quantityBtn col-md-6 mt-2">
-                            <button class="decrease-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
-                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity w-3" data-price="<?php echo $cart['price']; ?>" readonly>
-                            <button class="increase-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
+                            <!-- <button class="decrease-quantity1 mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
+                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity1 w-3" data-price="<?php echo $cart['price']; ?>" readonly>
+                            <button class="increase-quantity1 mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button> -->
                         </div>
                     </div>
                 <?php endforeach; ?>
                 <div class="col-md-12 text-center">
-                    <a href="cart.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn login">Checkout and View Address</a>
+                    <button class="btn login" id="checkoutBtn">Checkout and View Address</button>
                 </div>
             </div>
         </div>
@@ -411,35 +437,148 @@ include_once __DIR__ . "/layout/footer.php";
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.remove-item').forEach(button => {
-        button.addEventListener('click', function () {
-            const itemId = this.dataset.itemId;
-            const userId = <?php echo json_encode($_SESSION['id']); ?>;
-            const btnLogin = document.querySelector('.login')
-            
-            fetch('remove_item.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ user_id: userId, item_id: itemId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const cartItem = document.querySelector(`[data-cart-id="${itemId}"]`);
-                    cartItem.nextElementSibling.remove(); 
-                    cartItem.remove(); 
-                    // btnLogin.classList.remove('login')
-                    // btnLogin.classList.add('bg-secondary')
-                } else {
-                    alert('Failed to remove item from cart.');
-                }
+    // $('.increase-quantity1, .decrease-quantity1').on('click', function() {
+    //     var input = $(this).siblings('.quantity1');
+    //     var value = parseInt(input.val());
+
+    //     if ($(this).hasClass('increase-quantity1')) {
+    //         value++;
+    //     } else {
+    //         value = value > 1 ? value - 1 : 1;
+    //     }
+    //     input.val(value);
+
+    //     var cartContainers = document.querySelectorAll('.cartContainer');
+    //     cartContainers.forEach(function(cartContainer) {
+    //         var cart_id = cartContainer.dataset.cartId;
+
+    //         console.log('Cart ID:', cart_id);
+
+    //         var quantity = parseInt($(cartContainer).find('.quantity1').val());
+
+    //         $.ajax({
+    //             url: 'update_cart.php',
+    //             method: 'POST',
+    //             data: {
+    //                 cart_id: cart_id,
+    //                 quantity: quantity
+    //             },
+    //             success: function(response) {
+    //                 console.log(response);
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 console.error(xhr.responseText);
+    //             }
+    //         });
+    //     });
+
+    //     console.log("Quantity:", value);
+    // });
+
+    // $('#checkoutBtn').on('click', function() {
+    //     window.location.href = 'cart.php?restaurant_id=<?php echo $restaurant_id ?>';
+    // });
+    $(document).ready(function() {
+        $('.increase-quantity1, .decrease-quantity1').on('click', function() {
+            var input = $(this).siblings('.quantity1');
+            var value = parseInt(input.val());
+
+            if ($(this).hasClass('increase-quantity1')) {
+                value++;
+            } else {
+                value = value > 1 ? value - 1 : 1;
+            }
+            input.val(value);
+
+            var cartContainers = document.querySelectorAll('.cartContainer');
+            cartContainers.forEach(function(cartContainer) {
+                var cart_id = cartContainer.dataset.cartId;
+                console.log("Cart Id:", cart_id);
+                var quantity = parseInt($(cartContainer).find('.quantity1').val());
+                console.log("Quantity:", quantity);
+
+                $.ajax({
+                    url: 'update_cart.php',
+                    method: 'POST',
+                    data: {
+                        cart_id: cart_id,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        $('#checkoutBtn').on('click', function() {
+            var cartContainers = document.querySelectorAll('.cartContainer');
+            cartContainers.forEach(function(cartContainer) {
+                var cart_id = cartContainer.dataset.cartId;
+                var quantity = parseInt($(cartContainer).find('.quantity1').val());
+
+                $.ajax({
+                    url: 'update_cart.php',
+                    method: 'POST',
+                    data: {
+                        cart_id: cart_id,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            window.location.href = 'cart.php?restaurant_id=<?php echo $restaurant_id ?>';
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.dataset.itemId;
+                const userId = <?php echo json_encode($_SESSION['id']); ?>;
+                const btnLogin = document.querySelector('.login');
+
+                fetch('remove_item.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            item_id: itemId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const cartItem = document.querySelector(`[data-cart-id="${itemId}"]`);
+                            if (cartItem) {
+                                cartItem.remove();
+                            } else {
+                                console.error('Cart item not found.');
+                            }
+                        } else {
+                            alert('Failed to remove item from cart.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error removing item from cart:', error);
+                        alert('An error occurred while removing item from cart.');
+                    });
             });
         });
     });
-});
 </script>
 
 <script>

@@ -37,16 +37,6 @@ if (isset($_POST['township_id'], $_POST['payment_id'], $_POST['item_ids'], $_POS
 
         $itemDetails = $item_controller->getItem($item_id);
 
-        echo $order_code."<br>"; 
-        echo $quantity."<br>";
-        echo $total_price."<br>";
-        echo $order_date."<br>";
-        echo $order_time."<br>";
-        echo $user_id."<br>";
-        echo $item_id."<br>";
-        echo $township_id."<br>";
-        echo $payment_id."<br>";
-
         $success = $order_controller->addOrder($order_code, $quantity, $total_price, $order_date, $order_time, $user_id, $item_id, $township_id, $payment_id);
 
         echo $success;

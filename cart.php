@@ -67,13 +67,13 @@ $townships = $township_controller->getTownships();
                             $totalPrice = $cart['price'] * $cart['quantity'];
                         ?>
                             <tr>
-                                <td><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>"></td>
+                                <td style="display: none;"><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" checked></td>
                                 <td><?php echo $cart['name']; ?></td>
                                 <td><?php echo $cart['price']; ?></td>
                                 <td class="d-flex">
-                                    <button class="btn btn-success decrease-quantity" type="button" data-price="<?php echo $cart['price']; ?>">-</button>
-                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity" data-price="<?php echo $cart['price']; ?>">
-                                    <button class="btn btn-success increase-quantity" type="button" data-price="<?php echo $cart['price']; ?>">+</button>
+                                    <!-- <button class="btn btn-success decrease-quantity" type="button" data-price="<?php echo $cart['price']; ?>">-</button> -->
+                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>">
+                                    <!-- <button class="btn btn-success increase-quantity" type="button" data-price="<?php echo $cart['price']; ?>">+</button> -->
                                 </td>
                                 <td class="total-price" id="totalPrice"><?php echo number_format($totalPrice, 2); ?></td>
                             </tr>

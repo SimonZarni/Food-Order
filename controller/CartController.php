@@ -47,6 +47,11 @@ class CartController {
     {
         return $this->cart->getCartItemCountByUser($user_id);
     }
+
+    public function updateCartQuantity($cart_id, $quantity) 
+    {
+        return $this->cart->updateCartQuantity($cart_id, $quantity);
+    }
 }
 
 ?>

@@ -437,47 +437,6 @@ include_once __DIR__ . "/layout/footer.php";
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
 <script>
-    // $('.increase-quantity1, .decrease-quantity1').on('click', function() {
-    //     var input = $(this).siblings('.quantity1');
-    //     var value = parseInt(input.val());
-
-    //     if ($(this).hasClass('increase-quantity1')) {
-    //         value++;
-    //     } else {
-    //         value = value > 1 ? value - 1 : 1;
-    //     }
-    //     input.val(value);
-
-    //     var cartContainers = document.querySelectorAll('.cartContainer');
-    //     cartContainers.forEach(function(cartContainer) {
-    //         var cart_id = cartContainer.dataset.cartId;
-
-    //         console.log('Cart ID:', cart_id);
-
-    //         var quantity = parseInt($(cartContainer).find('.quantity1').val());
-
-    //         $.ajax({
-    //             url: 'update_cart.php',
-    //             method: 'POST',
-    //             data: {
-    //                 cart_id: cart_id,
-    //                 quantity: quantity
-    //             },
-    //             success: function(response) {
-    //                 console.log(response);
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.error(xhr.responseText);
-    //             }
-    //         });
-    //     });
-
-    //     console.log("Quantity:", value);
-    // });
-
-    // $('#checkoutBtn').on('click', function() {
-    //     window.location.href = 'cart.php?restaurant_id=<?php echo $restaurant_id ?>';
-    // });
     $(document).ready(function() {
         $('.increase-quantity1, .decrease-quantity1').on('click', function() {
             var input = $(this).siblings('.quantity1');
@@ -490,35 +449,30 @@ include_once __DIR__ . "/layout/footer.php";
             }
             input.val(value);
 
-            var cartContainers = document.querySelectorAll('.cartContainer');
-            cartContainers.forEach(function(cartContainer) {
-                var cart_id = cartContainer.dataset.cartId;
-                console.log("Cart Id:", cart_id);
-                var quantity = parseInt($(cartContainer).find('.quantity1').val());
-                console.log("Quantity:", quantity);
+            var cartContainer = $(this).closest('.cartContainer');
+            var cart_id = cartContainer.data('cartId');
+            var quantity = parseInt(cartContainer.find('.quantity1').val());
 
-                $.ajax({
-                    url: 'update_cart.php',
-                    method: 'POST',
-                    data: {
-                        cart_id: cart_id,
-                        quantity: quantity
-                    },
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+            $.ajax({
+                url: 'update_cart.php',
+                method: 'POST',
+                data: {
+                    cart_id: cart_id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
             });
         });
 
         $('#checkoutBtn').on('click', function() {
-            var cartContainers = document.querySelectorAll('.cartContainer');
-            cartContainers.forEach(function(cartContainer) {
-                var cart_id = cartContainer.dataset.cartId;
-                var quantity = parseInt($(cartContainer).find('.quantity1').val());
+            $('.cartContainer').each(function() {
+                var cart_id = $(this).data('cartId');
+                var quantity = parseInt($(this).find('.quantity1').val());
 
                 $.ajax({
                     url: 'update_cart.php',

@@ -72,9 +72,7 @@ $townships = $township_controller->getTownships();
                                 <td><?php echo $cart['name']; ?></td>
                                 <td><?php echo $cart['price']; ?></td>
                                 <td class="d-flex">
-                                    <!-- <button class="btn btn-success decrease-quantity" type="button" data-price="<?php echo $cart['price']; ?>">-</button> -->
                                     <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>" disabled>
-                                    <!-- <button class="btn btn-success increase-quantity" type="button" data-price="<?php echo $cart['price']; ?>">+</button> -->
                                 </td>
                                 <td class="total-price" id="totalPrice"><?php echo number_format($totalPrice, 2); ?></td>
                             </tr>
@@ -172,28 +170,6 @@ $townships = $township_controller->getTownships();
                 var townshipFee = parseFloat($(this).find('option:selected').data('fee'));
                 $('.township-fee').text(townshipFee.toFixed(2));
                 updateSubtotal();
-            });
-
-            $('.quantity').change(function() {
-                updateSubtotal();
-            });
-
-            $('.increase-quantity').click(function() {
-                var quantityInput = $(this).siblings('.quantity');
-                var currentQuantity = parseInt(quantityInput.val());
-                quantityInput.val(currentQuantity + 1);
-                updateTotalPrice(quantityInput);
-                updateSubtotal();
-            });
-
-            $('.decrease-quantity').click(function() {
-                var quantityInput = $(this).siblings('.quantity');
-                var currentQuantity = parseInt(quantityInput.val());
-                if (currentQuantity > 1) {
-                    quantityInput.val(currentQuantity - 1);
-                    updateTotalPrice(quantityInput);
-                    updateSubtotal();
-                }
             });
 
             $('#submitOrder').click(function() {

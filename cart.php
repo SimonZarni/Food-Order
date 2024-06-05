@@ -68,11 +68,12 @@ $townships = $township_controller->getTownships();
                         ?>
                             <tr>
                                 <td style="display: none;"><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" checked></td>
+                                <td></td>
                                 <td><?php echo $cart['name']; ?></td>
                                 <td><?php echo $cart['price']; ?></td>
                                 <td class="d-flex">
                                     <!-- <button class="btn btn-success decrease-quantity" type="button" data-price="<?php echo $cart['price']; ?>">-</button> -->
-                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>">
+                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>" disabled>
                                     <!-- <button class="btn btn-success increase-quantity" type="button" data-price="<?php echo $cart['price']; ?>">+</button> -->
                                 </td>
                                 <td class="total-price" id="totalPrice"><?php echo number_format($totalPrice, 2); ?></td>

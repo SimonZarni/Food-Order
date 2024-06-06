@@ -1,7 +1,8 @@
 <?php
 include_once __DIR__ . '/../include/dbconfig.php';
 
-class Restaurant {
+class Restaurant
+{
     private $conn, $statement;
 
     public function getRestaurants()
@@ -27,6 +28,27 @@ class Restaurant {
         if ($this->statement->execute()) {
             $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
             return $results;
+        }
+    }
+
+    public function searchRestaurantsByKeyword($keyword)
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT DISTINCT restaurant.*, restaurant.name AS restaurant_name
+                FROM restaurant
+                LEFT JOIN item ON restaurant.id = item.restaurant_id
+                LEFT JOIN menu ON item.menu_id = menu.id
+                WHERE restaurant.name LIKE :keyword 
+                   OR menu.name LIKE :keyword 
+                   OR item.name LIKE :keyword";
+        $this->statement = $this->conn->prepare($sql);
+        $like_keyword = '%' . $keyword . '%';
+        $this->statement->bindParam(':keyword', $like_keyword, PDO::PARAM_STR);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        } else {
+            return [];
         }
     }
 }

@@ -17,6 +17,11 @@ class RestaurantController {
     {
         return $this->restaurant->getRestaurantsByMenu($menu_id);
     }
+
+    public function searchRestaurantsByKeyword($keyword)
+    {
+        return $this->restaurant->searchRestaurantsByKeyword($keyword);
+    }
 }
 
 ?>

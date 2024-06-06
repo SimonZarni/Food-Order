@@ -41,8 +41,8 @@ session_start();
                 </div>
 
                 <div class="d-flex ms-auto">
-                    <form class="d-flex btn-search me-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex btn-search me-3" role="search" action="search.php" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                         <button class="btn" type="submit">Search</button>
                     </form>
                     <div>

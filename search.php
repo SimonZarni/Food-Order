@@ -31,6 +31,7 @@ $restaurants = $restaurant_controller->searchRestaurantsByKeyword($keyword);
             ?>
                 <div class="col">
                     <div class="card restaurant-display">
+                    <i class="bi bi-heart-fill heart-icon" data-liked="false" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
                         <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
                             <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
                             <div class="card-body">

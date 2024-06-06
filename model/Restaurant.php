@@ -34,7 +34,7 @@ class Restaurant
     public function searchRestaurantsByKeyword($keyword)
     {
         $this->conn = Database::connect();
-        $sql = "SELECT DISTINCT restaurant.*, restaurant.name AS restaurant_name
+        $sql = "SELECT DISTINCT restaurant.*, restaurant.name AS restaurant_name, restaurant.open_time as open_time
                 FROM restaurant
                 LEFT JOIN item ON restaurant.id = item.restaurant_id
                 LEFT JOIN menu ON item.menu_id = menu.id

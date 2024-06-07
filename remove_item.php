@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['error' => 'Missing required data']);
     }
 } else {
-    http_response_code(405); 
+    http_response_code(405); // Method Not Allowed
     echo json_encode(['error' => 'Invalid request method']);
 }
+
 ?>

@@ -42,7 +42,7 @@ class Cart
     public function getCartDetails($user_id, $restaurant_id)
     {
         $this->conn = Database::connect();
-        $sql = "SELECT item.*, cart.quantity, cart.id as cart_id, restaurant.name as restaurant_name
+        $sql = "SELECT item.*, cart.quantity, cart.id as cart_id, restaurant.name as restaurant_name, item.id as item_id
                 FROM item
                 INNER JOIN cart ON item.id = cart.item_id
                 INNER JOIN restaurant ON item.restaurant_id = restaurant.id
@@ -89,20 +89,25 @@ class Cart
         }
     }
 
-    public function getCartItemCountByUser($user_id)
+    public function getCartItemCountByUser($user_id, $restaurant_id)
     {
         $this->conn = Database::connect();
-        $sql = "SELECT COUNT(*) AS cart_count FROM cart WHERE user_id = :user_id";
+        $sql = "SELECT COUNT(*) AS cart_count 
+                FROM cart 
+                INNER JOIN item ON cart.item_id = item.id
+                WHERE cart.user_id = :user_id 
+                AND item.restaurant_id = :restaurant_id";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':restaurant_id', $restaurant_id);
         if ($this->statement->execute()) {
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
-            return $result['cart_count']; 
+            return $result['cart_count'];
         }
-        return 0; 
+        return 0;
     }
 
-    public function updateCartQuantity($cart_id, $quantity) 
+    public function updateCartQuantity($cart_id, $quantity)
     {
         $this->conn = Database::connect();
         $sql = "UPDATE cart SET quantity = :quantity WHERE id = :id";

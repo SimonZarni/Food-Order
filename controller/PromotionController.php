@@ -1,0 +1,22 @@
+<?php
+include_once __DIR__ . '/../model/Promotion.php';
+
+class PromotionController {
+    private $promotion;
+    function __construct()
+    {
+        $this->promotion = new Promotion();
+    }
+
+    public function getPromotionRestaurants()
+    {
+        return $this->promotion->getPromotionRestaurants();
+    }
+
+    public function getMenusAndItemsByRestaurantAndDiscount($restaurant_id, $discount)
+    {
+        return $this->promotion->getMenusAndItemsByRestaurantAndDiscount($restaurant_id, $discount);
+    }
+}
+
+?>

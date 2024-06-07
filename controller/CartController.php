@@ -43,9 +43,9 @@ class CartController {
         return $this->cart->checkItemInCart($item_id, $user_id);
     }
 
-    public function getCartItemCountByUser($user_id)
+    public function getCartItemCountByUser($user_id, $restaurant_id)
     {
-        return $this->cart->getCartItemCountByUser($user_id);
+        return $this->cart->getCartItemCountByUser($user_id, $restaurant_id);
     }
 
     public function updateCartQuantity($cart_id, $quantity) 

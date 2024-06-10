@@ -1,5 +1,4 @@
 <?php
-
 session_name('user');
 session_start();
 include_once __DIR__ . '/controller/OrderController.php';

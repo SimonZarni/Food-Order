@@ -132,7 +132,7 @@ $promotion_restaurants = $promotion_controller->getPromotionRestaurants();
             <?php
             foreach ($promotion_restaurants as $promotion_restaurant) {
             ?>
-                <a href="promoted_item.php?restaurant_id=<?php echo $promotion_restaurant['restaurant_id']; ?>&discount=<?php echo $promotion_restaurant['discount']; ?>">
+                <a href="item.php?restaurant_id=<?php echo $promotion_restaurant['restaurant_id']; ?>&discount=<?php echo $promotion_restaurant['discount']; ?>">
                     <div class="promo-item">
                         <img src="admin/uploads/<?php echo $promotion_restaurant['image']; ?>" class="img-fluid" alt="">
                         <h5>Get Up To <?php echo $promotion_restaurant['discount']; ?>% Off</h5>

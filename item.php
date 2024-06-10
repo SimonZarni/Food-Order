@@ -25,6 +25,9 @@ foreach ($results as $row) {
     $groupedItems[$menuName][] = $row;
 }
 
+$promotion_controller = new PromotionController();
+$promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +94,15 @@ foreach ($results as $row) {
                     <div>
                         <button class="btn btn-link text-dark" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
                             Restaurant Info
+                        </button>
+                    </div>
+                    <div>
+                        <button id="copyButton" class="btn btn-link text-dark" data-toggle="modal" data-target="#codeModal" data-backdrop="false">
+                            <?php
+                            foreach ($promotions as $promotion) {
+                                echo $promotion['voucher_code'];
+                            }
+                            ?>
                         </button>
                     </div>
                 </div>
@@ -400,6 +412,23 @@ include_once __DIR__ . "/layout/footer.php";
 ?>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    document.getElementById('copyButton').addEventListener('click', function() {
+        var voucherCode = this.textContent.trim();
+
+        var tempTextArea = document.createElement('textarea');
+        tempTextArea.value = voucherCode;
+        document.body.appendChild(tempTextArea);
+
+        tempTextArea.select();
+        document.execCommand('copy');
+
+        document.body.removeChild(tempTextArea);
+
+        alert('Voucher code copied to clipboard: ' + voucherCode);
+    });
+</script>
 
 <script>
     function updateCartCount() {

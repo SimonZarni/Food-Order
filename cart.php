@@ -4,6 +4,7 @@ session_start();
 include_once __DIR__ . '/controller/CartController.php';
 include_once __DIR__ . '/controller/PaymentController.php';
 include_once __DIR__ . '/controller/TownshipController.php';
+include_once __DIR__ . '/controller/PromotionController.php';
 
 $user_id = $_SESSION['id'];
 $restaurant_id = $_GET['restaurant_id'];
@@ -16,6 +17,9 @@ $payments = $payment_controller->getPayments();
 
 $township_controller = new TownshipController();
 $townships = $township_controller->getTownships();
+
+$promotion_controller = new PromotionController();
+$promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 
 ?>
 
@@ -170,8 +174,11 @@ $townships = $township_controller->getTownships();
                     </tbody>
                 </table> -->
                 <div class="cart-container">
-                    <?php foreach ($carts as $cart) {
+                    <?php
+                    $subtotal = 0;
+                    foreach ($carts as $cart) {
                         $totalPrice = $cart['price'] * $cart['quantity'];
+                        $subtotal += $totalPrice;
                     ?>
                         <div class="cart-item" data-id="<?php echo $cart['id']; ?>">
                             <input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" style="display: none;" checked>
@@ -187,7 +194,12 @@ $townships = $township_controller->getTownships();
                                 <div class="item-subtotal">Subtotal: $<span class="total-price"><?php echo number_format($totalPrice, 2); ?></span></div>
                             </div>
                         </div>
-                    <?php } ?>
+                    <?php
+                    }
+                    ?>
+                    <div class="cart-subtotal">
+                        Subtotal of all items: $<span class="subtotal-price"><?php echo number_format($subtotal, 2); ?></span>
+                    </div>
                 </div>
                 <div class="mx-3">
                     <a href="item.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn btn-primary">Go Back</a>
@@ -238,6 +250,11 @@ $townships = $township_controller->getTownships();
                     </select>
                 </div>
                 <div class="mt-2">
+                    <label for="" class="form-label">Voucher Code</label>
+                    <input type="number" name="voucher" id="voucher" class="form-control" placeholder="Apply Voucher Code">
+                    <button id="applyVoucher" class="btn btn-success mt-2" type="button" onclick="applyVoucher()">Apply</button>
+                </div>
+                <div class="mt-2">
                     Total Price: <span id="subtotal">0.00</span>
                 </div>
                 <button type="button" id="submitOrder" class="btn btn-primary mt-2">Submit Order</button>
@@ -249,38 +266,63 @@ $townships = $township_controller->getTownships();
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
     <script>
+        // const promotions = <?php echo json_encode($promotions); ?>;
+        // let currentVoucher = null;
+
+        // function applyVoucher() {
+        //     const voucherCode = $("#voucher").val();
+
+        //     const matchingPromotion = promotions.find(p => p.voucher_code === voucherCode);
+
+        //     if (matchingPromotion) {
+        //         currentVoucher = matchingPromotion;
+        //         alert("Voucher applied successfully!");
+        //         updateSubtotal();
+        //     } else {
+        //         currentVoucher = null;
+        //         alert("Invalid voucher code.");
+        //     }
+        // }
+
+
+        // function updateTotalPrice(quantityInput) {
+        //     const pricePerItem = $(quantityInput).data('price');
+        //     const quantity = parseInt($(quantityInput).val());
+        //     const totalPrice = pricePerItem * quantity;
+        //     $(quantityInput).closest('.cart-item').find('.total-price').text(totalPrice.toFixed(2));
+        //     return totalPrice;
+        // }
+
+        // function updateSubtotal() {
+        //     let totalPriceWithoutFee = 0;
+        //     $('.cart-item-checkbox:checked').each(function() {
+        //         const quantityInput = $(this).closest('.cart-item').find('.quantity');
+        //         totalPriceWithoutFee += updateTotalPrice(quantityInput);
+        //     });
+        //     const townshipFee = parseFloat($('#townshipSelect option:selected').data('fee'));
+        //     let subtotal = totalPriceWithoutFee + townshipFee;
+
+        //     if (currentVoucher) {
+        //         const discountAmount = subtotal * (currentVoucher.discount / 100);
+        //         subtotal -= discountAmount;
+        //     }
+
+        //     $('#subtotal').text(subtotal.toFixed(2));
+        //     $('#subtotal').data('value', subtotal);
+        // }
+
         // jQuery(document).ready(function($) {
-        //     function updateTotalPrice(quantityInput) {
-        //         var pricePerItem = $(quantityInput).data('price');
-        //         var quantity = parseInt($(quantityInput).val());
-        //         var totalPrice = pricePerItem * quantity;
-        //         $(quantityInput).closest('tr').find('.total-price').text(totalPrice.toFixed(2));
-        //         return totalPrice;
-        //     }
-
-        //     function updateSubtotal() {
-        //         var totalPriceWithoutFee = 0;
-
-        //         $('.cart-item-checkbox:checked').each(function() {
-        //             var quantityInput = $(this).closest('tr').find('.quantity');
-        //             totalPriceWithoutFee += updateTotalPrice(quantityInput);
-        //         });
-
-        //         console.log('Total Price Without Fee:', totalPriceWithoutFee);
-
-        //         var townshipFee = parseFloat($('#townshipSelect option:selected').data('fee'));
-        //         console.log('Township Fee:', townshipFee);
-
-        //         var subtotal = totalPriceWithoutFee + townshipFee;
-        //         console.log('Subtotal:', subtotal);
-
-        //         $('#subtotal').text(subtotal.toFixed(2));
-        //     }
-
         //     $('#townshipSelect').change(function() {
-        //         var townshipFee = parseFloat($(this).find('option:selected').data('fee'));
+        //         const townshipFee = parseFloat($(this).find('option:selected').data('fee'));
         //         $('.township-fee').text(townshipFee.toFixed(2));
         //         updateSubtotal();
+        //     });
+
+        //     $('#voucher').on('input', function() {
+        //         if (!$(this).val().trim()) {
+        //             currentVoucher = null;
+        //             updateSubtotal();
+        //         }
         //     });
 
         //     $('#submitOrder').click(function() {
@@ -290,7 +332,6 @@ $townships = $township_controller->getTownships();
         //         var quantities = $('.quantity').map(function() {
         //             return $(this).val();
         //         }).get();
-        //         console.log(quantities);
         //         var townshipId = $('#townshipSelect').val();
         //         var paymentId = $('#paymentSelect').val();
 
@@ -315,7 +356,7 @@ $townships = $township_controller->getTownships();
         //             'phone': phone,
         //             'address': address,
         //             'payment_id': paymentId,
-        //             'subtotal': $('#subtotal').text()
+        //             'subtotal': $('#subtotal').text(),
         //         };
 
         //         $.ajax({
@@ -324,10 +365,10 @@ $townships = $township_controller->getTownships();
         //             data: formData,
         //             success: function(response) {
         //                 alert('Order submitted successfully!');
-        //                 console.log(response);
         //                 $.each(itemIds, function(index, itemId) {
-        //                     $('input[value="' + itemId + '"]').closest('tr').remove();
+        //                     $('input[value="' + itemId + '"]').closest('.cart-item').remove();
         //                 });
+        //                 updateSubtotal();
         //             },
         //             error: function() {
         //                 alert('Error submitting order.');
@@ -335,6 +376,26 @@ $townships = $township_controller->getTownships();
         //         });
         //     });
         // });
+
+        var promotions = <?php echo json_encode($promotions); ?>;
+
+        function applyVoucher() {
+            var voucherCode = $('#voucher').val();
+            var foundPromotion = promotions.find(function(promotion) {
+                return promotion.voucher_code === voucherCode;
+            });
+
+            if (foundPromotion) {
+                var discount = foundPromotion.discount;
+                var subtotal = parseFloat($('#subtotal').text());
+                var discountedPrice = subtotal * (1 - discount / 100);
+                $('#subtotal').text(discountedPrice.toFixed(2));
+                alert('Voucher applied successfully!');
+            } else {
+                alert('Invalid voucher code. Please try again.');
+            }
+        }
+
         jQuery(document).ready(function($) {
             function updateTotalPrice(quantityInput) {
                 var pricePerItem = $(quantityInput).data('price');
@@ -423,6 +484,7 @@ $townships = $township_controller->getTownships();
             });
         });
     </script>
+
 </body>
 
 </html>

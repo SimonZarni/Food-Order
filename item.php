@@ -97,6 +97,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                         </button>
                     </div>
                     <div>
+                        <button class="btn text-dark">Voucher Code:</button>
                         <button id="copyButton" class="btn btn-link text-dark" data-toggle="modal" data-target="#codeModal" data-backdrop="false">
                             <?php
                             foreach ($promotions as $promotion) {

@@ -191,7 +191,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                                 <div class="item-quantity">
                                     Quantity: <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity" data-price="<?php echo $cart['price']; ?>" disabled>
                                 </div>
-                                <div class="item-subtotal">Subtotal: $<span class="total-price"><?php echo number_format($totalPrice, 2); ?></span></div>
+                                <div class="item-subtotal">Item Price: $<span class="total-price"><?php echo number_format($totalPrice, 2); ?></span></div>
                             </div>
                         </div>
                     <?php
@@ -266,117 +266,6 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
     <script>
-        // const promotions = <?php echo json_encode($promotions); ?>;
-        // let currentVoucher = null;
-
-        // function applyVoucher() {
-        //     const voucherCode = $("#voucher").val();
-
-        //     const matchingPromotion = promotions.find(p => p.voucher_code === voucherCode);
-
-        //     if (matchingPromotion) {
-        //         currentVoucher = matchingPromotion;
-        //         alert("Voucher applied successfully!");
-        //         updateSubtotal();
-        //     } else {
-        //         currentVoucher = null;
-        //         alert("Invalid voucher code.");
-        //     }
-        // }
-
-
-        // function updateTotalPrice(quantityInput) {
-        //     const pricePerItem = $(quantityInput).data('price');
-        //     const quantity = parseInt($(quantityInput).val());
-        //     const totalPrice = pricePerItem * quantity;
-        //     $(quantityInput).closest('.cart-item').find('.total-price').text(totalPrice.toFixed(2));
-        //     return totalPrice;
-        // }
-
-        // function updateSubtotal() {
-        //     let totalPriceWithoutFee = 0;
-        //     $('.cart-item-checkbox:checked').each(function() {
-        //         const quantityInput = $(this).closest('.cart-item').find('.quantity');
-        //         totalPriceWithoutFee += updateTotalPrice(quantityInput);
-        //     });
-        //     const townshipFee = parseFloat($('#townshipSelect option:selected').data('fee'));
-        //     let subtotal = totalPriceWithoutFee + townshipFee;
-
-        //     if (currentVoucher) {
-        //         const discountAmount = subtotal * (currentVoucher.discount / 100);
-        //         subtotal -= discountAmount;
-        //     }
-
-        //     $('#subtotal').text(subtotal.toFixed(2));
-        //     $('#subtotal').data('value', subtotal);
-        // }
-
-        // jQuery(document).ready(function($) {
-        //     $('#townshipSelect').change(function() {
-        //         const townshipFee = parseFloat($(this).find('option:selected').data('fee'));
-        //         $('.township-fee').text(townshipFee.toFixed(2));
-        //         updateSubtotal();
-        //     });
-
-        //     $('#voucher').on('input', function() {
-        //         if (!$(this).val().trim()) {
-        //             currentVoucher = null;
-        //             updateSubtotal();
-        //         }
-        //     });
-
-        //     $('#submitOrder').click(function() {
-        //         var itemIds = $('input[name="item_ids[]"]:checked').map(function() {
-        //             return $(this).val();
-        //         }).get();
-        //         var quantities = $('.quantity').map(function() {
-        //             return $(this).val();
-        //         }).get();
-        //         var townshipId = $('#townshipSelect').val();
-        //         var paymentId = $('#paymentSelect').val();
-
-        //         if (itemIds.length === 0 || !townshipId || !paymentId) {
-        //             alert('Please select at least one cart item and specify both township and payment method.');
-        //             return;
-        //         }
-
-        //         var totalPrices = [];
-        //         $('.total-price').each(function() {
-        //             totalPrices.push(parseFloat($(this).text()));
-        //         });
-
-        //         var address = $('#address').val();
-        //         var phone = $('#phone').val();
-
-        //         var formData = {
-        //             'item_ids': itemIds,
-        //             'quantities': quantities,
-        //             'total_prices': totalPrices,
-        //             'township_id': townshipId,
-        //             'phone': phone,
-        //             'address': address,
-        //             'payment_id': paymentId,
-        //             'subtotal': $('#subtotal').text(),
-        //         };
-
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: 'order.php',
-        //             data: formData,
-        //             success: function(response) {
-        //                 alert('Order submitted successfully!');
-        //                 $.each(itemIds, function(index, itemId) {
-        //                     $('input[value="' + itemId + '"]').closest('.cart-item').remove();
-        //                 });
-        //                 updateSubtotal();
-        //             },
-        //             error: function() {
-        //                 alert('Error submitting order.');
-        //             }
-        //         });
-        //     });
-        // });
-
         var promotions = <?php echo json_encode($promotions); ?>;
 
         function applyVoucher() {

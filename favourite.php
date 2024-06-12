@@ -25,27 +25,33 @@ $favourites = $favourite_controller->getFavouriteRestaurants($user_id);
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2>Your Favourite Restaurants</h2>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            <?php foreach ($favourites as $favourite) {
-            ?>
-                <div class="col">
-                    <div class="card restaurant-display">
-                        <a href="item.php?restaurant_id=<?php echo $favourite['id']; ?>">
-                            <img src="admin/uploads/<?php echo $favourite['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $favourite['name']; ?></h5>
-                                <p class="card-text"><?php echo $favourite['open_time']; ?></p>
-                            </div>
-                        </a>
+    <?php
+    if ($favourites) {
+    ?>
+        <div class="container mt-5">
+            <h2>Your Favourite Restaurants</h2>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <?php foreach ($favourites as $favourite) {
+                ?>
+                    <div class="col">
+                        <div class="card restaurant-display">
+                            <a href="item.php?restaurant_id=<?php echo $favourite['id']; ?>">
+                                <img src="admin/uploads/<?php echo $favourite['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $favourite['name']; ?></h5>
+                                    <p class="card-text"><?php echo $favourite['open_time']; ?></p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
             <?php
+                }
+            } else {
+                echo "You haven't added any restaurant to your favourites.";
             }
             ?>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>

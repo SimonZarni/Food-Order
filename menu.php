@@ -4,6 +4,10 @@ include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/MenuController.php';
 include_once __DIR__ . '/controller/RestaurantController.php';
 include_once __DIR__ . '/controller/PromotionController.php';
+include_once __DIR__ . '/controller/FavouriteController.php';
+
+if (isset($_SESSION['id']))
+    $user_id = $_SESSION['id'];
 
 $menu_controller = new MenuController();
 $menus = $menu_controller->getMenus();
@@ -21,6 +25,8 @@ if (isset($keyword)) {
 
 $promotion_controller = new PromotionController();
 $promotion_restaurants = $promotion_controller->getPromotionRestaurants();
+
+$favourite_controller = new FavouriteController();
 
 ?>
 <!DOCTYPE html>
@@ -173,10 +179,11 @@ $promotion_restaurants = $promotion_controller->getPromotionRestaurants();
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <?php foreach ($restaurants as $restaurant) {
                 if ($restaurant['status'] == null) {
+                    $isFavourite = $favourite_controller->isFavourite($user_id, $restaurant['id']) ? 'text-danger' : '';
             ?>
                     <div class="col-12 col-sm-4 col-lg-3">
                         <div class="card restaurant-display">
-                            <i class="bi bi-heart-fill heart-icon" data-liked="false" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
+                            <i class="bi bi-heart-fill heart-icon <?php echo $isFavourite; ?>" data-liked="<?php echo $isFavourite ? 'true' : 'false'; ?>" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
                             <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
                                 <div class="d-flex justify-content-center">
                                     <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" style="height:180px;width:200px" alt="...">
@@ -230,38 +237,11 @@ $promotion_restaurants = $promotion_controller->getPromotionRestaurants();
                     success: function(response) {
                         if (response.success) {
                             $heartIcon.addClass('text-danger');
-                        } else {
-                            alert('Failed to add restaurant to favorites.');
                         }
                     },
-
                 });
                 alert('Restaurant added to favourites!');
-            });
-        });
-    </script>
-
-    <script>
-        jQuery(document).ready(function($) {
-            $(document).on('click', '.heart-icon', function() {
-                var restaurantId = $(this).data('restaurant_id');
-                var heartIcon = $(this);
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'check_favourite.php',
-                    data: {
-                        restaurant_id: restaurantId
-                    },
-                    success: function(response) {
-                        if (response.isFavourite) {
-                            heartIcon.addClass('text-danger');
-                        }
-                    },
-                    error: function() {
-                        alert('Error occurred while processing request.');
-                    }
-                });
+                location.reload()
             });
         });
     </script>

@@ -388,7 +388,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                             <p><?php echo $cart['description'] ?></p>
                         </div>
                     </div>
-                    <div class="d-flex mb-5 ">
+                    <div class="d-flex mb-5 price-class">
                         <div class="col-md-4 mt-3" id="totalPrice">
                             <?php echo number_format($totalPrice, 2); ?>
                         </div>
@@ -570,8 +570,11 @@ include_once __DIR__ . "/layout/footer.php";
             var cart_id = buttonClass.data('cartId');
             var quantity = parseInt(buttonClass.find('.quantity1').val());
             var price = input.data('price')
+            console.log(quantity)
+            console.log(price)
 
-            var totalPriceElement = $(this).closest('.related-content').find('#totalPrice');
+            var totalPriceElement = $(this).closest('.price-class').find('#totalPrice');
+            console.log(totalPriceElement)
             totalPriceElement.text((quantity * price).toFixed(2))
 
             $.ajax({

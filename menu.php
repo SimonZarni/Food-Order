@@ -3,6 +3,7 @@
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/MenuController.php';
 include_once __DIR__ . '/controller/RestaurantController.php';
+include_once __DIR__ . '/controller/ReviewController.php';
 include_once __DIR__ . '/controller/PromotionController.php';
 include_once __DIR__ . '/controller/FavouriteController.php';
 
@@ -14,6 +15,9 @@ $menus = $menu_controller->getMenus();
 
 $restaurant_controller = new RestaurantController();
 $restaurants = $restaurant_controller->getRestaurants();
+
+$review_controller = new ReviewController();
+$ratings = $review_controller->fetchAverageRatingsForAllRestaurants();
 
 if (isset($_GET['keyword'])) {
     $keyword = $_GET['keyword'];
@@ -179,23 +183,33 @@ $favourite_controller = new FavouriteController();
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <?php foreach ($restaurants as $restaurant) {
                 if ($restaurant['status'] == null) {
-                    $isFavourite = $favourite_controller->isFavourite($user_id, $restaurant['id']) ? 'text-danger' : '';
             ?>
                     <div class="col-12 col-sm-4 col-lg-3">
                         <div class="card restaurant-display">
-                            <i class="bi bi-heart-fill heart-icon <?php echo $isFavourite; ?>" data-liked="<?php echo $isFavourite ? 'true' : 'false'; ?>" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
+                            <i class="bi bi-heart-fill heart-icon" data-liked="false" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
                             <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
                                 <div class="d-flex justify-content-center">
                                     <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" style="height:180px;width:200px" alt="...">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo $restaurant['name']; ?></h5>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><?php echo $restaurant['name']; ?></h5>
+                                        <?php foreach ($ratings as $rating) {
+                                            if ($rating['restaurant_id'] == $restaurant['id']) { ?>
+                                                <p><i class="bi bi-star-fill text-warning"></i><?php echo number_format($rating['average_rating'], 1) ?> <span>(+<?php echo $rating['review_count']; ?>)</span></p>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                    </div>
                                     <p class="card-text"><?php echo $restaurant['open_time']; ?></p>
+                                    <!-- Rating loop moved outside of the restaurant loop -->
                                 </div>
                             </a>
                         </div>
                     </div>
-            <?php }
+            <?php
+                }
             } ?>
         </div>
     </div>

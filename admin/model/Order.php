@@ -43,7 +43,8 @@ class Order
         }
     }
 
-    public function getOrderDetails($id) {
+    public function getOrderDetails($id)
+    {
         $this->conn = Database::connect();
         $sql = "SELECT * FROM order_details WHERE id = :id";
         $this->statement = $this->conn->prepare($sql);
@@ -52,10 +53,10 @@ class Order
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         } else {
-            return null; 
+            return null;
         }
     }
-    
+
     public function getOrdersByPrice($minPrice = null, $maxPrice = null)
     {
         $this->conn = Database::connect();
@@ -120,7 +121,7 @@ class Order
             $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
             return $results;
         }
-    }    
+    }
 
     public function getOrderByCode($order_code)
     {
@@ -188,8 +189,8 @@ class Order
     public function addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status)
     {
         $this->conn = Database::connect();
-        $status = "Not Delivered"; 
-        
+        $status = "Not Delivered";
+
         $sql = "INSERT INTO delivery (order_code, user_id, phone, address, delivery_date, township_id, status) 
                 VALUES (:order_code, :user_id, :phone, :address, :delivery_date, :township_id, :status)";
         $this->statement = $this->conn->prepare($sql);
@@ -198,7 +199,7 @@ class Order
         $this->statement->bindParam(':phone', $phone);
         $this->statement->bindParam(':address', $address);
         $this->statement->bindParam(':delivery_date', $order_date);
-        $this->statement->bindParam(':township_id', $township_id); 
+        $this->statement->bindParam(':township_id', $township_id);
         $this->statement->bindParam(':status', $status);
         return $this->statement->execute();
     }
@@ -229,7 +230,7 @@ class Order
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
             return $result['total_orders'];
         } else {
-            return 0; 
+            return 0;
         }
     }
 
@@ -242,6 +243,20 @@ class Order
                 JOIN user ON od.user_id = user.id
                 JOIN township ON od.township_id = township.id
                 WHERE d.order_code IS NULL";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
+
+    public function getDeliveredOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT od.*, od.subtotal as total_price, od.order_date as order_date
+                FROM order_details od
+                JOIN delivery d ON od.order_code = d.order_code
+                WHERE d.order_code IS NOT NULL";
         $this->statement = $this->conn->prepare($sql);
         if ($this->statement->execute()) {
             $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);

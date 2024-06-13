@@ -2,6 +2,7 @@
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/ItemController.php';
 include_once __DIR__ . '/controller/CartController.php';
+include_once __DIR__ . '/controller/ReviewController.php';
 include_once __DIR__ . '/controller/PromotionController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
@@ -15,6 +16,10 @@ $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
 $cart_controller = new CartController();
 if (isset($user_id))
     $carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
+
+$review_controller = new ReviewController();
+$reviews = $review_controller->fetchReviewsByRestaurant($restaurant_id);
+$summary = $review_controller->calculateRating($reviews);
 
 $groupedItems = [];
 foreach ($results as $row) {
@@ -84,20 +89,20 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                         <p>Delivery Available |</p>
                     </div>
                     <div class="rating-star mt-2">
-                        <p><i class="bi bi-star-fill"></i> 4.1 <span>(+3000)</span></p>
+                        <p><i class="bi bi-star-fill"></i><?php echo $summary['average']; ?> <span>(+<?php echo $summary['count']; ?>)</span></p>
                     </div>
                     <div>
-                        <button class="btn btn-link text-dark" data-toggle="modal" data-target="#reviewModal" data-backdrop="false">
+                        <a class="btn btn-link" style="color:brown;" href="review.php?restaurant_id=<?php echo $restaurant_id; ?>">
                             See Review |
-                        </button>
+                        </a>
                     </div>
                     <div>
-                        <button class="btn btn-link text-dark" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
+                        <button class="btn btn-link" style="color:brown;" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
                             Restaurant Info
                         </button>
                     </div>
                     <div>
-                        <button class="btn text-dark">Voucher Code:</button>
+                        <button class="btn btn-link text-dark">Voucher Code:</button>
                         <button id="copyButton" class="btn btn-link text-dark" data-toggle="modal" data-target="#codeModal" data-backdrop="false">
                             <?php
                             foreach ($promotions as $promotion) {

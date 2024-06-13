@@ -17,11 +17,6 @@ class PromotionController {
     {
         return $this->promotion->getPromotionByRestaurant($restaurant_id);
     }
-
-    public function getMenusAndItemsByRestaurantAndDiscount($restaurant_id, $discount)
-    {
-        return $this->promotion->getMenusAndItemsByRestaurantAndDiscount($restaurant_id, $discount);
-    }
 }
 
 ?>

@@ -9,8 +9,14 @@ class RestaurantController {
         $this->restaurant = new Restaurant();
     }
 
-    public function getRestaurants(){
+    public function getRestaurants()
+    {
         return $this->restaurant->getRestaurants();
+    }
+
+    public function getRestaurant($id)
+    {
+        return $this->restaurant->getRestaurant($id);
     }
 
     public function getRestaurantsByMenu($menu_id)

@@ -18,6 +18,7 @@ $auth_controller->authentication();
   <link rel="stylesheet" href="../../src/css/datatables.css">
   <link rel="stylesheet" href="../../src/css/datatables.min.css">
   <link rel="stylesheet" href="../../src/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -90,7 +91,7 @@ $auth_controller->authentication();
             <li class="sidebar-item">
               <a class="sidebar-link" href="../promotion/promotion_list.php" aria-expanded="false">
                 <span>
-                  <i class="ti ti-pizza"></i>
+                  <i class="ti ti-tag"></i>
                 </span>
                 <span class="hide-menu">Promotion</span>
               </a>
@@ -125,6 +126,14 @@ $auth_controller->authentication();
                   <i class="ti ti-file-description"></i>
                 </span>
                 <span class="hide-menu">Payment</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="../review/review_list.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-star"></i>
+                </span>
+                <span class="hide-menu">Review</span>
               </a>
             </li>
             <li class="sidebar-item">

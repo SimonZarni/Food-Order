@@ -30,6 +30,7 @@ $promotions = $promotion_controller->getPromotions();
                                 <th>Restaurant Image</th>
                                 <th>Discount</th>
                                 <th>Voucher Code</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

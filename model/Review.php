@@ -20,6 +20,7 @@ class Review {
             return $results;
         }
     }
+
     public function calculateRating($reviews)
     {
         // Check if $reviews is valid and not null
@@ -57,6 +58,7 @@ class Review {
             ]
         ];
     }
+    
     public function fetchAverageRatingsForAllRestaurants()
     {
         $this->conn = Database::connect();
@@ -75,7 +77,6 @@ class Review {
         }
         return [];
     }
-
 
     public function addReview($rating, $review, $date, $restaurant, $user, $item)
     {

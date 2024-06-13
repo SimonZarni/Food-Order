@@ -334,7 +334,7 @@ include_once __DIR__ . "/layout/footer.php";
                 },
                 success: function(response) {
                     console.log(response);
-                    alert('Added Successfully');
+                    alert('Review submitted successfully.');
                     location.reload()
                 },
                 error: function(xhr, status, error) {

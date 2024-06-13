@@ -113,10 +113,6 @@ class OrderController
         }
     }
 
-    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status){
-        return $this->order->addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status);
-    }
-
     public function declineOrder($order_id)
     {
         $declined = $this->order->declineOrder($order_id);
@@ -131,6 +127,11 @@ class OrderController
         } else {
             return false;
         }
+    }
+
+    public function addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status)
+    {
+        return $this->order->addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status);
     }
 
     public function orderMail($email, $message)
@@ -169,23 +170,38 @@ class OrderController
         }
     }
 
-    public function getMostBoughtItem(){
+    public function getMostBoughtItem()
+    {
         return $this->order->getMostBoughtItem();
     }
 
-    public function getTotalOrders(){
+    public function getTotalOrders()
+    {
         return $this->order->getTotalOrders();
     }
 
-    public function getTotalAcceptedOrders(){
+    public function getUndeliverdOrders()
+    {
+        return $this->order->getUndeliveredOrders();
+    }
+
+    public function getUndeliveredStatusOrders()
+    {
+        return $this->order->getUndeliveredStatusOrders();
+    }
+
+    public function getTotalAcceptedOrders()
+    {
         return $this->order->getTotalAcceptedOrders();
     }
 
-    public function getTotalDeclinedOrders(){
+    public function getTotalDeclinedOrders()
+    {
         return $this->order->getTotalDeclinedOrders();
     }
 
-    public function getTotalPendingOrders(){
+    public function getTotalPendingOrders()
+    {
         return $this->order->getTotalPendingOrders();
     }
 }

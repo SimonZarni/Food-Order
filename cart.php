@@ -4,6 +4,7 @@ session_start();
 include_once __DIR__ . '/controller/CartController.php';
 include_once __DIR__ . '/controller/PaymentController.php';
 include_once __DIR__ . '/controller/TownshipController.php';
+include_once __DIR__ . '/controller/PromotionController.php';
 
 $user_id = $_SESSION['id'];
 $restaurant_id = $_GET['restaurant_id'];
@@ -16,6 +17,9 @@ $payments = $payment_controller->getPayments();
 
 $township_controller = new TownshipController();
 $townships = $township_controller->getTownships();
+
+$promotion_controller = new PromotionController();
+$promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 
 ?>
 
@@ -31,6 +35,94 @@ $townships = $township_controller->getTownships();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .item-image {
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+
+        .item-image img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 10px;
+        }
+
+        .item-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-price,
+        .item-quantity,
+        .item-subtotal {
+            font-size: 1em;
+            color: #555;
+        }
+
+        .item-quantity input {
+            width: 60px;
+            margin-left: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .total-price {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .item-subtotal {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .item-quantity {
+                margin-top: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -51,7 +143,7 @@ $townships = $township_controller->getTownships();
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <table class="table table-striped">
+                <!-- <table class="table table-striped">
                     <thead>
                         <tr>
                             <th></th>
@@ -67,13 +159,12 @@ $townships = $township_controller->getTownships();
                             $totalPrice = $cart['price'] * $cart['quantity'];
                         ?>
                             <tr>
-                                <td><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>"></td>
+                                <td style="display: none;"><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" checked></td>
+                                <td></td>
                                 <td><?php echo $cart['name']; ?></td>
                                 <td><?php echo $cart['price']; ?></td>
                                 <td class="d-flex">
-                                    <button class="btn btn-success decrease-quantity" type="button" data-price="<?php echo $cart['price']; ?>">-</button>
-                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity" data-price="<?php echo $cart['price']; ?>">
-                                    <button class="btn btn-success increase-quantity" type="button" data-price="<?php echo $cart['price']; ?>">+</button>
+                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>" disabled>
                                 </td>
                                 <td class="total-price" id="totalPrice"><?php echo number_format($totalPrice, 2); ?></td>
                             </tr>
@@ -81,7 +172,38 @@ $townships = $township_controller->getTownships();
                         }
                         ?>
                     </tbody>
-                </table>
+                </table> -->
+                <div class="cart-container">
+                    <?php
+                    $subtotal = 0;
+                    foreach ($carts as $cart) {
+                        $totalPrice = $cart['price'] * $cart['quantity'];
+                        $subtotal += $totalPrice;
+                    ?>
+                        <div class="cart-item" data-id="<?php echo $cart['id']; ?>">
+                            <input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" style="display: none;" checked>
+                            <div class="item-image">
+                                <img src="admin/uploads/<?php echo $cart['image']; ?>" alt="<?php echo $cart['name']; ?>">
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name"><?php echo $cart['name']; ?></div>
+                                <div class="item-price">Price: $<?php echo number_format($cart['price'], 2); ?></div>
+                                <div class="item-quantity">
+                                    Quantity: <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity" data-price="<?php echo $cart['price']; ?>" disabled>
+                                </div>
+                                <div class="item-subtotal">Item Price: $<span class="total-price"><?php echo number_format($totalPrice, 2); ?></span></div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="cart-subtotal">
+                        Subtotal of all items: $<span class="subtotal-price"><?php echo number_format($subtotal, 2); ?></span>
+                    </div>
+                </div>
+                <div class="mx-3">
+                    <a href="item.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn btn-primary">Go Back</a>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="mt-2">
@@ -128,6 +250,11 @@ $townships = $township_controller->getTownships();
                     </select>
                 </div>
                 <div class="mt-2">
+                    <label for="" class="form-label">Voucher Code</label>
+                    <input type="number" name="voucher" id="voucher" class="form-control" placeholder="Apply Voucher Code">
+                    <button id="applyVoucher" class="btn btn-success mt-2" type="button" onclick="applyVoucher()">Apply</button>
+                </div>
+                <div class="mt-2">
                     Total Price: <span id="subtotal">0.00</span>
                 </div>
                 <button type="button" id="submitOrder" class="btn btn-primary mt-2">Submit Order</button>
@@ -139,12 +266,31 @@ $townships = $township_controller->getTownships();
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
     <script>
+        var promotions = <?php echo json_encode($promotions); ?>;
+
+        function applyVoucher() {
+            var voucherCode = $('#voucher').val();
+            var foundPromotion = promotions.find(function(promotion) {
+                return promotion.voucher_code === voucherCode;
+            });
+
+            if (foundPromotion) {
+                var discount = foundPromotion.discount;
+                var subtotal = parseFloat($('#subtotal').text());
+                var discountedPrice = subtotal * (1 - discount / 100);
+                $('#subtotal').text(discountedPrice.toFixed(2));
+                alert('Voucher applied successfully!');
+            } else {
+                alert('Invalid voucher code. Please try again.');
+            }
+        }
+
         jQuery(document).ready(function($) {
             function updateTotalPrice(quantityInput) {
                 var pricePerItem = $(quantityInput).data('price');
                 var quantity = parseInt($(quantityInput).val());
                 var totalPrice = pricePerItem * quantity;
-                $(quantityInput).closest('tr').find('.total-price').text(totalPrice.toFixed(2));
+                $(quantityInput).closest('.cart-item').find('.total-price').text(totalPrice.toFixed(2));
                 return totalPrice;
             }
 
@@ -152,7 +298,7 @@ $townships = $township_controller->getTownships();
                 var totalPriceWithoutFee = 0;
 
                 $('.cart-item-checkbox:checked').each(function() {
-                    var quantityInput = $(this).closest('tr').find('.quantity');
+                    var quantityInput = $(this).closest('.cart-item').find('.quantity');
                     totalPriceWithoutFee += updateTotalPrice(quantityInput);
                 });
 
@@ -171,28 +317,6 @@ $townships = $township_controller->getTownships();
                 var townshipFee = parseFloat($(this).find('option:selected').data('fee'));
                 $('.township-fee').text(townshipFee.toFixed(2));
                 updateSubtotal();
-            });
-
-            $('.quantity').change(function() {
-                updateSubtotal();
-            });
-
-            $('.increase-quantity').click(function() {
-                var quantityInput = $(this).siblings('.quantity');
-                var currentQuantity = parseInt(quantityInput.val());
-                quantityInput.val(currentQuantity + 1);
-                updateTotalPrice(quantityInput);
-                updateSubtotal();
-            });
-
-            $('.decrease-quantity').click(function() {
-                var quantityInput = $(this).siblings('.quantity');
-                var currentQuantity = parseInt(quantityInput.val());
-                if (currentQuantity > 1) {
-                    quantityInput.val(currentQuantity - 1);
-                    updateTotalPrice(quantityInput);
-                    updateSubtotal();
-                }
             });
 
             $('#submitOrder').click(function() {
@@ -238,8 +362,9 @@ $townships = $township_controller->getTownships();
                         alert('Order submitted successfully!');
                         console.log(response);
                         $.each(itemIds, function(index, itemId) {
-                            $('input[value="' + itemId + '"]').closest('tr').remove();
+                            $('input[value="' + itemId + '"]').closest('.cart-item').remove();
                         });
+                        updateSubtotal();
                     },
                     error: function() {
                         alert('Error submitting order.');
@@ -248,6 +373,7 @@ $townships = $township_controller->getTownships();
             });
         });
     </script>
+
 </body>
 
 </html>

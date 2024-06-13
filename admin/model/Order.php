@@ -52,30 +52,10 @@ class Order
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         } else {
-            return null; // Return null if query fails
+            return null; 
         }
     }
-
-    public function addDelivery($order_code, $user_id, $address, $order_date, $township_id, $phone, $status)
-    {
-        $this->conn = Database::connect();
-        $status = "Not Delivered"; // Reset status if necessary
-        
-        // Insert into delivery table
-        $sql = "INSERT INTO delivery (order_code, user_id, address, delivery_date, township_id, phone, status) 
-                VALUES (:order_code, :user_id, :address, :delivery_date, :township_id, :phone, :status)";
-        $this->statement = $this->conn->prepare($sql);
-        $this->statement->bindParam(':order_code', $order_code);
-        $this->statement->bindParam(':user_id', $user_id);
-        $this->statement->bindParam(':address', $address);
-        $this->statement->bindParam(':delivery_date', $order_date); // Assuming delivery date is the same as order date
-        $this->statement->bindParam(':township_id', $township_id); // Bind township_id
-        $this->statement->bindParam(':phone', $phone); // Bind township_id
-        $this->statement->bindParam(':status', $status);
-        return $this->statement->execute();
-    }
     
-
     public function getOrdersByPrice($minPrice = null, $maxPrice = null)
     {
         $this->conn = Database::connect();
@@ -204,20 +184,38 @@ class Order
         $this->statement->bindParam(':id', $order_id);
         return $this->statement->execute();
     }
-    
-    public function getMostBoughtItem(){
+
+    public function addDelivery($order_code, $user_id, $phone, $address, $order_date, $township_id, $status)
+    {
+        $this->conn = Database::connect();
+        $status = "Not Delivered"; 
+        
+        $sql = "INSERT INTO delivery (order_code, user_id, phone, address, delivery_date, township_id, status) 
+                VALUES (:order_code, :user_id, :phone, :address, :delivery_date, :township_id, :status)";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':order_code', $order_code);
+        $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':phone', $phone);
+        $this->statement->bindParam(':address', $address);
+        $this->statement->bindParam(':delivery_date', $order_date);
+        $this->statement->bindParam(':township_id', $township_id); 
+        $this->statement->bindParam(':status', $status);
+        return $this->statement->execute();
+    }
+
+    public function getMostBoughtItem()
+    {
         $this->conn = Database::connect();
         $sql = "SELECT item.id AS item_id, 
-                        SUM(o.quantity) AS total_quantity, 
-                        item.name AS item_name, 
-                        restaurant.name AS restaurant_name
+                SUM(o.quantity) AS total_quantity, 
+                item.name AS item_name, 
+                restaurant.name AS restaurant_name
                 FROM `order` o
                 JOIN item ON o.item_id = item.id
                 JOIN restaurant ON item.restaurant_id = restaurant.id
                 GROUP BY item.id
                 ORDER BY total_quantity DESC
-                LIMIT 1;
-                ";
+                LIMIT 1;";
         $this->statement = $this->conn->query($sql);
         return $this->statement->fetch(PDO::FETCH_ASSOC);
     }
@@ -231,7 +229,39 @@ class Order
             $result = $this->statement->fetch(PDO::FETCH_ASSOC);
             return $result['total_orders'];
         } else {
-            return 0; // Return 0 if query fails or no orders found
+            return 0; 
+        }
+    }
+
+    public function getUndeliveredOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT od.*, user.name as username, township.name as township
+                FROM order_details od
+                LEFT JOIN delivery d ON od.order_code = d.order_code
+                JOIN user ON od.user_id = user.id
+                JOIN township ON od.township_id = township.id
+                WHERE d.order_code IS NULL";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
+
+    public function getUndeliveredStatusOrders()
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT od.*, user.name as username, township.name as township
+                FROM order_details od
+                LEFT JOIN delivery d ON od.order_code = d.order_code
+                JOIN user ON od.user_id = user.id
+                JOIN township ON od.township_id = township.id
+                WHERE d.status = 'Not delivered'";
+        $this->statement = $this->conn->prepare($sql);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
         }
     }
 
@@ -273,5 +303,4 @@ class Order
             return 0; // Return 0 if query fails or no pending orders found
         }
     }
-
 }

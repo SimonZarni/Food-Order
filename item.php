@@ -2,15 +2,19 @@
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/ItemController.php';
 include_once __DIR__ . '/controller/CartController.php';
+include_once __DIR__ . '/controller/PromotionController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
-$user_id = $_SESSION['id'];
+if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id'];
+}
 
 $result_controller = new ItemController();
 $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
 
 $cart_controller = new CartController();
-$carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
+if (isset($user_id))
+    $carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
 
 $groupedItems = [];
 foreach ($results as $row) {
@@ -20,6 +24,9 @@ foreach ($results as $row) {
     }
     $groupedItems[$menuName][] = $row;
 }
+
+$promotion_controller = new PromotionController();
+$promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 
 ?>
 
@@ -55,11 +62,10 @@ foreach ($results as $row) {
             <ol class="breadcrumb custom-breadcrumb">
                 <?php
                 $previousMenuName = null;
-                foreach ($results as $result) {
-                    $menuName = $result['menu_name'];
+                foreach ($groupedItems as $menuName => $items) {
                     if ($menuName !== $previousMenuName) {
                 ?>
-                        <li class="breadcrumb-item"><?php echo $menuName; ?></li>
+                        <li class="breadcrumb-item"><?php echo htmlspecialchars($menuName); ?></li>
                 <?php
                         $previousMenuName = $menuName;
                     }
@@ -68,7 +74,7 @@ foreach ($results as $row) {
             </ol>
         </div>
         <div class="mx-3">
-            <h4 class=""><?php if(isset($results['restaurant_name'])) echo $results[0]['restaurant_name']; ?></h4>
+            <h4 class=""><?php if (isset($results['restaurant_name'])) echo $results[0]['restaurant_name']; ?></h4>
             <div class="d-flex justify-content-between">
                 <div class="d-flex">
                     <div class="restaurant-status">
@@ -88,6 +94,16 @@ foreach ($results as $row) {
                     <div>
                         <button class="btn btn-link text-dark" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
                             Restaurant Info
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn text-dark">Voucher Code:</button>
+                        <button id="copyButton" class="btn btn-link text-dark" data-toggle="modal" data-target="#codeModal" data-backdrop="false">
+                            <?php
+                            foreach ($promotions as $promotion) {
+                                echo $promotion['voucher_code'];
+                            }
+                            ?>
                         </button>
                     </div>
                 </div>
@@ -214,7 +230,6 @@ foreach ($results as $row) {
             </div>
         </div>
 
-
         <!-- Restaurant-info -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
@@ -252,61 +267,115 @@ foreach ($results as $row) {
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
     <hr>
 
-    <div class="container-fluid">
-        <nav id="navbar-example2" class="food-category bg-light px-3 mb-3">
-            <div class="d-flex justify-content-between">
-                <div class="">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                </div>
-                <ul class="nav">
-                    <?php
-                    $previousMenuName = null;
-                    foreach ($results as $result) {
-                        $menuName = $result['menu_name'];
-                        if ($menuName !== $previousMenuName) {
-                    ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#<?php echo $menuName; ?>"><?php echo $menuName; ?></a>
-                            </li>
-                    <?php
-                            $previousMenuName = $menuName;
-                        }
+    <nav id="navbar-example2" class="food-category bg-body-tertiary px-3 mb-3 shadow-sm">
+        <div class="d-flex justify-content-between">
+            <div class="">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <ul class="nav">
+                <?php
+                $previousMenuName = null;
+                foreach ($groupedItems as $menuName => $items) {
+                    if ($menuName !== $previousMenuName) {
+                ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#<?php echo $menuName; ?>"><?php echo $menuName; ?></a>
+                        </li>
+                <?php
+                        $previousMenuName = $menuName;
                     }
-                    ?>
-                </ul>
-                <div class=" cart-noti px-2">
-                    <!-- <a href="cart.php" class="fs-3">
-                        <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
-                        <span id="cart-count" class="badge badge-pill badge-danger">0</span>
-                    </a> -->
-                    <button class="fs-3 navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" data-user-id="<?php echo $user_id; ?>" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
-                        <span id="cart-count" class="badge badge-pill badge-danger">0</span>
-                    </button>
+                }
+                ?>
+            </ul>
+            <div class=" cart-noti px-2">
+                <button id="loadModelButton" class="fs-3 navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" data-user-id="<?php echo $user_id; ?>" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <i id="cart-icon" class="bi bi-cart4 text-dark"></i>
+                    <span id="cart-count" class="badge badge-pill badge-danger">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="food-item-list scrollspy-example p-3 rounded-2" tabindex="0">
+        <?php foreach ($groupedItems as $menuName => $items) : ?>
+            <div class="row justify-content-center align-items-center mt-3">
+                <h4 id="<?php echo $menuName; ?>"><?php echo $menuName; ?></h4>
+                <div class="col d-flex flex-wrap">
+                    <?php foreach ($items as $item) : ?>
+                        <div class="col-md-4 d-flex food-item border rounded item-display my-2 p-3">
+                            <div class="col-md-6">
+                                <h5><?php echo $item['item_name']; ?></h5>
+                                <span style="font-size: 0.9rem;"><?php echo $item['description']; ?></span>
+                                <p class="mt-3"><?php echo $item['price']; ?></p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="admin/uploads/<?php echo $item['image']; ?>" style="width: 160px;height:130px" alt="">
+                            </div>
+                            <button class="item-add btn" data-toggle="modal" data-target="#itemDetailModal_<?php echo $item['item_id']; ?>"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="itemDetailModal_<?php echo $item['item_id']; ?>" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true" data-backdrop="false">
+                            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="itemDetailModalLabel">Item Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-md-6">
+                                                <img src="admin/uploads/<?php echo $item['image']; ?>" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h4><?php echo $item['item_name']; ?></h4>
+                                                <p><?php echo $item['price']; ?></p>
+                                                <p><?php echo $item['description']; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <div class="mb-3 col-md-5 quantityBtn d-flex">
+                                            <button class="btn mx-2 decrease-quantity" type="button"><i class="bi bi-dash-lg"></i></button>
+                                            <input type="number mx-2" class="form-control quantity" readonly value="1">
+                                            <button class="btn mx-2 increase-quantity" type="button"><i class="bi bi-plus-lg"></i></button>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-outline-dark add-to-cart" type="button" data-item-id="<?php echo $item['item_id']; ?>">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </nav>
+        <?php endforeach; ?>
+    </div>
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cart items</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <?php foreach ($carts as $cart) : ?>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cart items</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body position-relative">
+            <div class="cart-container">
+                <?php if (isset($carts)) foreach ($carts as $cart) : ?>
                     <?php
                     $totalPrice = $cart['price'] * $cart['quantity'];
                     ?>
-                    <div class="d-flex mb-2" data-cart-id="<?php echo $cart['id']; ?>">
+                    <div class="d-flex mb-2 related-content" data-cart-id="<?php echo $cart['item_id']; ?>">
                         <div class="col-md-6">
-                            <img src="images/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
+                            <img src="admin/uploads/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
                         </div>
                         <div class="col-md-6">
                             <h6><?php echo $cart['name']; ?></h6>
@@ -314,90 +383,27 @@ foreach ($results as $row) {
                             <p><?php echo $cart['description'] ?></p>
                         </div>
                     </div>
-                    <div class="d-flex mb-5">
-                        <div class="total-price col-md-6 mt-2" id="totalPrice">
-                            <?php echo $totalPrice ?>
+                    <div class="d-flex mb-5 ">
+                        <div class="col-md-4 mt-3" id="totalPrice">
+                            <?php echo number_format($totalPrice, 2); ?>
                         </div>
-                        <div class="">
-                            <button class="remove-item btn btn-link" type="button" data-item-id="<?php echo $cart['id']; ?>"><i class="bi bi-trash text-danger fs-5"></i></button>
+                        <div class="col-md-2">
+                            <button class="remove-item btn btn-link mt-2" type="button" data-item-id="<?php echo $cart['item_id']; ?>"><i class="bi bi-trash text-danger fs-5"></i></button>
                         </div>
-                        <div class="quantityBtn col-md-6 mt-2">
-                            <button class="decrease-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
-                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity w-3" data-price="<?php echo $cart['price']; ?>" readonly>
-                            <button class="increase-quantity mx-2" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
+                        <div class="col-md-6 mt-2 d-flex justify-content-end buttonClass" data-cart-id="<?php echo $cart['cart_id']; ?>">
+                            <button class="decrease-quantity1 btn btn-link text-warning" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
+                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity1 text-center form-control" data-price="<?php echo $cart['price']; ?>" data-cart-id="<?php echo $cart['id']; ?>" readonly>
+                            <button class="increase-quantity1 btn btn-link text-warning" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <div class="col-md-12 text-center">
-                    <a href="cart.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn login">Checkout and View Address</a>
-                </div>
             </div>
-        </div>
-
-        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="food-item-list scrollspy-example p-3 rounded-2" tabindex="0">
-            <div class="gap-3">
-                <?php foreach ($groupedItems as $menuName => $items) : ?>
-                    <div class="row justify-content-center align-items-center mt-3">
-                        <h4 id="<?php echo $menuName; ?>"><?php echo $menuName; ?></h4>
-                        <div class="col d-flex gap-2">
-                            <?php foreach ($items as $item) : ?>
-                                <div class="col-md-4 d-flex food-item border rounded p-3 gap-2">
-                                    <div>
-                                        <h6><?php echo $item['item_name']; ?></h6>
-                                        <p><?php echo $item['description']; ?></p>
-                                        <p><?php echo $item['price']; ?></p>
-                                    </div>
-                                    <div>
-                                        <img src="admin/uploads/<?php echo $item['image']; ?>" style="width: 200px;height:150px" alt="">
-                                    </div>
-                                    <button class="item-add btn" data-toggle="modal" data-target="#itemDetailModal_<?php echo $item['item_id']; ?>" data-backdrop="false"><i class="bi bi-plus-lg"></i></button>
-
-                                </div>
-                                <!-- Modal -->
-                                <div class="modal fade" id="itemDetailModal_<?php echo $item['item_id']; ?>" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="itemDetailModalLabel">Item Details</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="col-md-6">
-                                                        <img src="admin/uploads/<?php echo $item['image']; ?>" class="img-fluid" alt="">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4><?php echo $item['item_name']; ?></h4>
-                                                        <p><?php echo $item['price']; ?></p>
-                                                        <p><?php echo $item['description']; ?></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer Fd-flex justify-content-between">
-                                                <div class="mb-3 col-md-5 quantityBtn d-flex">
-                                                    <button class="btn mx-2 decrease-quantity" type="button"><i class="bi bi-dash-lg"></i></button>
-                                                    <input type="number mx-2" class="form-control quantity" value="1">
-                                                    <button class="btn mx-2 increase-quantity" type="button"><i class="bi bi-plus-lg"></i></button>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <button class="btn btn-outline-dark add-to-cart" type="button" data-item-id="<?php echo $item['item_id']; ?>">
-                                                        Add to Cart
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+            <div class="position-absolute bottom-0 start-50 translate-middle">
+                <button class="btn login px-5" id="checkoutBtn">Review Order</button>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
@@ -409,58 +415,100 @@ include_once __DIR__ . "/layout/footer.php";
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.remove-item').forEach(button => {
-        button.addEventListener('click', function () {
-            const itemId = this.dataset.itemId;
-            const userId = <?php echo json_encode($_SESSION['id']); ?>;
-            const btnLogin = document.querySelector('.login')
-            
-            fetch('remove_item.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ user_id: userId, item_id: itemId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const cartItem = document.querySelector(`[data-cart-id="${itemId}"]`);
-                    cartItem.nextElementSibling.remove(); 
-                    cartItem.remove(); 
-                    // btnLogin.classList.remove('login')
-                    // btnLogin.classList.add('bg-secondary')
-                } else {
-                    alert('Failed to remove item from cart.');
+    document.getElementById('copyButton').addEventListener('click', function() {
+        var voucherCode = this.textContent.trim();
+
+        var tempTextArea = document.createElement('textarea');
+        tempTextArea.value = voucherCode;
+        document.body.appendChild(tempTextArea);
+
+        tempTextArea.select();
+        document.execCommand('copy');
+
+        document.body.removeChild(tempTextArea);
+
+        alert('Voucher code copied to clipboard: ' + voucherCode);
+    });
+</script>
+
+<script>
+    function updateCartCount() {
+        var restaurantId = <?php echo json_encode($restaurant_id); ?>;
+        $.ajax({
+            type: 'GET',
+            url: 'cart_count.php',
+            data: {
+                restaurant_id: restaurantId
+            },
+            success: function(response) {
+                $('#cart-count').text(response);
+                if (parseInt(response) === 0) {
+                    $('.login').remove();
+                    document.querySelector('.offcanvas-body').innerHTML += `
+                    <div>
+                        <div class="text-center">
+                            <img src="images/cart-empty.png" alt="Cart Empty">
+                            <h4 class="text-danger">Oops! Your cart is empty</h4>
+                        </div>
+                        <div class="sticky-bottom">
+                            <div class="mt-5 text-center">
+                                <button class="btn login p-2 px-3 disabled bg-secondary" style="border-radius:40px;" id="checkoutBtn">Review Order</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 }
+            },
+            error: function() {
+                console.error('Error fetching cart count.');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const offcanvas = document.querySelector('.offcanvas-body')
+                const itemId = this.dataset.itemId;
+                const userId = <?php echo json_encode($_SESSION['id']); ?>;
+                const btnLogin = document.querySelector('.login')
+
+                fetch('remove_item.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            item_id: itemId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const cartItem = document.querySelector(`[data-cart-id="${itemId}"]`);
+                        if (data.success) {
+                            cartItem.nextElementSibling.remove();
+                            cartItem.remove();
+                            updateCartCount();
+                        } else {
+                            alert('Failed to remove item from cart.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    });
             });
         });
     });
-});
 </script>
 
 <script>
-    $(document).ready(function() {
-        function updateCartCount() {
-            $.ajax({
-                type: 'GET',
-                url: 'cart_count.php',
-                success: function(response) {
-                    $('#cart-count').text(response);
-                },
-                error: function() {
-                    console.error('Error fetching cart count.');
-                }
-            });
-        }
+    var restaurantId = <?php echo json_encode($restaurant_id); ?>;
 
-        updateCartCount();
-    });
-</script>
-
-<script>
     $(document).ready(function() {
+        updateCartCount()
+
         var item_id = <?php echo $item['item_id']; ?>;
         var itemAdded = localStorage.getItem('itemAdded' + item_id);
 
@@ -484,10 +532,9 @@ include_once __DIR__ . "/layout/footer.php";
 
         checkItemInCart();
 
-        updateTotalPrice();
         $('.increase-quantity, .decrease-quantity').on('click', function() {
-            var input = $(this).siblings('.quantity');
-            var value = parseInt(input.val());
+            let input = $(this).siblings('.quantity');
+            let value = parseInt(input.val());
 
             if ($(this).hasClass('increase-quantity')) {
                 value++;
@@ -503,13 +550,45 @@ include_once __DIR__ . "/layout/footer.php";
             updateTotalPrice();
         });
 
-        function updateTotalPrice() {
-            var quantity = parseInt($('.quantity').val());
-            var price = parseFloat('<?php echo $item['price']; ?>');
-            var totalPrice = quantity * price;
-            $('.total-price').text(totalPrice.toFixed(2));
-            sessionStorage.setItem('total_price', totalPrice.toFixed(2));
-        }
+        $('.increase-quantity1, .decrease-quantity1').on('click', function() {
+            var input = $(this).siblings('.quantity1');
+            var value = parseInt(input.val());
+
+            if ($(this).hasClass('increase-quantity1')) {
+                value++;
+            } else {
+                value = value > 1 ? value - 1 : 1;
+            }
+            input.val(value);
+
+            var buttonClass = $(this).closest('.buttonClass');
+            var cart_id = buttonClass.data('cartId');
+            var quantity = parseInt(buttonClass.find('.quantity1').val());
+            var price = input.data('price')
+
+            var totalPriceElement = $(this).closest('.related-content').find('#totalPrice');
+            totalPriceElement.text((quantity * price).toFixed(2))
+
+            $.ajax({
+                url: 'update_cart.php',
+                method: 'POST',
+                data: {
+                    cart_id: cart_id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#checkoutBtn').on('click', function() {
+            window.location.href = 'cart.php?restaurant_id=<?php echo $restaurant_id ?>';
+        });
+
 
         $('.add-to-cart').on('click', function() {
             var user_id = <?php echo isset($_SESSION['id']) ? $_SESSION['id'] : 'null'; ?>;
@@ -522,7 +601,6 @@ include_once __DIR__ . "/layout/footer.php";
             var quantity = parseInt(modal.find('.quantity').val());
             var item_id = modal.find('.add-to-cart').data('item-id');
             var totalPrice = parseFloat(sessionStorage.getItem('total_price'));
-            console.log(item_id)
 
             $.ajax({
                 type: 'POST',
@@ -535,13 +613,14 @@ include_once __DIR__ . "/layout/footer.php";
                 success: function(response) {
                     alert("Item added to cart successfully.");
                     if (!localStorage.getItem('itemAdded' + item_id)) {
-                        $(this).text('Added to Cart').prop('disabled', true).addClass('btn-outline-success').removeClass('btn-outline-dark');
+                        $(this).text('Add to Cart').prop('disabled', false).addClass('btn-outline-dark').removeClass('btn-outline-success');
                         localStorage.setItem('itemAdded' + item_id, 'true');
                     } else {
-                        $(this).text('Added to Cart').prop('disabled', false).removeClass('btn-outline-success').addClass('btn-outline-dark');
+                        $(this).text('Added to Cart').prop('disabled', false).addClass('btn-outline-success').removeClass('btn-outline-dark');
                         localStorage.setItem('itemAdded' + item_id, 'true');
                     }
                     updateCartCount()
+                    location.reload();
                 }.bind(this),
                 error: function(xhr, status, error) {
                     console.error("Error:", xhr.responseText);

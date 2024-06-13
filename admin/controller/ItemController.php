@@ -38,7 +38,7 @@ class ItemController {
         return $this->item->deleteItem($id);
     }
 
-    public function getTotalitems() {
+    public function getTotalItems() {
         return $this->item->getTotalItems();
     }
 }

@@ -3,12 +3,30 @@
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/MenuController.php';
 include_once __DIR__ . '/controller/RestaurantController.php';
+include_once __DIR__ . '/controller/PromotionController.php';
+include_once __DIR__ . '/controller/FavouriteController.php';
+
+if (isset($_SESSION['id']))
+    $user_id = $_SESSION['id'];
 
 $menu_controller = new MenuController();
 $menus = $menu_controller->getMenus();
 
 $restaurant_controller = new RestaurantController();
 $restaurants = $restaurant_controller->getRestaurants();
+
+if (isset($_GET['keyword'])) {
+    $keyword = $_GET['keyword'];
+}
+
+if (isset($keyword)) {
+    $restaurants = $restaurant_controller->searchRestaurantsByKeyword($keyword);
+}
+
+$promotion_controller = new PromotionController();
+$promotion_restaurants = $promotion_controller->getPromotionRestaurants();
+
+$favourite_controller = new FavouriteController();
 
 ?>
 <!DOCTYPE html>
@@ -24,45 +42,17 @@ $restaurants = $restaurant_controller->getRestaurants();
     <div class="container-fluid">
         <div class="row">
             <div class="subnav d-flex justify-content-around">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Delivery</a>
+                <ul class="nav">
+                    <li class="mt-2">
+                        <form class="d-flex btn-search me-3" role="search" action="menu.php" method="get">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                            <button class="btn" type="submit">Search</button>
+                        </form>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pick Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
-                    </li>
-                </ul>
-                <ul class="nav mt-2 cartbtn">
                     <li>
-                        <!-- Filter Button -->
-                        <button type="button" class="btn btn-link text-dark fs-4" data-toggle="modal" data-target="#filterModal" data-backdrop="false">
+                        <button type="button" class="btn btn-link fs-4" style="color: rgb(209, 186, 130);" data-toggle="modal" data-target="#filterModal" data-backdrop="false">
                             <i class="bi bi-funnel"></i>
                         </button>
-                    </li>
-                    <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="favourite.php?user_id=<?php if (isset($_SESSION['id'])) echo $_SESSION['id']; ?>"><i class="bi bi-heart"></i></a>
-                    </li>
-                    <!-- <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="cart.php">
-                                <i class="bi bi-cart4"></i>
-                                <?php
-                                if(isset($_SESSION['id'])){
-                                ?>
-                                <span id="cart-count" class="badge badge-pill badge-danger">0</span>
-                                <?php
-                                } else {
-                                ?>
-                                <span id="" class="badge badge-pill badge-danger"></span>
-                                <?php
-                                }
-                                ?>
-                            </a>
-                    </li> -->
-                    <li class="mx-3 mt-2">
-                        <a class="text-decoration-none" href="orders.php?id=<?php if (isset($_SESSION['id'])) echo $_SESSION['id']; ?>"><i class="bi bi-phone"></i></a>
                     </li>
                 </ul>
 
@@ -145,26 +135,18 @@ $restaurants = $restaurant_controller->getRestaurants();
     <div class="container-fluid promo-container">
         <h2 class="mx-5">Find the Promotion</h2>
         <div class="promo-scroll">
-            <div class="promo-item">
-                <img src="images/promo1.png" class="img-fluid" alt="">
-                <h5>Get Up To 25% Off</h5>
-            </div>
-            <div class="promo-item">
-                <img src="images/promo2.jpg" class="img-fluid" alt="">
-                <h5>Get Up To 30% Off</h5>
-            </div>
-            <div class="promo-item">
-                <img src="images/promo2.png" class="img-fluid" alt="">
-                <h5>Get Up To 25% Off</h5>
-            </div>
-            <div class="promo-item">
-                <img src="images/promo3.jpg" class="img-fluid" alt="">
-                <h5>Get Up To 15% Off</h5>
-            </div>
-            <div class="promo-item">
-                <img src="images/promo3.jpg" class="img-fluid" alt="">
-                <h5>Get Up To 35% Off</h5>
-            </div>
+            <?php
+            foreach ($promotion_restaurants as $promotion_restaurant) {
+            ?>
+                <a href="item.php?restaurant_id=<?php echo $promotion_restaurant['restaurant_id']; ?>&discount=<?php echo $promotion_restaurant['discount']; ?>">
+                    <div class="promo-item">
+                        <img src="admin/uploads/<?php echo $promotion_restaurant['image']; ?>" class="img-fluid" alt="">
+                        <h5>Get Up To <?php echo $promotion_restaurant['discount']; ?>% Off</h5>
+                    </div>
+                </a>
+            <?php
+            }
+            ?>
         </div>
     </div>
 
@@ -190,19 +172,26 @@ $restaurants = $restaurant_controller->getRestaurants();
 
     </div>
 
-    <!-- Restaurant -->
+   <!-- Restaurant -->
 
-    <div class="container mt-5">
+   <div class="container mt-5">
         <h2>Restaurants</h2>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <?php foreach ($restaurants as $restaurant) {
-                if ($restaurant['status'] == null) {
-            ?>
-                    <div class="col">
+        <?php foreach ($restaurants as $restaurant) {
+            $isFavourite = $favourite_controller->isFavourite($user_id, $restaurant['id']);
+            $favouriteClass = $isFavourite ? 'text-danger' : ''; // Change to text-danger for favorited restaurants
+            $favouriteData = $isFavourite ? 'true' : 'false';
+    ?>
+                   <!-- Restaurant card -->
+                    <div class="col-12 col-sm-4 col-lg-3">
                         <div class="card restaurant-display">
-                            <i class="bi bi-heart-fill heart-icon" data-liked="false" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
+                            <!-- Heart icon for favourite -->
+                            <i class="bi bi-heart-fill heart-icon <?php echo $favouriteClass; ?>" data-liked="<?php echo $favouriteData; ?>" data-restaurant_id="<?php echo $restaurant['id']; ?>"></i>
+                            <!-- Restaurant details -->
                             <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
-                                <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
+                                <div class="d-flex justify-content-center">
+                                    <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" style="height:180px;width:200px" alt="...">
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $restaurant['name']; ?></h5>
                                     <p class="card-text"><?php echo $restaurant['open_time']; ?></p>
@@ -210,8 +199,8 @@ $restaurants = $restaurant_controller->getRestaurants();
                             </a>
                         </div>
                     </div>
-            <?php }
-            } ?>
+                <?php }
+                ?>
         </div>
     </div>
 
@@ -237,55 +226,42 @@ $restaurants = $restaurant_controller->getRestaurants();
     </script>
 
     <script>
-        jQuery(document).ready(function($) {
-            $('.heart-icon').click(function() {
-                var $heartIcon = $(this);
-                var restaurantId = $heartIcon.data('restaurant_id');
-                console.log(restaurantId);
+        document.addEventListener("DOMContentLoaded", function() {
+        const heartIcons = document.querySelectorAll('.heart-icon');
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'add_to_favourite.php',
-                    data: {
-                        restaurant_id: restaurantId
+        heartIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const restaurantId = this.dataset.restaurant_id;
+                const isLiked = this.dataset.liked === 'true';
+                const newLikedStatus = !isLiked;
+
+                fetch('toggle_favourite.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    success: function(response) {
-                        if (response.success) {
-                            $heartIcon.addClass('text-danger');
+                    body: `restaurant_id=${restaurantId}&is_liked=${newLikedStatus}`,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the UI immediately
+                        if (newLikedStatus) {
+                            icon.classList.add('text-danger');
                         } else {
-                            alert('Failed to add restaurant to favorites.');
+                            icon.classList.remove('text-danger');
                         }
-                    },
-
-                });
-                alert('Restaurant added to favourites!');
-            });
-        });
-    </script>
-
-    <script>
-        jQuery(document).ready(function($) {
-            $(document).on('click', '.heart-icon', function() {
-                var restaurantId = $(this).data('restaurant_id');
-                var heartIcon = $(this);
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'check_favourite.php',
-                    data: {
-                        restaurant_id: restaurantId
-                    },
-                    success: function(response) {
-                        if (response.isFavourite) {
-                            heartIcon.addClass('text-danger');
-                        }
-                    },
-                    error: function() {
-                        alert('Error occurred while processing request.');
+                        icon.dataset.liked = newLikedStatus.toString();
+                    } else {
+                        console.error('Error toggling favourite status:', data.message);
                     }
+                })
+                .catch(error => {
+                    console.error('Error toggling favourite status:', error);
                 });
+                location.reload();
             });
-        });
+        });});
     </script>
 
 </body>

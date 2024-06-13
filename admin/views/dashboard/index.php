@@ -22,14 +22,13 @@ $total_delivery_count = $delivery_controller->getTotalDeliveries();
 $total_delivered_count = $delivery_controller->getTotalDeliveredDeliveries();
 $total_undelivered_count = $delivery_controller->getTotalUndeliveredDeliveries();
 $item_controller = new ItemController();
-$totalitem = $item_controller->getTotalitems();
+$totalitem = $item_controller->getTotalItems();
 $restaurant_controller = new RestaurantController();
-$totalrestaurant = $restaurant_controller->getTotalrestaurants();
+$totalrestaurant = $restaurant_controller->getTotalRestaurants();
 $menu_controller = new MenuController();
-$totalmenu = $menu_controller->getTotalmenus();
+$totalmenu = $menu_controller->getTotalMenus();
 $user_controller = new UserController();
-$totaluser = $user_controller->getTotalusers();
-
+$totaluser = $user_controller->getTotalUsers();
 
 ?>
 
@@ -95,14 +94,14 @@ $totaluser = $user_controller->getTotalusers();
           </div>
           <div class="row">
               <div class="col-md-12">
-                  <h5><strong>Most Bought Item:</strong>  <span class=""><?php echo $mostboughtitem['item_name']," from ".$mostboughtitem['restaurant_name']. " restaurant"; ?></span></h5><hr>
+                  <h5><strong>Most Bought Item:</strong>  <span class=""><?php echo $mostboughtitem['item_name']," from ".$mostboughtitem['restaurant_name']. " restaurant"; ?></span></h5>
+                  <h5><strong>Total Orders:</strong>  <span class=""><?php echo $total_orders?></span></h5>
               </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Details About Orders -->
   <div class="row">
     <div class="col-lg-12 d-flex align-items-strech">
       <div class="card w-100">
@@ -149,8 +148,6 @@ $totaluser = $user_controller->getTotalusers();
       </div>
     </div>
   </div>
-
-  <!-- Details About Orders -->
   <div class="row">
     <div class="col-lg-12 d-flex align-items-strech">
       <div class="card w-100">
@@ -170,7 +167,7 @@ $totaluser = $user_controller->getTotalusers();
                 <div class="col-lg-6">
                     <div class="card border border-success">
                         <div class="card-body">
-                            <h5 class="card-title">Total Accepted Delivery</h5>
+                            <h5 class="card-title">Total Delivered Orders</h5>
                             <p class="card-text text-success"><?php echo $total_delivered_count; ?></p>
                         </div>
                     </div>
@@ -189,8 +186,6 @@ $totaluser = $user_controller->getTotalusers();
       </div>
     </div>
   </div>
-
-  <!-- Sales Overview -->
   <div class="row">
     <div class="col-lg-8 d-flex align-items-strech">
       <div class="card w-100">
@@ -435,6 +430,7 @@ $totaluser = $user_controller->getTotalusers();
       </div>
     </div>
   </div>
+</div>
   </body>
 
   </html>

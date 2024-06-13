@@ -28,6 +28,7 @@ class Favourite
         }
     }
 
+
     public function getFavouriteRestaurants($user_id)
     {
         $this->conn = Database::connect();
@@ -41,4 +42,15 @@ class Favourite
             return $results;
         }
     }
+
+    public function removeFavourite($user_id, $restaurant_id)
+    {
+        $this->conn = Database::connect();
+        $sql = "DELETE FROM favourite WHERE user_id = :user_id AND restaurant_id = :restaurant_id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':user_id', $user_id);
+        $this->statement->bindParam(':restaurant_id', $restaurant_id);
+        return $this->statement->execute();
+    }
+
 }

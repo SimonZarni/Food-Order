@@ -67,56 +67,133 @@ if (isset($_POST['submit'])) {
   <link rel="stylesheet" href="css/style.css">
 </head>
 
+
+
+<style>
+  body {
+    background-image: url(images/register_bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+  }
+
+  .login_formbg {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+
+  h2,
+  label {
+    color: rgb(209, 186, 130);
+  }
+
+  .input_group {
+    position: relative;
+    width: 100%;
+    height: 50px;
+  }
+
+  .input_group input {
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    width: 100%;
+    height: 100%;
+    font-size: 1.01rem;
+    color: rgb(209, 186, 130);
+    padding: 20px 45px 20px 20px;
+  }
+
+  .input_group input::placeholder {
+    color: rgb(209, 186, 130);
+  }
+
+  .input_group i {
+    position: absolute;
+    right: 14px;
+    top: 11px;
+    font-size: 1.1rem;
+    color: rgb(209, 186, 130);
+  }
+
+  .forgot_group input {
+    accent-color: #fff;
+    margin-right: 3px;
+  }
+
+  .forgot_group label {
+    font-size: 0.8rem;
+    margin-right: 20px;
+  }
+
+  .forgot_group a {
+    font-size: 0.8rem;
+    margin: 2px;
+  }
+
+  .submit_btn {
+    width: 100%;
+    border-radius: 40px;
+    background-color: brown;
+    color: white;
+  }
+
+  .submit_btn:hover {
+    background-color: rgb(98, 26, 26);
+    color: white;
+  }
+</style>
+
 <body>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-5" style="margin-top:100px;">
-        <form action="" method="post">
-          <div class="mb-3">
-            <label for="" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="" aria-describedby="textHelp">
-            <span class="text-danger"><?php if (isset($name_error)) echo $name_error; ?></span>
-          </div>
-          <div class="mb-3">
-            <label for="" class="form-label">Email Address</label>
-            <input type="email" name="email" class="form-control" id="" aria-describedby="emailHelp">
-            <span class="text-danger"><?php if (isset($email_error)) echo $email_error; ?></span>
-          </div>
-          <div class="mb-4">
-            <label for="" class="form-label">Password</label>
-            <div class="input-group">
-              <input type="password" name="password" class="form-control" id="password">
-              <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                <i class="ti ti-eye"></i>
-              </button>
-            </div>
+
+  <div class="login_container ms-5 d-flex justify-content-center align-items-center" style="height:100vh">
+    <div class="p-4 py-5 login_formbg col-md-4 col-8" style="border-radius:20px;">
+      <div class="text-center">
+        <h2>Registration</h2>
+      </div>
+      <form action="" method="post" class="m-4">
+        <div class="mb-3 input_group">
+          <input type="text" name="name" id="" placeholder="Name">
+          <i class="bi bi-person fs-5"></i>
+          <span class="text-danger"><?php if (isset($name_error)) echo $name_error; ?></span>
+        </div>
+        <div class="mb-3 input_group">
+          <input type="email" name="email" id="" aria-describedby="emailHelp" placeholder="Email">
+          <i class="bi bi-envelope-at"></i>
+          <span class="text-danger"><?php if (isset($email_error)) echo $email_error; ?></span>
+        </div>
+
+        <div class="mb-3">
+          <div class="input_group">
+            <input type="password" name="password" id="password" placeholder="Password">
+            <i class="bi bi-eye"></i>
             <span class="text-danger"><?php if (isset($password_error)) echo $password_error; ?></span>
           </div>
-          <div class="mb-4">
-            <label for="" class="form-label">Confirm Password</label>
-            <div class="input-group">
-              <input type="password" name="con_password" class="form-control" id="con_password">
-              <button type="button" class="btn btn-outline-secondary" id="toggleConPassword">
-                <i class="ti ti-eye"></i>
-              </button>
-            </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="input_group">
+            <input type="password" name="con_password" id="password" placeholder="Confirm Password">
+            <i class="bi bi-eye"></i>
             <span class="text-danger"><?php if (isset($conPass_error)) echo $conPass_error; ?></span>
+
           </div>
-          <span class="text-danger"><?php if (isset($error)) echo $error; ?></span>
-          <div>
-            <button class="btn btn-primary mb-4 rounded-2" name="submit">Sign Up</button>
-          </div>
-          <div class="d-flex align-items-center justify-content-center">
-            <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-            <a class="text-primary fw-bold ms-2" href="login.php">Sign In</a>
-          </div>
-        </form>
-      </div>
+        </div>
+        <span class="text-danger"><?php if (isset($error)) echo $error; ?></span>
+        <button class="btn mb-2 submit_btn" name="submit">Sign Up</button>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="mb-0 fw-medium text-light" style="font-size:0.9rem;margin-top:2px;">Already have an Account?</p>
+          <a class="ms-2" style="color:rgb(209, 186, 130);" style="font-size:0.9rem" href="login.php">Sign In</a>
+        </div>
+      </form>
     </div>
   </div>
+  <script src="../../src/js/script.js"></script>
 </body>
 
 </html>
-<?php
-include_once __DIR__ . "/layout/footer.php";
-?>

@@ -13,7 +13,7 @@ $auth_controller->authentication();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Food Drop</title>
   <link rel="shortcut icon" type="image/png" href="../../src/images/logos/favicon.png" />
   <link rel="stylesheet" href="../../src/css/datatables.css">
   <link rel="stylesheet" href="../../src/css/datatables.min.css">
@@ -85,6 +85,14 @@ $auth_controller->authentication();
                   <i class="ti ti-pizza"></i>
                 </span>
                 <span class="hide-menu">Item</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="../promotion/promotion_list.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-pizza"></i>
+                </span>
+                <span class="hide-menu">Promotion</span>
               </a>
             </li>
             <li class="sidebar-item">

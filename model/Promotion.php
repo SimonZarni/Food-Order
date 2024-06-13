@@ -8,7 +8,7 @@ class Promotion
     public function getPromotionRestaurants()
     {
         $this->conn = Database::connect();
-        $sql = "SELECT restaurant.*, promotion.discount as discount, promotion.name as discount_name, restaurant.profile_img as image, restaurant.id as restaurant_id
+        $sql = "SELECT restaurant.*, promotion.discount as discount, restaurant.profile_img as image, restaurant.id as restaurant_id
                 FROM restaurant
                 INNER JOIN promotion ON restaurant.id = promotion.restaurant_id";
         $this->statement = $this->conn->prepare($sql);

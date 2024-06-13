@@ -4,6 +4,7 @@ include_once __DIR__ . '/../../controller/PaymentController.php';
 
 $paymentController = new PaymentController();
 $payments = $paymentController->getPayments();
+
 ?>
 
 <div class="container-fluid">
@@ -54,6 +55,7 @@ $payments = $paymentController->getPayments();
         </div>
     </div>
 </div>
+
 <?php
 include_once __DIR__ . '/../../layouts/footer.php';
 ?>

@@ -22,6 +22,11 @@ class FavouriteController {
     {
         return $this->favourite->getFavouriteRestaurants($user_id);
     }
+
+    public function removeFavourite($user_id, $restaurant_id)
+    {
+        return $this->favourite->removeFavourite($user_id, $restaurant_id);
+    }
 }
 
 ?>

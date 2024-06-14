@@ -1,6 +1,5 @@
 <?php
-session_name('user');
-session_start();
+include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/CartController.php';
 include_once __DIR__ . '/controller/PaymentController.php';
 include_once __DIR__ . '/controller/TownshipController.php';
@@ -38,7 +37,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
     <style>
         .cart-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -67,9 +66,9 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
         }
 
         .item-image img {
-            max-width: 100px;
-            max-height: 100px;
-            border-radius: 5px;
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 10px;
             object-fit: cover;
         }
 
@@ -104,12 +103,10 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 
         .total-price {
             font-weight: bold;
-            color: #007bff;
         }
 
         .item-subtotal {
             margin-top: 10px;
-            font-size: 1.1em;
         }
 
         @media (max-width: 768px) {
@@ -126,53 +123,17 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 </head>
 
 <body>
-    <div class="stepper-wrapper">
-        <div class="stepper-item completed">
-            <div class="step-counter">1</div>
-            <div class="step-name">Menu</div>
-        </div>
-        <div class="stepper-item completed">
-            <div class="step-counter">2</div>
-            <div class="step-name">Cart</div>
-        </div>
-        <div class="stepper-item active">
-            <div class="step-counter">3</div>
-            <div class="step-name">Checkout</div>
-        </div>
-    </div>
     <div class="container-fluid">
+        <div class="mx-3" style="margin-top:80px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="item.php?restaurant_id=<?php echo $restaurant_id ?>" style="color:rgb(209, 186, 130);">Item</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Order</li>
+                </ol>
+            </nav>
+        </div>
         <div class="row">
             <div class="col-md-6">
-                <!-- <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Item</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($carts as $cart) {
-                            $totalPrice = $cart['price'] * $cart['quantity'];
-                        ?>
-                            <tr>
-                                <td style="display: none;"><input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" checked></td>
-                                <td></td>
-                                <td><?php echo $cart['name']; ?></td>
-                                <td><?php echo $cart['price']; ?></td>
-                                <td class="d-flex">
-                                    <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity form-control" data-price="<?php echo $cart['price']; ?>" disabled>
-                                </td>
-                                <td class="total-price" id="totalPrice"><?php echo number_format($totalPrice, 2); ?></td>
-                            </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table> -->
                 <div class="cart-container">
                     <?php
                     $subtotal = 0;
@@ -182,32 +143,38 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                     ?>
                         <div class="cart-item" data-id="<?php echo $cart['id']; ?>">
                             <input type="checkbox" class="cart-item-checkbox" name="item_ids[]" value="<?php echo $cart['id']; ?>" style="display: none;" checked>
-                            <div class="item-image">
+                            <div class="item-image col-md-6">
                                 <img src="admin/uploads/<?php echo $cart['image']; ?>" alt="<?php echo $cart['name']; ?>">
                             </div>
-                            <div class="item-details">
+                            <div class="item-details col-md-6">
                                 <div class="item-name"><?php echo $cart['name']; ?></div>
-                                <div class="item-price">Price: $<?php echo number_format($cart['price'], 2); ?></div>
+                                <div class="item-price">Price: MMK <?php echo number_format($cart['price'], 1); ?></div>
                                 <div class="item-quantity">
                                     Quantity: <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity" data-price="<?php echo $cart['price']; ?>" disabled>
                                 </div>
-                                <div class="item-subtotal">Item Price: $<span class="total-price"><?php echo number_format($totalPrice, 2); ?></span></div>
+                                <div class="item-subtotal">Item Price: <span class="total-price">MMK <?php echo number_format($totalPrice, 2); ?></span></div>
                             </div>
                         </div>
                     <?php
                     }
                     ?>
-                    <div class="cart-subtotal">
-                        Subtotal of all items: $<span class="subtotal-price"><?php echo number_format($subtotal, 2); ?></span>
+                    <div class="d-flex p-2 m-2">
+                        <div class="col-md-7">
+                            <p>Subtotal</p>
+                            <p>Delivery Fee</p>
+                            <p>Voucher</p>
+                        </div>
+                        <div class="col-md-5">
+                            <p class="subtotal-price">MMK <?php echo number_format($subtotal, 2); ?></p>
+                            <p>MMK <span class="township-fee">0.00</span></p>
+                            <p class="text-danger">MMK -<span class="discountAmount">0.00</span></p>
+                        </div>
                     </div>
                 </div>
-                <div class="mx-3">
-                    <a href="item.php?restaurant_id=<?php echo $restaurant_id ?>" class="btn btn-primary">Go Back</a>
-                </div>
             </div>
-            <div class="col-md-6">
-                <div class="mt-2">
-                    <label for="" class="form-label">Township</label>
+            <div class="col-md-5">
+                <div class="mt-4">
+                    <label for="" class="form-label"><b>Township</b></label>
                     <select name="township" id="townshipSelect" class="form-select">
                         <option value="" disabled selected>Select township</option>
                         <?php
@@ -223,19 +190,17 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                         ?>
                     </select>
                 </div>
-                <div class="mt-2">
-                    Delivery Fee: <span class="township-fee"></span>
-                </div>
-                <div class="mt-2">
-                    <label for="" class="form-label">Phone</label>
+
+                <div class="mt-4">
+                    <label for="" class="form-label"><b>Phone</b></label>
                     <input type="number" name="phone" id="phone" class="form-control" placeholder="Please fill your phone number">
                 </div>
-                <div class="mt-2">
-                    <label for="" class="form-label">Address</label>
+                <div class="mt-4">
+                    <label for="" class="form-label"><b>Address</b></label>
                     <input type="text" name="address" id="address" class="form-control" placeholder="Please fill in your address">
                 </div>
-                <div class="mt-2">
-                    <label for="" class="form-label">Payment Method</label>
+                <div class="mt-4">
+                    <label for="" class="form-label"><b>Payment Method</b></label>
                     <select name="payment" id="paymentSelect" class="form-select">
                         <option value="" disabled selected>Select payment method</option>
                         <?php
@@ -249,18 +214,23 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                         ?>
                     </select>
                 </div>
-                <div class="mt-2">
-                    <label for="" class="form-label">Voucher Code</label>
+                <div class="mt-4">
+                    <label for="" class="form-label"><b>Voucher Code</b></label>
                     <input type="number" name="voucher" id="voucher" class="form-control" placeholder="Apply Voucher Code">
-                    <button id="applyVoucher" class="btn btn-success mt-2" type="button" onclick="applyVoucher()">Apply</button>
+                    <div class="text-center">
+                        <button id="applyVoucher" class="btn btn-outline-warning mt-3" style="border-radius:40px;padding:8px 60px;" type="button" onclick="applyVoucher()">Apply</button>
+                    </div>
                 </div>
-                <div class="mt-2">
-                    Total Price: <span id="subtotal">0.00</span>
-                </div>
-                <button type="button" id="submitOrder" class="btn btn-primary mt-2">Submit Order</button>
             </div>
         </div>
+        <nav class="sticky-bottom bg-body-tertiary mt-5">
+            <div class="d-flex justify-content-around p-3">
+                <h4 class="mt-3">Total Price <span id="subtotal">0.00</span> Kyats</h4>
+                <!-- <a href="menu.php" type="button" id="submitOrder" class="btn login mt-2" style="border-radius:40px;padding:10px 60px">Submit Order</a> -->
+                <button type="button" id="submitOrder" class="btn login mt-2" style="border-radius:40px;padding:10px 60px">Submit Order</button>
 
+            </div>
+        </nav>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -277,8 +247,10 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
             if (foundPromotion) {
                 var discount = foundPromotion.discount;
                 var subtotal = parseFloat($('#subtotal').text());
+                var discountAmount = subtotal * (discount / 100);
                 var discountedPrice = subtotal * (1 - discount / 100);
                 $('#subtotal').text(discountedPrice.toFixed(2));
+                $('.discountAmount').text(discountAmount.toFixed(2));
                 alert('Voucher applied successfully!');
             } else {
                 alert('Invalid voucher code. Please try again.');
@@ -335,6 +307,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                     return;
                 }
 
+
                 var totalPrices = [];
                 $('.total-price').each(function() {
                     totalPrices.push(parseFloat($(this).text()));
@@ -342,6 +315,10 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 
                 var address = $('#address').val();
                 var phone = $('#phone').val();
+                if (!address || !phone) {
+                    alert('Please fill your address or phone number');
+                    return;
+                }
 
                 var formData = {
                     'item_ids': itemIds,
@@ -360,7 +337,9 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                     data: formData,
                     success: function(response) {
                         alert('Order submitted successfully!');
-                        console.log(response);
+                        sessionStorage.setItem('orderSuccess', 'true');
+                        window.location.href = 'menu.php';
+
                         $.each(itemIds, function(index, itemId) {
                             $('input[value="' + itemId + '"]').closest('.cart-item').remove();
                         });

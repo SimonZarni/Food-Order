@@ -30,7 +30,7 @@ $restaurants = $restaurant_controller->getRestaurantsByMenu($menu_id);
                         <div class="card restaurant-display">
                             <i class="bi bi-heart-fill heart-icon" data-liked="false"></i>
                             <a href="item.php?restaurant_id=<?php echo $restaurant['id']; ?>">
-                                <img src="images/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
+                                <img src="admin/uploads/<?php echo $restaurant['profile_img']; ?>" class="img-fluid" style="height:180px" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $restaurant['name']; ?></h5>
                                     <p class="card-text">Open</p>

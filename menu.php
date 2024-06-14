@@ -287,27 +287,27 @@ $favourite_controller = new FavouriteController();
     </script>
 
     <script>
-        jQuery(document).ready(function($) {
-            $('.heart-icon').click(function() {
-                var $heartIcon = $(this);
-                var restaurantId = $heartIcon.data('restaurant_id');
-                console.log(restaurantId);
+        // jQuery(document).ready(function($) {
+        //     $('.heart-icon').click(function() {
+        //         var $heartIcon = $(this);
+        //         var restaurantId = $heartIcon.data('restaurant_id');
+        //         console.log(restaurantId);
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'add_to_favourite.php',
-                    data: {
-                        restaurant_id: restaurantId
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $heartIcon.addClass('text-danger');
-                        }
-                    },
-                });
-                alert('Restaurant added to favourites!');
-            });
-        });
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: 'add_to_favourite.php',
+        //             data: {
+        //                 restaurant_id: restaurantId
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $heartIcon.addClass('text-danger');
+        //                 }
+        //             },
+        //         });
+        //         alert('Restaurant added to favourites!');
+        //     });
+        // });
 
         document.addEventListener("DOMContentLoaded", function() {
             const heartIcons = document.querySelectorAll('.heart-icon');
@@ -317,6 +317,7 @@ $favourite_controller = new FavouriteController();
                     const restaurantId = this.dataset.restaurant_id;
                     const isLiked = this.dataset.liked === 'true';
                     const newLikedStatus = !isLiked;
+                    console.log(restaurantId);
 
                     fetch('toggle_favourite.php', {
                             method: 'POST',
@@ -330,8 +331,10 @@ $favourite_controller = new FavouriteController();
                             if (data.success) {
                                 if (newLikedStatus) {
                                     icon.classList.add('text-danger');
+                                    alert('Restaurant added to favourites!');
                                 } else {
                                     icon.classList.remove('text-danger');
+                                    alert('Restaurant removed from favourites!');
                                 }
                                 icon.dataset.liked = newLikedStatus.toString();
                             } else {

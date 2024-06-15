@@ -191,12 +191,6 @@ class OrderController
         return $this->order->getDeliveredOrders();
     }
 
-
-    public function getUndeliveredStatusOrders()
-    {
-        return $this->order->getUndeliveredStatusOrders();
-    }
-
     public function getTotalAcceptedOrders()
     {
         return $this->order->getTotalAcceptedOrders();
@@ -212,3 +206,5 @@ class OrderController
         return $this->order->getTotalPendingOrders();
     }
 }
+
+?>

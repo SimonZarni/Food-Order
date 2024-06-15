@@ -37,12 +37,12 @@ session_start();
                         <li class="nav-item">
                             <a class="nav-link" href="menu.php">Menu</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">Restaurants</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Vouchers</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 

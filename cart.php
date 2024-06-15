@@ -252,6 +252,7 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                 $('#subtotal').text(discountedPrice.toFixed(2));
                 $('.discountAmount').text(discountAmount.toFixed(2));
                 alert('Voucher applied successfully!');
+                $('#applyVoucher').prop('disabled', true);
             } else {
                 alert('Invalid voucher code. Please try again.');
             }

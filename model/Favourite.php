@@ -52,5 +52,4 @@ class Favourite
         $this->statement->bindParam(':restaurant_id', $restaurant_id);
         return $this->statement->execute();
     }
-
 }

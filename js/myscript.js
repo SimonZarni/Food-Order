@@ -83,33 +83,6 @@ function updatePriceRange(slider) {
 
 /*Filter Price Range*/
 
-/*Favourite*/
-// Select all heart icons
-// document.addEventListener("DOMContentLoaded", function () {
-//   // Select all heart icons
-//   const heartIcons = document.querySelectorAll(".heart-icon");
-
-//   // Debugging: log heartIcons
-//   console.log(heartIcons);
-
-//   // Add click event listener to each heart icon
-//   heartIcons.forEach(function (icon) {
-//     if (icon) {
-//       icon.addEventListener("click", function () {
-//         // Toggle the 'liked' class
-//         icon.classList.toggle("liked");
-
-//         // Toggle the 'data-liked' attribute
-//         const isLiked = icon.getAttribute("data-liked") === "true";
-//         icon.setAttribute("data-liked", !isLiked);
-//         console.log("like it");
-//       });
-//     }
-//   });
-// });
-
-/*Favourite*/
-
 /*Copy Address*/
 
 // Function to copy the restaurant address to clipboard

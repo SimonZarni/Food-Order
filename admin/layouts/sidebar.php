@@ -13,11 +13,12 @@ $auth_controller->authentication();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Food Drop</title>
   <link rel="shortcut icon" type="image/png" href="../../src/images/logos/favicon.png" />
   <link rel="stylesheet" href="../../src/css/datatables.css">
   <link rel="stylesheet" href="../../src/css/datatables.min.css">
   <link rel="stylesheet" href="../../src/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -88,6 +89,14 @@ $auth_controller->authentication();
               </a>
             </li>
             <li class="sidebar-item">
+              <a class="sidebar-link" href="../promotion/promotion_list.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-tag"></i>
+                </span>
+                <span class="hide-menu">Promotion</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
               <a class="sidebar-link" href="../order/order_list.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-device-tablet"></i>
@@ -117,6 +126,14 @@ $auth_controller->authentication();
                   <i class="ti ti-file-description"></i>
                 </span>
                 <span class="hide-menu">Payment</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="../review/review_list.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-star"></i>
+                </span>
+                <span class="hide-menu">Review</span>
               </a>
             </li>
             <li class="sidebar-item">

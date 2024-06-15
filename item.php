@@ -3,6 +3,9 @@ include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/ItemController.php';
 include_once __DIR__ . '/controller/CartController.php';
 include_once __DIR__ . '/controller/PromotionController.php';
+include_once __DIR__ . '/controller/CartController.php';
+include_once __DIR__ . '/controller/ReviewController.php';
+include_once __DIR__ . '/controller/PromotionController.php';
 
 $restaurant_id = $_GET['restaurant_id'];
 if (isset($_SESSION['id'])) {
@@ -11,6 +14,14 @@ if (isset($_SESSION['id'])) {
 
 $result_controller = new ItemController();
 $results = $result_controller->getMenusAndItemsByRestaurant($restaurant_id);
+
+$cart_controller = new CartController();
+if (isset($user_id))
+    $carts = $cart_controller->getCartDetails($user_id, $restaurant_id);
+
+$review_controller = new ReviewController();
+$reviews = $review_controller->fetchReviewsByRestaurant($restaurant_id);
+$summary = $review_controller->calculateRating($reviews);
 
 $cart_controller = new CartController();
 if (isset($user_id))
@@ -84,16 +95,26 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                         <p>Delivery Available |</p>
                     </div>
                     <div class="rating-star mt-2">
-                        <p><i class="bi bi-star-fill"></i> 4.1 <span>(+3000)</span></p>
+                        <p><i class="bi bi-star-fill"></i><?php echo $summary['average']; ?> <span>(+<?php echo $summary['count']; ?>)</span></p>
                     </div>
                     <div>
-                        <button class="btn btn-link text-dark" data-toggle="modal" data-target="#reviewModal" data-backdrop="false">
+                        <a class="btn btn-link" style="color:brown;" href="review.php?restaurant_id=<?php echo $restaurant_id; ?>">
                             See Review |
+                        </a>
+                    </div>
+                    <div>
+                        <button class="btn btn-link" style="color:brown;" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
+                            Restaurant Info
                         </button>
                     </div>
                     <div>
-                        <button class="btn btn-link text-dark" data-toggle="modal" data-target="#infoModal" data-backdrop="false">
-                            Restaurant Info
+                        <button class="btn btn-link text-dark">Voucher Code:</button>
+                        <button id="copyButton" class="btn btn-link text-dark" data-toggle="modal" data-target="#codeModal" data-backdrop="false">
+                            <?php
+                            foreach ($promotions as $promotion) {
+                                echo $promotion['voucher_code'];
+                            }
+                            ?>
                         </button>
                     </div>
                     <div>
@@ -400,6 +421,104 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
             </div>
             <div class="position-absolute bottom-0 start-50 translate-middle">
                 <button class="btn login px-5" id="checkoutBtn">Review Order</button>
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="food-item-list scrollspy-example p-3 rounded-2" tabindex="0">
+        <?php foreach ($groupedItems as $menuName => $items) : ?>
+            <div class="row justify-content-center align-items-center mt-3">
+                <h4 id="<?php echo $menuName; ?>"><?php echo $menuName; ?></h4>
+                <div class="col d-flex flex-wrap">
+                    <?php foreach ($items as $item) : ?>
+                        <div class="col-md-4 d-flex food-item border rounded item-display my-2 p-3">
+                            <div class="col-md-6">
+                                <h5><?php echo $item['item_name']; ?></h5>
+                                <span style="font-size: 0.9rem;"><?php echo $item['description']; ?></span>
+                                <p class="mt-3"><?php echo $item['price']; ?></p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="admin/uploads/<?php echo $item['image']; ?>" style="width: 160px;height:130px" alt="">
+                            </div>
+                            <button class="item-add btn" data-toggle="modal" data-target="#itemDetailModal_<?php echo $item['item_id']; ?>"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="itemDetailModal_<?php echo $item['item_id']; ?>" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true" data-backdrop="false">
+                            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="itemDetailModalLabel">Item Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-md-6">
+                                                <img src="admin/uploads/<?php echo $item['image']; ?>" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h4><?php echo $item['item_name']; ?></h4>
+                                                <p><?php echo $item['price']; ?></p>
+                                                <p><?php echo $item['description']; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <div class="mb-3 col-md-5 quantityBtn d-flex">
+                                            <button class="btn mx-2 decrease-quantity" type="button"><i class="bi bi-dash-lg"></i></button>
+                                            <input type="number mx-2" class="form-control quantity" readonly value="1">
+                                            <button class="btn mx-2 increase-quantity" type="button"><i class="bi bi-plus-lg"></i></button>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-outline-dark add-to-cart" type="button" data-item-id="<?php echo $item['item_id']; ?>">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cart items</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body position-relative">
+            <div class="cart-container">
+                <?php if (isset($carts)) foreach ($carts as $cart) : ?>
+                    <?php
+                    $totalPrice = $cart['price'] * $cart['quantity'];
+                    ?>
+                    <div class="d-flex mb-2 related-content" data-cart-id="<?php echo $cart['item_id']; ?>">
+                        <div class="col-md-6">
+                            <img src="admin/uploads/<?php echo $cart['image']; ?>" style="width: 100px;height:80px;border-radius:20px;" alt="">
+                        </div>
+                        <div class="col-md-6">
+                            <h6><?php echo $cart['name']; ?></h6>
+                            <p><?php echo $cart['price'] ?></p>
+                            <p><?php echo $cart['description'] ?></p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-5 price-class">
+                        <div class="col-md-4 mt-3" id="totalPrice">
+                            <?php echo number_format($totalPrice, 2); ?>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="remove-item btn btn-link mt-2" type="button" data-item-id="<?php echo $cart['item_id']; ?>"><i class="bi bi-trash text-danger fs-5"></i></button>
+                        </div>
+                        <div class="col-md-6 mt-2 d-flex justify-content-end buttonClass" data-cart-id="<?php echo $cart['cart_id']; ?>">
+                            <button class="decrease-quantity1 btn btn-link text-warning" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-dash-lg"></i></button>
+                            <input type="number" value="<?php echo $cart['quantity']; ?>" class="quantity1 text-center form-control" data-price="<?php echo $cart['price']; ?>" data-cart-id="<?php echo $cart['id']; ?>" readonly>
+                            <button class="increase-quantity1 btn btn-link text-warning" type="button" data-price="<?php echo $cart['price']; ?>"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle">
+                <button class="btn login px-5" id="checkoutBtn">Review Order</button>
             </div>
         </div>
     </div>
@@ -567,6 +686,48 @@ include_once __DIR__ . "/layout/footer.php";
             var price = input.data('price')
 
             var totalPriceElement = $(this).closest('.related-content').find('#totalPrice');
+            totalPriceElement.text((quantity * price).toFixed(2))
+
+            $.ajax({
+                url: 'update_cart.php',
+                method: 'POST',
+                data: {
+                    cart_id: cart_id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#checkoutBtn').on('click', function() {
+            window.location.href = 'cart.php?restaurant_id=<?php echo $restaurant_id ?>';
+        });
+
+        $('.increase-quantity1, .decrease-quantity1').on('click', function() {
+            var input = $(this).siblings('.quantity1');
+            var value = parseInt(input.val());
+
+            if ($(this).hasClass('increase-quantity1')) {
+                value++;
+            } else {
+                value = value > 1 ? value - 1 : 1;
+            }
+            input.val(value);
+
+            var buttonClass = $(this).closest('.buttonClass');
+            var cart_id = buttonClass.data('cartId');
+            var quantity = parseInt(buttonClass.find('.quantity1').val());
+            var price = input.data('price')
+            console.log(quantity)
+            console.log(price)
+
+            var totalPriceElement = $(this).closest('.price-class').find('#totalPrice');
+            console.log(totalPriceElement)
             totalPriceElement.text((quantity * price).toFixed(2))
 
             $.ajax({

@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Food Drop</title>
   <link rel="shortcut icon" type="image/png" href="../../src/images/logos/favicon.png" />
   <link rel="stylesheet" href="../../src/css/styles.min.css" />
 </head>
@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
                   <span class="text-danger"><?php if (isset($error)) echo $error; ?></span>
                   <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" name="submit">Sign In</button>
                   <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
+                    <p class="fs-4 mb-0 fw-bold">New to Food Drop?</p>
                     <a class="text-primary fw-bold ms-2" href="register.php">Create an account</a>
                   </div>
                 </form>

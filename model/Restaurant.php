@@ -16,6 +16,18 @@ class Restaurant
         }
     }
 
+    public function getRestaurant($id)
+    {
+        $this->conn = Database::connect();
+        $sql = "select * from restaurant where id=:id";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':id', $id);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetch(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
+
     public function getRestaurantsByMenu($menu_id)
     {
         $this->conn = Database::connect();

@@ -20,6 +20,13 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+  $("#promotionTable").DataTable({
+    paging: true,
+    searching: true,
+  });
+});
+
+$(document).ready(function () {
   $("#orderTable").DataTable({
     paging: true,
     searching: true,
@@ -28,6 +35,13 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $("#paymentTable").DataTable({
+    paging: true,
+    searching: true,
+  });
+});
+
+$(document).ready(function () {
+  $("#reviewTable").DataTable({
     paging: true,
     searching: true,
   });

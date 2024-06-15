@@ -206,5 +206,3 @@ class OrderController
         return $this->order->getTotalPendingOrders();
     }
 }
-
-?>

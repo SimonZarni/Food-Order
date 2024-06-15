@@ -141,7 +141,7 @@ if (isset($_GET['township'])) {
                                         </td>
                                     </tr>
                             <?php
-                                }
+                                } 
                             }
                             ?>
                         </tbody>

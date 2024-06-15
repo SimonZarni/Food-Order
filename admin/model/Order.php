@@ -242,7 +242,8 @@ class Order
                 LEFT JOIN delivery d ON od.order_code = d.order_code
                 JOIN user ON od.user_id = user.id
                 JOIN township ON od.township_id = township.id
-                WHERE d.order_code IS NULL";
+                WHERE d.order_code IS NULL
+                OR d.status = 'Not Delivered'";
         $this->statement = $this->conn->prepare($sql);
         if ($this->statement->execute()) {
             $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
@@ -303,5 +304,3 @@ class Order
         }
     }
 }
-
-?>

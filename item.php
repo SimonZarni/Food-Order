@@ -308,6 +308,23 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
     </nav>
 
     <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="food-item-list scrollspy-example p-3 rounded-2" tabindex="0">
+        <?php
+        foreach ($promotions as $promotion) {
+
+        ?>
+            <div class="voucher">
+                <div class="voucher-header">
+                    <h5>Special Offer</h5>
+                    <p>Get <?php echo $promotion['discount']; ?>% Off Your Next Purchase!</p>
+                </div>
+                <div class="voucher-body d-flex justify-content-center">
+                    <p class="mx-3">Use Code: <span id="promoCode"></span><strong><?php echo $promotion['voucher_code']; ?></strong></span></p>
+                    <i class="bi bi-clipboard" onclick="copyVoucherCode()"></i>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
         <?php foreach ($groupedItems as $menuName => $items) : ?>
             <div class="row justify-content-center align-items-center mt-3">
                 <h4 id="<?php echo $menuName; ?>"><?php echo $menuName; ?></h4>
@@ -420,20 +437,22 @@ include_once __DIR__ . "/layout/footer.php";
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
 <script>
-    document.getElementById('copyButton').addEventListener('click', function() {
-        var voucherCode = this.textContent.trim();
+    function copyVoucherCode() {
+        var voucherCode = '<?php echo $promotion['voucher_code']; ?>';
 
-        var tempTextArea = document.createElement('textarea');
-        tempTextArea.value = voucherCode;
-        document.body.appendChild(tempTextArea);
+        var tempInput = document.createElement("input");
+        tempInput.value = voucherCode;
+        document.body.appendChild(tempInput);
 
-        tempTextArea.select();
-        document.execCommand('copy');
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999);
 
-        document.body.removeChild(tempTextArea);
+        document.execCommand("copy");
 
-        alert('Voucher code copied to clipboard: ' + voucherCode);
-    });
+        document.body.removeChild(tempInput);
+
+        alert("Code copied to clipboard: " + voucherCode);
+    }
 </script>
 
 <script>

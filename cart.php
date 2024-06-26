@@ -228,7 +228,6 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
                 <h4 class="mt-3">Total Price <span id="subtotal">0.00</span> Kyats</h4>
                 <!-- <a href="menu.php" type="button" id="submitOrder" class="btn login mt-2" style="border-radius:40px;padding:10px 60px">Submit Order</a> -->
                 <button type="button" id="submitOrder" class="btn login mt-2" style="border-radius:40px;padding:10px 60px">Submit Order</button>
-
             </div>
         </nav>
     </div>

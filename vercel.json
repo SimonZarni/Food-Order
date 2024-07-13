@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "admin/views/dashboard/index.php",
+        "use": "@vercel/php"
+      },
+      {
+        "src": "index.php",
+        "use": "@vercel/php"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/admin/(.*)",
+        "dest": "/admin/views/dashboard/index.php"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.php"
+      }
+    ]
+  }
+  

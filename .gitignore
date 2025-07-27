@@ -1,0 +1,31 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Composer dependencies
+/vendor/
+
+# Environment files (DO NOT expose secrets)
+.env
+
+# Log files and debug output
+*.log
+
+# Cache
+/cache/
+*.cache
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# OS-specific files
+*.swp
+*.swo
+
+# PHPUnit
+phpunit.xml
+phpunit.xml.dist
+
+# XAMPP related
+xamppfiles/

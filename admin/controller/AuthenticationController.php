@@ -50,7 +50,8 @@ class AuthenticationController {
         $mailer->Port = 587;
 
         $mailer->Username = "simonzarni03@gmail.com";
-        $mailer->Password = "uszj czrg zowg apxa";
+        // $mailer->Password = "uszj czrg zowg apxa";
+        $mailer->Password = "xhvphumrelhrfevk";
 
         $mailer->setFrom("simonzarni03@gmail.com","Food Order");
         $mailer->addAddress($email);
@@ -77,7 +78,8 @@ class AuthenticationController {
         $mailer->Port = 587;
 
         $mailer->Username = "simonzarni03@gmail.com";
-        $mailer->Password = "uszj czrg zowg apxa";
+        // $mailer->Password = "uszj czrg zowg apxa";
+        $mailer->Password = "xhvphumrelhrfevk";
 
         $mailer->setFrom("simonzarni03@gmail.com","Food Order");
         $mailer->addAddress($email);

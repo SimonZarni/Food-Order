@@ -27,6 +27,11 @@ class OrderController {
     {
         return $this->order->getOrderByCode($order_code); 
     }
+
+    public function getOrderByCodeAndUser($order_code, $user_id)
+    {
+        return $this->order->getOrderByCodeAndUser($order_code, $user_id);
+    }
 }
 
 ?>

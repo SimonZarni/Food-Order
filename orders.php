@@ -22,6 +22,33 @@ $orders = $order_controller->getOrdersByUser($user_id);
     <div class="container" style="margin-top: 70px">
         <h4>Orders History</h4>
         <strong>Customer Name: </strong><?php echo $orders[0]['username'] ?>
+        
+        <?php
+        if (isset($_GET['reorder'])) {
+            if ($_GET['reorder'] == 'success') {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Items added to cart successfully!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>';
+            } elseif ($_GET['reorder'] == 'failed') {
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Failed to add items to cart. Please try again.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>';
+            } elseif ($_GET['reorder'] == 'notfound') {
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Order not found.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>';
+            }
+        }
+        ?>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-striped">
@@ -63,13 +90,16 @@ $orders = $order_controller->getOrdersByUser($user_id);
                                     }
                                     ?>
                                 </td>
-                                <?php
-                                if ($order['status'] == 'Accepted') {
-                                ?>
-                                    <td><a href="invoice.php?order_code=<?php echo $order['order_code']; ?>" class="btn btn-warning">Invoice</a></td>
-                                <?php
-                                }
-                                ?>
+                                <td>
+                                    <a href="reorder.php?order_code=<?php echo $order['order_code']; ?>" class="btn btn-primary btn-sm">Reorder</a>
+                                    <?php
+                                    if ($order['status'] == 'Accepted') {
+                                    ?>
+                                        <a href="invoice.php?order_code=<?php echo $order['order_code']; ?>" class="btn btn-warning btn-sm">Invoice</a>
+                                    <?php
+                                    }
+                                    ?>
+                                </td>
                             </tr>
                         <?php
                         }

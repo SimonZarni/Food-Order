@@ -1,11 +1,26 @@
 <?php
+session_name('user');
+session_start();
+
+if (!isset($_SESSION['id'])) {
+    header('location: login.php');
+    exit;
+}
+
 include_once __DIR__ . '/layout/sidebar.php';
 include_once __DIR__ . '/controller/OrderController.php';
 
 $order_code = $_GET['order_code'];
+$user_id = $_SESSION['id'];
 
 $order_controller = new OrderController();
-$orders = $order_controller->getOrderByCode($order_code);
+// Security fix: Verify order belongs to current user
+$orders = $order_controller->getOrderByCodeAndUser($order_code, $user_id);
+
+if (!$orders || count($orders) == 0) {
+    header('location: orders.php?id=' . $user_id . '&error=notfound');
+    exit;
+}
 
 ?>
 

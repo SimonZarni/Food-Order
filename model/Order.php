@@ -99,6 +99,26 @@ class Order {
         }
     }
 
+    public function getOrderByCodeAndUser($order_code, $user_id)
+    {
+        $this->conn = Database::connect();
+        $sql = "SELECT `order`.*, order_details.*, order_details.subtotal, user.name as username, item.name as item, item.price as item_price, 
+                township.name as township, township.fee as fee
+                FROM `order`
+                JOIN order_details ON `order`.order_code = order_details.order_code 
+                JOIN user on `order`.user_id = user.id
+                JOIN item on `order`.item_id = item.id
+                JOIN township on `order`.township_id = township.id
+                WHERE `order`.order_code = :order_code AND `order`.user_id = :user_id;";
+        $this->statement = $this->conn->prepare($sql);
+        $this->statement->bindParam(':order_code', $order_code);
+        $this->statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        if ($this->statement->execute()) {
+            $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+    }
+
     public function getOrderDetails($id){
         $this->conn = Database::connect();
         $sql = "SELECT order_details.* from `order_details` WHERE `order_details`.id= :id";

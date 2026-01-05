@@ -125,6 +125,16 @@ $promotions = $promotion_controller->getPromotionByRestaurant($restaurant_id);
 <body>
     <div class="container-fluid">
         <div class="mx-3" style="margin-top:80px;">
+            <?php
+            if (isset($_GET['reorder']) && $_GET['reorder'] == 'success') {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle"></i> Items from your previous order have been added to cart!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>';
+            }
+            ?>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="item.php?restaurant_id=<?php echo $restaurant_id ?>" style="color:rgb(209, 186, 130);">Item</a></li>

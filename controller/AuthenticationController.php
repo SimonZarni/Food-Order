@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
@@ -74,8 +76,10 @@ class AuthenticationController
             $mailer->isSMTP();
             $mailer->Host = 'smtp.gmail.com';
             $mailer->SMTPAuth = true;
-            $mailer->Username = "simonzarni03@gmail.com";
-            $mailer->Password = "xhvphumrelhrfevk"; // No spaces
+            // $mailer->Username = "simonzarni03@gmail.com";
+            // $mailer->Password = "xhvphumrelhrfevk"; 
+            $mailer->Username = $_ENV['EMAIL_USERNAME'];
+            $mailer->Password = $_ENV['EMAIL_PASSWORD'];
             $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mailer->Port = 587;
 

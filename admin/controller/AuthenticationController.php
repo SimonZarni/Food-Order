@@ -1,8 +1,10 @@
 <?php
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -54,9 +56,10 @@ class AuthenticationController {
         $mailer->SMTPSecure = 'tls';
         $mailer->Port = 587;
 
-        $mailer->Username = "simonzarni03@gmail.com";
-        // $mailer->Password = "uszj czrg zowg apxa";
-        $mailer->Password = "xhvphumrelhrfevk";
+        // $mailer->Username = "simonzarni03@gmail.com";
+        // $mailer->Password = "xhvphumrelhrfevk";
+        $mailer->Username = $_ENV['EMAIL_USERNAME'];
+        $mailer->Password = $_ENV['EMAIL_PASSWORD'];
 
         $mailer->setFrom("simonzarni03@gmail.com","Food Order");
         $mailer->addAddress($email);
@@ -82,9 +85,10 @@ class AuthenticationController {
         $mailer->SMTPSecure = 'tls';
         $mailer->Port = 587;
 
-        $mailer->Username = "simonzarni03@gmail.com";
-        // $mailer->Password = "uszj czrg zowg apxa";
-        $mailer->Password = "xhvphumrelhrfevk";
+        // $mailer->Username = "simonzarni03@gmail.com";
+        // $mailer->Password = "xhvphumrelhrfevk";
+        $mailer->Username = $_ENV['EMAIL_USERNAME'];
+        $mailer->Password = $_ENV['EMAIL_PASSWORD'];
 
         $mailer->setFrom("simonzarni03@gmail.com","Food Order");
         $mailer->addAddress($email);
